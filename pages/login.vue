@@ -1,0 +1,61 @@
+<template>
+  <div class="register-container d-flex align-center justify-center">
+    <div class="page">
+      <v-form id="login-form" @submit.prevent="login()">
+        <v-text-field
+          v-model="username"
+          label="Username or E-mail"
+          :error="!!errors.username"
+          :error-messages="errors.username"
+        ></v-text-field>
+        <v-text-field
+          v-model="password"
+          type="password"
+          label="Password"
+          :error="!!errors.password"
+          :error-messages="errors.password"
+        ></v-text-field>
+        <v-btn
+          type="submit"
+          form="login-form"
+          class="mt-2"
+          color="primary"
+          block
+          >Login</v-btn
+        >
+      </v-form>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import axios from 'axios'
+import { User } from '../types'
+
+export default {
+  data() {
+    return {
+      user: [] as Array<User>,
+      username: '',
+      password: '',
+      errors: {},
+    }
+  },
+  methods: {
+    async login() {
+      const data = await this.$axios.$post('user/login', {
+        username: this.username,
+        password: this.password,
+      })
+      this.user = data
+      this.errors = data.errors ? data.errors : {}
+      if (!data.errors) {
+        this.$router.push({ name: 'account' })
+        await this.$store.dispatch('getLoggedinUser')
+      }
+    },
+  },
+}
+</script>
+
+<style lang="scss" scoped></style>
