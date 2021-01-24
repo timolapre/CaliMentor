@@ -37,15 +37,35 @@
           :error="!!errors.country"
           :error-messages="errors.country"
         ></v-autocomplete>
+
+        <v-select
+          v-model="premium"
+          class="pa-1 pt-4 ma-0"
+          item-value="id"
+          item-text="name"
+          :items="premiumOptions"
+          label="Free / Premium"
+        ></v-select>
+
+        <div v-if="premium == 1">
+          <v-text-field label="Banking info"></v-text-field>
+        </div>
+
         <v-btn
           type="submit"
           form="register-form"
           class="mt-2"
           color="primary"
           block
-          >Register</v-btn
         >
+          Register
+        </v-btn>
       </v-form>
+      <GoogleLoginButton />
+      <div class="mt-4 d-flex float-right align-center">
+        <p class="mb-0 mr-3">Already have an account?</p>
+        <v-btn @click="$router.push({ name: 'login' })"> Login </v-btn>
+      </div>
     </div>
   </div>
 </template>
@@ -59,12 +79,17 @@ export default {
   name: 'Register',
   data() {
     return {
+      premiumOptions: [
+        { name: 'Free', id: 0 },
+        { name: 'Premium €2,99 / month', id: 1 },
+      ],
       countries: CountryList.getData(),
       username: '',
       password: '',
       repeatPassword: '',
       email: '',
       country: '',
+      premium: null,
       errors: {},
     }
   },

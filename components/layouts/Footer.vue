@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-footer class="d-none d-md-block text-center" absolute
+    <v-footer class="d-none d-md-block text-center" absolute 
       >&copy; CaliMentor</v-footer
     >
     <v-footer
@@ -35,7 +35,7 @@ export default {
         },
         {
           name: 'Saved workouts',
-          icon: 'fa-save',
+          icon: 'fa-heart',
           url: '',
         },
         {
@@ -46,7 +46,7 @@ export default {
         {
           name: 'Account',
           icon: 'fa-user',
-          url: 'Account',
+          url: 'account',
         },
       ],
     }

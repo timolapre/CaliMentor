@@ -5,22 +5,22 @@
         CaliMentor
       </h1>
       <div
-        class="ml-auto d-none d-md-block d-flex justify-center align-center"
+        class="ml-auto d-none d-md-flex justify-center align-center"
         v-if="$store.state.LOGGEDIN"
       >
-        <p class="d-inline mr-3">
+        <p class="d-inline ma-0">
           Welcome {{ $store.state.LOGGEDINUSER.username }}
         </p>
-        <v-btn class="v-btn" @click="$router.push({ name: 'account' })"
+        <v-btn class="v-btn ml-6" @click="$router.push({ name: 'account' })"
           >Account</v-btn
         >
-        <v-btn class="v-btn" @click="logout">Logout</v-btn>
+        <v-btn class="v-btn ml-2" @click="logout">Logout</v-btn>
       </div>
-      <div class="ml-auto d-none d-md-block" v-else>
+      <div class="ml-auto d-none d-md-flex" v-else>
         <v-btn class="v-btn" @click="$router.push({ name: 'login' })"
           >Login</v-btn
         >
-        <v-btn class="v-btn" @click="$router.push({ name: 'register' })"
+        <v-btn class="v-btn ml-2" @click="$router.push({ name: 'register' })"
           >Register</v-btn
         >
       </div>
@@ -33,10 +33,12 @@ import Vue from 'vue'
 
 export default Vue.extend({
   name: 'Header',
+  data() {
+    return {}
+  },
   methods: {
     async logout() {
       const data = await this.$axios.$get('user/logout')
-      console.log(data)
 
       if (data) {
         await this.$store.dispatch('logoutUser')
@@ -45,6 +47,7 @@ export default Vue.extend({
   },
   async created() {
     await this.$store.dispatch('getLoggedinUser')
+    await this.$store.dispatch('setExerciseOptions')
   },
 })
 </script>

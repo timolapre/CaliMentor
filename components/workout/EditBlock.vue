@@ -20,21 +20,21 @@
             class="mx-2 mb-3"
           >
             <v-col class="px-0 pb-0">
-              <v-text-field
+              <v-combobox
                 flat
                 solo
                 dense
                 hide-details
                 background-color="secondary"
+                :items="exercises"
                 placeholder="Exercise"
                 class="block-input"
                 v-model="exercise.name"
-              ></v-text-field>
+              ></v-combobox>
             </v-col>
             <v-col
               cols="3"
               sm="2"
-              lg="1"
               class="d-flex align-center justify-end px-1 pb-0"
             >
               <v-text-field
@@ -50,7 +50,6 @@
             <v-col
               cols="3"
               sm="2"
-              lg="1"
               class="d-flex align-center justify-end px-0 pb-0"
             >
               <v-select
@@ -266,6 +265,15 @@ export default {
     },
     deleteBlock() {
       this.$emit('delete-block', this.block.id)
+    },
+  },
+  computed: {
+    exercises() {
+      const exercises = []
+      this.$store.state.EXERCISES.forEach((exercise) => {
+        exercises.push(exercise.name)
+      })
+      return exercises
     },
   },
 }

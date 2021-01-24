@@ -149,7 +149,6 @@ export default {
         workout: this.workout,
       })
       this.$router.push({ name: 'workout-id', params: { id: data } })
-      console.log(data)
     },
     async saveEditWorkout() {
       await this.$axios.$post('workout/edit', {

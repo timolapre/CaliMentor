@@ -1,14 +1,16 @@
 import axios from 'axios'
-import { User } from '~/types'
+import { User } from '../types'
 
 export const strict = false
 
 export const state = () => ({
   LOGGEDIN: false,
   LOGGEDINUSER: {} as User,
+  PREMIUMUSER: false,
   WORKOUT_TYPE_OPTIONS: null,
   WORKOUT_DIFFICULTY_OPTIONS: null,
   WORKOUT_DURATION_OPTIONS: null,
+  EXERCISES: null,
 })
 
 export const mutations = {}
@@ -32,15 +34,28 @@ export const actions = {
       state.WORKOUT_DURATION_OPTIONS = data
     }
   },
+  async setExerciseOptions({ state }: any) {
+    if (!state.EXERCISES) {
+      const data = await this.$axios.$get('workout/exercises')
+      // const exercises = []
+      // data.forEach((exercise) => {
+      //   exercises.push(exercise.name)
+      // })
+      state.EXERCISES = data
+    }
+  },
   async getLoggedinUser({ state }: any) {
     if (!state.LOGGEDINUSER.id) {
       const data = (await this.$axios.$get('user/me')) as User
       state.LOGGEDIN = data.id ? true : false
+      state.PREMIUMUSER =
+        data.type == 'premium' || data.type == 'gifted_premium' ? true : false
       state.LOGGEDINUSER = data
     }
   },
   async logoutUser({ state }: any) {
     state.LOGGEDIN = false
+    state.PREMIUMUSER = false
     state.LOGGEDINUSER = {}
   },
 }

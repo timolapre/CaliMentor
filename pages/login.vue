@@ -4,7 +4,7 @@
       <v-form id="login-form" @submit.prevent="login()">
         <v-text-field
           v-model="username"
-          label="Username or E-mail"
+          label="Username"
           :error="!!errors.username"
           :error-messages="errors.username"
         ></v-text-field>
@@ -15,15 +15,31 @@
           :error="!!errors.password"
           :error-messages="errors.password"
         ></v-text-field>
+        <div class="d-flex align-center justify-space-between">
+          <h4 class="red--text mb-3">{{ errors.all }}</h4>
+          <v-btn
+            class="mt-2 float-right mb-5"
+            small
+            @click="$router.push({ name: 'forgotpassword' })"
+            >Forgot password
+          </v-btn>
+        </div>
+
         <v-btn
           type="submit"
           form="login-form"
           class="mt-2"
           color="primary"
           block
-          >Login</v-btn
-        >
+          >Login
+        </v-btn>
       </v-form>
+
+      <GoogleLoginButton />
+      <div class="mt-4 d-flex float-right align-center">
+        <p class="mb-0 mr-3">No account yet?</p>
+        <v-btn @click="$router.push({ name: 'register' })"> Register </v-btn>
+      </div>
     </div>
   </div>
 </template>

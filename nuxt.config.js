@@ -2,12 +2,21 @@ export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     title: 'CaliMentor',
-    meta: [ 
+    meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    script: [
+      {
+        src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
+        'data-ad-client': 'ca-pub-8433512426340061',
+        'data-adtest': "on",
+        async: true
+      },
+      { src: "https://js.stripe.com/v3/" }
+    ]
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
