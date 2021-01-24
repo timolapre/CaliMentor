@@ -143,12 +143,11 @@
 
 <script>
 import moment from 'moment'
-import { Block } from '../../types'
 import { WORKOUT_BLOCK_OPTIONS_INFO } from '../../constants'
 
 export default {
   props: {
-    block: { type: Block, default: () => {} },
+    block: { type: Object, default: () => {} },
     index: { type: Number, default: 0 },
   },
   data() {

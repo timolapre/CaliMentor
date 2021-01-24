@@ -58,7 +58,7 @@
                 dense
                 hide-details
                 background-color="secondary"
-                :items="['x', 's']"
+                :items="['x', 's', 'm']"
                 v-model="exercise.append"
               ></v-select>
             </v-col>

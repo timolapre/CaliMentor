@@ -63,14 +63,24 @@
         <h1>Personal records and progress</h1>
         <p>click on an exercise to see the history or edit</p>
         <v-row class="mt-1">
-          <v-col cols="12" sm="6" class="py-1">
-            <v-btn block class="py-1">
-              <h2>Push Ups: 10</h2>
+          <v-col v-for="pr in PRs" :key="pr.id" cols="12" sm="6" class="pa-1">
+            <v-btn
+              block
+              class="py-1"
+              @click="$router.push({ name: 'pr-id', params: { id: pr.id } })"
+            >
+              <h2>{{ pr.exercise }} {{ pr.count }}{{ pr.append }}</h2>
             </v-btn>
           </v-col>
-          <v-col cols="12" sm="6" class="py-1">
-            <v-btn block class="py-1">
-              <h2>Push Ups: 10</h2>
+          <v-col cols="12" sm="6" class="pa-1">
+            <v-btn
+              color="primary"
+              @click="$router.push({ name: 'pr-add' })"
+              class="py-1"
+              outlined
+              block
+            >
+              <h2>Add exercise</h2>
             </v-btn>
           </v-col>
         </v-row>
@@ -86,7 +96,7 @@ export default {
   data() {
     return {
       user: {} as User,
-      myWorkouts: [],
+      PRs: [],
       achievements: [
         { id: 1, tooltip: 'Buy premium', icon: 'hand-holding-usd', size: '' },
         {
@@ -160,6 +170,13 @@ export default {
         })
       console.log('charge premium', data)
     },
+    async getPersonalRecords() {
+      const data = await this.$axios.$get('personalrecord/all')
+      this.PRs = data || []
+    },
+  },
+  created() {
+    this.getPersonalRecords()
   },
 }
 </script>

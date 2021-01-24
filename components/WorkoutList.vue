@@ -48,13 +48,11 @@
 </template>
 
 <script>
-import { Workout } from '~/types'
-
 var moment = require('moment')
 export default {
   name: 'WorkoutList',
   props: {
-    workout: { type: Workout, default: () => {} },
+    workout: { type: Object, default: () => {} },
     index: { type: Number, default: 0 },
   },
   data() {
