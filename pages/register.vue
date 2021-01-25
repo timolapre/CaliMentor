@@ -95,16 +95,13 @@ export default {
   },
   methods: {
     async register() {
-      const { data } = await axios.post(
-        process.env.VUE_APP_API_HOST + '/user/register',
-        {
-          username: this.username,
-          password: this.password,
-          repeatPassword: this.repeatPassword,
-          email: this.email,
-          country: this.country,
-        }
-      )
+      const data = await this.$axios.$post('/user/register', {
+        username: this.username,
+        password: this.password,
+        repeatPassword: this.repeatPassword,
+        email: this.email,
+        country: this.country,
+      })
       this.errors = data.errors
       await this.$store.dispatch('getLoggedinUser')
     },

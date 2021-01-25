@@ -4,12 +4,6 @@ import Vuetify from 'vuetify'
 
 Vue.use(Vuetify)
 
-if (process.env.NODE_ENV === 'production') {
-  process.env.VUE_APP_API_HOST = 'https://borderlessinc.science.uu.nl:8080/api'
-} else {
-  process.env.VUE_APP_API_HOST = 'http://localhost:8080/api'
-}
-
 export default new Vuetify({
   icons: {
     iconfont: 'fa',
