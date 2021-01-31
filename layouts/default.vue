@@ -41,7 +41,7 @@ html {
 
 .page {
   width: 100%;
-  margin: 1rem 2rem 0;
+  margin: 1rem 1rem 0;
   max-width: 768px;
 }
 

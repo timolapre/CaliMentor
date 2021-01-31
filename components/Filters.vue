@@ -1,5 +1,5 @@
 <template>
-  <div class="filter-container mb-3">
+  <div class="filter-container mb-0">
     <div class="filters">
       <!-- Type -->
       <v-select
@@ -50,9 +50,10 @@
       Filters
     </v-btn>
 
-    <div class="d-flex">
+    <div class="d-flex mb-3">
       <v-text-field
         v-model="searchName"
+        hide-details
         filled
         class="pa-0 ma-0 rounded-tr-0 rounded-br-0"
         placeholder="Search..."
@@ -68,6 +69,100 @@
       </v-btn>
     </div>
 
+    <div v-if="$route.name == 'workouts' && $store.state.LOGGEDIN">
+      <v-card
+        class="pa-2 mb-sm-10 mb-2 d-sm-flex d-none align-center flex-sm-row flex-column"
+      >
+        <v-btn
+          @click="RandomWorkout"
+          color="secondary"
+          class="mr-3 d-sm-block d-none"
+        >
+          <v-icon class="mr-2" small>fa-random</v-icon>Random workout</v-btn
+        >
+        <div class="d-flex">
+          <v-checkbox
+            hide-details
+            color="primary"
+            class="mt-0 mx-3"
+            :label="'My workouts'"
+            v-model="meFilter"
+            @click="searchWorkouts()"
+          ></v-checkbox>
+          <v-checkbox
+            hide-details
+            color="primary"
+            class="mt-0 mx-3"
+            :label="'Favorited'"
+            v-model="favoritedFilter"
+            @click="searchWorkouts()"
+          ></v-checkbox>
+        </div>
+        <div class="d-flex ml-sm-auto mt-3 mt-sm-0 justify-center">
+          <v-icon class="mr-3 pt-1" small>fa-arrow-up</v-icon>
+          <div class="filterby-dropdown">
+            <v-select
+              dense
+              hide-details
+              flat
+              v-model="filterTop"
+              color="primary"
+              class="my-0"
+              item-value="id"
+              :items="[
+                { text: 'Most likes', id: 'likes' },
+                { text: 'Most Finishes', id: 'finishes' },
+                { text: 'Newest', id: 'new' },
+              ]"
+              @change="searchWorkouts()"
+            ></v-select>
+          </div>
+        </div>
+      </v-card>
+
+      <div class="d-sm-none d-block">
+        <div class="d-flex mb-3">
+          <v-checkbox
+            hide-details
+            color="primary"
+            class="mt-0 mx-3"
+            :label="'My workouts'"
+            v-model="meFilter"
+            @click="searchWorkouts()"
+          ></v-checkbox>
+          <v-checkbox
+            hide-details
+            color="primary"
+            class="mt-0 mx-3"
+            :label="'Favorited'"
+            v-model="favoritedFilter"
+            @click="searchWorkouts()"
+          ></v-checkbox>
+        </div>
+        <v-card flat class="d-flex ml-sm-auto mt-3 mt-sm-0 justify-center">
+          <v-icon class="mr-1 ml-3" small>fa-arrow-up</v-icon>
+          <v-select
+            dense
+            hide-details
+            solo
+            flat
+            v-model="filterTop"
+            class="my-0"
+            item-value="id"
+            :items="[
+              { text: 'Most likes', id: 'likes' },
+              { text: 'Most Finishes', id: 'finishes' },
+              { text: 'Newest', id: 'new' },
+            ]"
+            @change="searchWorkouts()"
+          ></v-select>
+        </v-card>
+        <v-btn block @click="RandomWorkout" class="d-sm-none d-block mt-5">
+          <v-icon class="mr-2" small>fa-random</v-icon>Random workout</v-btn
+        >
+      </div>
+    </div>
+    <!-- 
     <v-row v-if="$route.name == 'workouts'" class="mt-2 pb-1">
       <v-col cols="12" sm="4" class="py-1 pr-sm-1">
         <div>
@@ -126,7 +221,7 @@
           </v-btn>
         </div>
       </v-col>
-    </v-row>
+    </v-row> 
 
     <v-row class="mt-5 mt-sm-2">
       <v-col cols="12" sm="4" class="py-1 pr-sm-1">
@@ -173,13 +268,7 @@
           >
         </div>
       </v-col>
-    </v-row>
-
-    <div v-if="$route.name == 'workouts' && $store.state.LOGGEDIN" class="mt-4">
-      <v-btn @click="$router.push({ name: 'workout-create' })" block>
-        <v-icon class="mr-2" small>fa-dumbbell</v-icon>Create workout</v-btn
-      >
-    </div>
+    </v-row>-->
   </div>
 </template>
 
@@ -232,7 +321,7 @@ export default {
         me: this.meFilter ? true : undefined,
         top: this.filterTop,
       }
-
+      this.$emit('reset-page')
       this.$router.push({ name: 'workouts', query })
     },
     setFilters() {
@@ -277,6 +366,11 @@ export default {
     this.dateFilter = [{ id: 0, text: 'All' }].concat(WORKOUT_DATE_OPTIONS)
     this.setFilters()
   },
+  watch: {
+    $route(to, from) {
+      this.setFilters()
+    },
+  },
 }
 </script>
 
@@ -314,5 +408,14 @@ export default {
   background-color: $background-color-light;
   color: $white;
   border: none;
+}
+
+.filterby-dropdown {
+  width: 150px;
+}
+@media only screen and (max-width: 600px) {
+  .filterby-dropdown {
+    width: 75%;
+  }
 }
 </style>

@@ -7,8 +7,10 @@
         <v-col cols="12" sm="3">
           <v-text-field
             class="pt-0"
-            label="Name"
+            label="Name workout"
             v-model="workout.name"
+            :error="!!errors.name"
+            :error-messages="errors.name"
           ></v-text-field>
         </v-col>
         <!-- Type -->
@@ -19,6 +21,8 @@
             item-value="id"
             :items="typeOptions"
             label="Type"
+            :error="!!errors.type"
+            :error-messages="errors.type"
           ></v-select>
         </v-col>
         <!-- Difficulty -->
@@ -29,6 +33,8 @@
             item-value="id"
             :items="difficultyOptions"
             label="Difficulty"
+            :error="!!errors.difficulty"
+            :error-messages="errors.difficulty"
           ></v-select>
         </v-col>
         <!-- Duration -->
@@ -39,6 +45,8 @@
             item-value="id"
             :items="durationOptions"
             label="Duration"
+            :error="!!errors.duration"
+            :error-messages="errors.duration"
           ></v-select>
         </v-col>
       </v-row>
@@ -48,12 +56,22 @@
         v-model="workout.description"
       ></v-text-field>
 
-      <WorkoutEditBlock
-        v-for="block in workout.blocks"
-        @delete-block="deleteBlock"
-        :key="block.id"
-        :block="block"
-      />
+      <p
+        v-if="errors.block && workout.blocks.length == 0"
+        class="error--text text-center"
+      >
+        {{ errors.block }}
+      </p>
+
+      <ul id="items" style="list-style: none" class="pl-0">
+        <WorkoutEditBlock
+          v-for="block in workout.blocks"
+          @delete-block="deleteBlock"
+          @copy-block="copyBlock"
+          :key="block.id"
+          :block="block"
+        />
+      </ul>
 
       <v-card class="my-4">
         <v-container class="text-center">
@@ -79,6 +97,7 @@ import { v4 as uuid } from 'uuid'
 import { Workout, Block, Exercise } from '../../types'
 import { WORKOUT_BLOCK_OPTIONS } from '../../constants'
 import { log } from 'util'
+import Sortable from 'sortablejs'
 
 export default {
   data() {
@@ -90,6 +109,7 @@ export default {
       typeOptions: [],
       blockOptions: WORKOUT_BLOCK_OPTIONS,
       selectedBlock: 'Circuit',
+      errors: {},
       workout: {
         name: '',
         description: '',
@@ -128,6 +148,12 @@ export default {
     deleteBlock(id) {
       this.workout.blocks = this.workout.blocks.filter((x) => x.id !== id)
     },
+    copyBlock(id) {
+      let block = this.workout.blocks.filter((x) => x.id === id)[0]
+      block = JSON.parse(JSON.stringify(block))
+      block.id = uuid()
+      this.workout.blocks.push(block)
+    },
     saveNewOrEditWorkout() {
       if (this.edit) {
         this.saveEditWorkout()
@@ -136,15 +162,26 @@ export default {
       }
     },
     async saveNewWorkout() {
-      if (
-        !this.workout.name.length ||
-        !this.workout.type ||
-        !this.workout.difficulty ||
-        !this.workout.duration ||
-        this.workout.blocks.length == 0
-      ) {
-        return
+      const errors = {
+        name: !this.workout.name.length ? 'Name is required' : undefined,
+        type: !this.workout.type ? 'Type is required' : undefined,
+        difficulty: !this.workout.difficulty
+          ? 'Difficulty is required'
+          : undefined,
+        duration: !this.workout.duration ? 'Duraton is required' : undefined,
+        block:
+          this.workout.blocks.length == 0
+            ? 'At least one exercise block is required'
+            : undefined,
       }
+
+      for (const error in errors) {
+        if (errors[error]) {
+          this.errors = errors
+          return
+        }
+      }
+
       const data = await this.$axios.$post('workout/create', {
         workout: this.workout,
       })
@@ -190,6 +227,25 @@ export default {
       this.edit = true
       this.getWorkout(this.workoutId)
     }
+
+    var el = document.getElementById('items')
+    var me = this
+    var sortable = Sortable.create(el, {
+      animation: 400,
+      handle: '.handle',
+      onEnd(evt) {
+        const block = JSON.parse(
+          JSON.stringify(me.workout.blocks[evt.oldIndex])
+        )
+        const id = block.id
+        block.id = uuid()
+        const newIndex =
+          evt.oldIndex < evt.newIndex ? evt.newIndex + 1 : evt.newIndex
+
+        me.workout.blocks.splice(newIndex, 0, block)
+        me.workout.blocks = me.workout.blocks.filter((x) => x.id !== id)
+      },
+    })
   },
 }
 </script>

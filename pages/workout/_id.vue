@@ -44,7 +44,7 @@
       </v-container>
       <div class="d-flex justify-end mt-5" v-if="$store.state.LOGGEDIN">
         <v-row>
-          <v-col cols="4">
+          <v-col cols="2" sm="1">
             <v-btn
               block
               :color="likeOrDislike == 1 ? 'primary' : ''"
@@ -53,7 +53,7 @@
               <v-icon small>fa-thumbs-up</v-icon>
             </v-btn>
           </v-col>
-          <v-col cols="4">
+          <v-col cols="2" sm="1">
             <v-btn
               block
               :color="likeOrDislike == -1 ? 'red' : ''"
@@ -62,13 +62,13 @@
               <v-icon small>fa-thumbs-down</v-icon>
             </v-btn>
           </v-col>
-          <v-col cols="4">
+          <v-col cols="6" sm="3" class="ml-auto">
             <v-btn
               :color="favorited ? 'primary' : ''"
               block
               @click="favoriteWorkout"
             >
-              <v-icon small>fa-heart</v-icon>
+              <v-icon small class="mr-2">fa-heart</v-icon> Favorite
             </v-btn>
           </v-col>
         </v-row>
@@ -79,9 +79,39 @@
       >
         <v-row>
           <v-col cols="6">
-            <v-btn @click="deleteWorkout" block>
-              <v-icon small>fa-trash</v-icon>
-            </v-btn>
+            <v-dialog v-model="DeleteWorkoutDialog" persistent max-width="290">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn block v-bind="attrs" v-on="on">
+                  <v-icon small>fa-trash</v-icon>
+                </v-btn>
+              </template>
+              <v-card>
+                <v-card-title class="headline"> Delete workout </v-card-title>
+                <v-card-text>
+                  Are you sure you want to delete this workout permanently?
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    color="green"
+                    text
+                    @click="DeleteWorkoutDialog = false"
+                  >
+                    Cancel
+                  </v-btn>
+                  <v-btn
+                    color="green"
+                    text
+                    @click="
+                      deleteWorkout()
+                      DeleteWorkoutDialog = false
+                    "
+                  >
+                    Delete
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </v-col>
           <v-col cols="6">
             <v-btn @click="editWorkout" block>
@@ -98,12 +128,15 @@
         @block-finish="blockFinishCount += 1"
         :index="i"
       />
+
+      <canvas id="confettiCanvas" class="d-none"></canvas>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import moment from 'moment'
+import confetti from 'canvas-confetti'
 import { log } from 'util'
 import { Workout } from '../../types'
 
@@ -116,6 +149,8 @@ export default {
       favorited: false,
       blockFinishCount: 0,
       likeOrDislike: 0,
+      changedLike: 0,
+      DeleteWorkoutDialog: false,
     }
   },
   methods: {
@@ -171,14 +206,54 @@ export default {
         id: this.workout.id,
         likeOrDislike,
       })
+
+      this.workout.likes = data
     },
     async workoutFinished() {
       const data = await this.$axios.$post('workout/finish', {
         id: this.workout.id,
       })
+      this.fireConfetti(0.25, {
+        spread: 26,
+        startVelocity: 55,
+      })
+      this.fireConfetti(0.2, {
+        spread: 60,
+      })
+      this.fireConfetti(0.35, {
+        spread: 100,
+        decay: 0.91,
+        scalar: 0.8,
+      })
+      this.fireConfetti(0.1, {
+        spread: 120,
+        startVelocity: 25,
+        decay: 0.92,
+        scalar: 1.2,
+      })
+      this.fireConfetti(0.1, {
+        spread: 120,
+        startVelocity: 45,
+      })
     },
     async increaseView() {
       await this.$axios.$post('workout/view', { id: this.workout.id })
+    },
+    fireConfetti(particleRatio, opts) {
+      var myCanvas = document.getElementById('confettiCanvas')
+      var count = 200
+      var defaults = {
+        origin: { y: 0.8 },
+      }
+      var myConfetti = confetti.create(myCanvas, {
+        resize: true,
+        useWorker: true,
+      })
+      confetti(
+        Object.assign({}, defaults, opts, {
+          particleCount: Math.floor(count * particleRatio),
+        })
+      )
     },
   },
   created() {

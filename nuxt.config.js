@@ -1,3 +1,6 @@
+
+const webpack = require("webpack");
+
 export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
@@ -15,7 +18,9 @@ export default {
         'data-adtest': "on",
         async: true
       },
-      { src: "https://js.stripe.com/v3/" }
+      { src: "https://js.stripe.com/v3/" },
+      // { src: "https://code.jquery.com/jquery-3.5.1.min.js" },
+      // { src: "https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" }
     ]
   },
 
@@ -86,6 +91,6 @@ export default {
       vue: {
         prettify: false
       }
-    }
+    },
   },
 }

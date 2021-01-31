@@ -95,6 +95,8 @@ export default {
         user: this.user,
       })
 
+      await this.$store.dispatch('getLoggedinUser', true)
+
       this.errors = data.errors ? data.errors : {}
       if (data.user?.id) {
         this.savedUser = true

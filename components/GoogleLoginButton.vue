@@ -12,6 +12,13 @@
       @click="googleLoginImage = 'focus'"
     />
   </a>
+
+  <!-- 
+  <v-btn class="mt-2" height="40" width="auto" contain color="primary">
+    <v-icon class="mr-2">fa-google</v-icon>
+    Sign in with Google
+  </v-btn>
+   -->
 </template>
 
 <script lang="ts">

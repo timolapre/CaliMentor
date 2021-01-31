@@ -168,7 +168,10 @@ export default {
       }
     },
     startRestTimer() {
-      this.startTimer(0, this.block.values[0])
+      this.startTimer(
+        this.block.values[1] == 'Minutes' ? this.block.values[0] : 0,
+        this.block.values[1] == 'Seconds' ? this.block.values[0] : 0
+      )
     },
     startEMOMTimer() {
       this.startTimer(0, this.block.values[0], this.block.values[1])

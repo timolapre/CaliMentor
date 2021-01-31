@@ -1,16 +1,20 @@
 <template>
-  <div>
+  <li>
     <v-card class="my-4">
       <v-container class="px-0">
-        <div class="d-flex justify-content">
+        <div class="d-flex justify-content handle">
           <h3 class="ml-3">{{ block.type }}</h3>
           <!-- <v-icon @click="deleteBlock" class="mr-6 ml-auto" small
             >fa-arrow-up</v-icon
           >
           <v-icon @click="deleteBlock" class="mr-6" small>fa-arrow-down</v-icon> -->
-          <v-icon @click="deleteBlock" class="mr-6 ml-auto" small
-            >fa-trash</v-icon
+          <v-icon
+            @click="copyBlock"
+            class="mr-6 ml-auto no-background-hover"
+            small
+            >fa-copy</v-icon
           >
+          <v-icon @click="deleteBlock" class="mr-6" small>fa-trash</v-icon>
         </div>
         <v-divider class="my-2"></v-divider>
         <div v-if="!['Rest', 'Text'].includes(block.type)">
@@ -135,6 +139,7 @@
             rows="3"
             class="mx-2 mb-0"
             v-model="block.values[0]"
+            maxlength="2000"
           ></v-textarea>
         </div>
         <v-divider
@@ -236,7 +241,7 @@
         </div>
       </v-container>
     </v-card>
-  </div>
+  </li>
 </template>
 
 <script lang="ts">
@@ -266,6 +271,9 @@ export default {
     deleteBlock() {
       this.$emit('delete-block', this.block.id)
     },
+    copyBlock() {
+      this.$emit('copy-block', this.block.id)
+    },
   },
   computed: {
     exercises() {
@@ -279,4 +287,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.no-background-hover::after {
+  background-color: transparent !important;
+}
+</style>

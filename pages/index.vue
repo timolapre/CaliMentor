@@ -3,7 +3,7 @@
     <div class="page">
       <Filters />
 
-      <div class="w-100 mt-4">
+      <div class="w-100 mt-2">
         <v-btn block elevation="5" color="primary" to="/workouts" class="py-7"
           >All workouts</v-btn
         >

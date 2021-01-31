@@ -1,7 +1,11 @@
 <template>
   <div class="workout-container d-flex align-center justify-center">
     <div class="page">
-      <Filters class="mb-4" @search-workouts="getWorkouts" />
+      <Filters
+        class="mb-4"
+        @search-workouts="getWorkouts"
+        @reset-page="pageSelected = 1"
+      />
 
       <div v-if="loading" class="d-flex justify-center">
         <Loading />

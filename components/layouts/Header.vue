@@ -8,13 +8,90 @@
         class="ml-auto d-none d-md-flex justify-center align-center"
         v-if="$store.state.LOGGEDIN"
       >
-        <p class="d-inline ma-0">
-          Welcome {{ $store.state.LOGGEDINUSER.username }}
-        </p>
-        <v-btn class="v-btn ml-6" @click="$router.push({ name: 'account' })"
-          >Account</v-btn
+        <v-btn @click="$router.push({ name: 'results' })">
+          <v-icon class="mr-2" small>fa-chart-bar</v-icon>Results</v-btn
         >
-        <v-btn class="v-btn ml-2" @click="logout">Logout</v-btn>
+
+        <v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn v-bind="attrs" v-on="on" class="ml-2 px-4">
+              <v-icon class="mr-2" small>fa-dumbbell</v-icon> Workouts
+            </v-btn>
+          </template>
+
+          <v-list>
+            <v-list-item
+              link
+              @click="
+                $router.push({
+                  name: 'workouts',
+                  query: { favorited: 0, me: 0 },
+                })
+              "
+            >
+              <v-list-item-title v-text="'All workouts'"></v-list-item-title>
+            </v-list-item>
+            <v-list-item
+              link
+              @click="
+                $router.push({
+                  name: 'workouts',
+                  query: { favorited: 0, me: 1 },
+                })
+              "
+            >
+              <v-list-item-title v-text="'My workouts'"></v-list-item-title>
+            </v-list-item>
+            <v-list-item
+              link
+              @click="
+                $router.push({
+                  name: 'workouts',
+                  query: { favorited: 1, me: 0 },
+                })
+              "
+            >
+              <v-list-item-title
+                v-text="'Favorited workouts'"
+              ></v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+
+        <v-btn class="ml-2" @click="$router.push({ name: 'workout-create' })">
+          <v-icon class="mr-2" small>fa-plus</v-icon>Create workout</v-btn
+        >
+
+        <v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn v-bind="attrs" v-on="on" class="ml-2 px-1">
+              <v-icon small>fa-user</v-icon>
+            </v-btn>
+          </template>
+
+          <v-list>
+            <v-list-item link>
+              <v-list-item-title
+                v-text="'Sign out'"
+                @click="logout"
+              ></v-list-item-title>
+            </v-list-item>
+            <v-list-item link @click="$router.push({ name: 'account' })">
+              <v-list-item-title v-text="'My profile'"></v-list-item-title>
+            </v-list-item>
+            <v-list-item
+              link
+              v-if="!$store.state.PREMIUMUSER"
+              @click="$router.push({ name: 'account-edit' })"
+            >
+              <v-list-item-title
+                v-text="'Upgrade to premium'"
+              ></v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+
+        <!-- <v-btn class="v-btn ml-2" @click="logout">Logout</v-btn> -->
       </div>
       <div class="ml-auto d-none d-md-flex" v-else>
         <v-btn class="v-btn" @click="$router.push({ name: 'login' })"

@@ -1,49 +1,48 @@
 <template>
   <div class="register-container d-flex align-center justify-center">
     <div class="page">
-      <!-- <h1 class="text-center">Welcome {{ user.username }}</h1>
-      <v-row class="mb-5">
-        <v-col class="px-1">
-          <v-btn block color="primary" @click="buyPremium">
-            Upgrade to premium
-          </v-btn>
-        </v-col>
-      </v-row> -->
-
-      <v-btn block @click="logout" class="mb-5">
-        <v-icon class="mr-3" small>fa-sign-out-alt</v-icon> Sign out
-      </v-btn>
-
-      <v-card class="mb-5">
-        <v-card-text>
-          <v-btn
-            @click="$router.push({ name: 'account-edit' })"
-            color="secondary"
-            class="float-right"
-            >Edit</v-btn
+      <!-- Achievements -->
+      <div class="text-center">
+        <h1>Achievements</h1>
+        <v-row class="mt-3">
+          <v-col
+            cols="4"
+            sm="2"
+            v-for="achievement in achievements"
+            :key="achievement.id"
           >
-          <h3 class="my-3">{{ $store.state.LOGGEDINUSER.username }}</h3>
-          <h3 class="my-3">{{ $store.state.LOGGEDINUSER.email }}</h3>
-        </v-card-text>
-      </v-card>
+            <Achievement v-bind:achievement="achievement" />
+          </v-col>
+        </v-row>
+      </div>
 
-      <v-btn block @click="$router.push({ name: 'workout-history' })">
-        <v-icon class="mr-3" small>fa-history</v-icon> My workout history
-      </v-btn>
-      <v-btn
-        class="mt-2"
-        block
-        @click="$router.push({ name: 'workouts', query: { me: true } })"
-      >
-        <v-icon class="mr-3" small>fa-dumbbell</v-icon> My workouts
-      </v-btn>
-      <v-btn
-        class="mt-2"
-        block
-        @click="$router.push({ name: 'workout-create' })"
-      >
-        <v-icon class="mr-3" small>fa-plus</v-icon> Create workout
-      </v-btn>
+      <!-- Personal Records and progress -->
+      <div class="mt-15 text-center">
+        <h1>Personal records and progress</h1>
+        <p>click on an exercise to see the history or edit</p>
+        <v-row class="mt-1">
+          <v-col v-for="pr in PRs" :key="pr.id" cols="12" sm="6" class="pa-1">
+            <v-btn
+              block
+              class="py-1"
+              @click="$router.push({ name: 'pr-id', params: { id: pr.id } })"
+            >
+              <h2>{{ pr.exercise }} {{ pr.count }}{{ pr.append }}</h2>
+            </v-btn>
+          </v-col>
+          <v-col cols="12" sm="6" class="pa-1">
+            <v-btn
+              color="primary"
+              @click="$router.push({ name: 'pr-add' })"
+              class="py-1"
+              outlined
+              block
+            >
+              <h2>Add exercise</h2>
+            </v-btn>
+          </v-col>
+        </v-row>
+      </div>
     </div>
   </div>
 </template>

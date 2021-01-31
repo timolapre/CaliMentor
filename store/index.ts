@@ -44,8 +44,8 @@ export const actions = {
       state.EXERCISES = data
     }
   },
-  async getLoggedinUser({ state }: any) {
-    if (!state.LOGGEDINUSER.id) {
+  async getLoggedinUser({ state }: any, force = false) {
+    if (!state.LOGGEDINUSER.id || force) {
       const data = (await this.$axios.$get('user/me')) as User
       state.LOGGEDIN = data.id ? true : false
       state.PREMIUMUSER =
