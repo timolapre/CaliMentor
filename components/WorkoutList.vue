@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card
-      class="my-4"
+      class="workoutlist my-4"
       :elevation="elevation"
       hover
       @click="$router.push({ name: 'workout-id', params: { id: workout.id } })"

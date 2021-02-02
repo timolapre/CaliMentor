@@ -45,6 +45,9 @@ export default {
         dark: {
           primary: '#19d24b',
         },
+        light: {
+          primary: '#19d24b',
+        },
       },
     },
   },

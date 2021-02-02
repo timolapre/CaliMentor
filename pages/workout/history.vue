@@ -10,6 +10,7 @@
         :history="h"
       >
       </HistoryCard>
+      <h3 class="mt-5 text-center" v-if="history.length == 0">Your workout history will be shown here</h3>
     </div>
   </div>
 </template>

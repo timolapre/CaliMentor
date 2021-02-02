@@ -19,6 +19,18 @@
             <!-- Rest -->
             <div v-if="block.type === 'Rest'" class="d-flex align-center">
               <h3 class="mr-3">{{ timer }}</h3>
+              <v-btn
+                v-if="timer"
+                color="secondary"
+                min-width="0"
+                @click="
+                  finished = true
+                  $emit('block-finish')
+                "
+                class="px-3 py-2"
+              >
+                <v-icon dark x-small> fa-check </v-icon>
+              </v-btn>
               <v-btn v-if="!timer" color="secondary" @click="startRestTimer">
                 <v-icon dark x-small> fa-play </v-icon>
               </v-btn>
@@ -30,6 +42,18 @@
               <h3 v-if="timer" class="mr-3">
                 {{ setCount }} / {{ block.values[1] }}
               </h3>
+              <v-btn
+                v-if="timer"
+                color="secondary"
+                min-width="0"
+                @click="
+                  finished = true
+                  $emit('block-finish')
+                "
+                class="px-3 py-2"
+              >
+                <v-icon dark x-small> fa-check </v-icon>
+              </v-btn>
               <v-btn v-if="!timer" color="secondary" @click="startEMOMTimer">
                 <v-icon dark x-small> fa-play </v-icon>
               </v-btn>
@@ -38,6 +62,18 @@
             <!-- AMRAP -->
             <div v-if="block.type === 'AMRAP'" class="d-flex align-center">
               <h3 class="mr-3">{{ timer }}</h3>
+              <v-btn
+                v-if="timer"
+                color="secondary"
+                min-width="0"
+                @click="
+                  finished = true
+                  $emit('block-finish')
+                "
+                class="px-3 py-2"
+              >
+                <v-icon dark x-small> fa-check </v-icon>
+              </v-btn>
               <v-btn v-if="!timer" color="secondary" @click="startAMRAPTimer">
                 <v-icon dark x-small> fa-play </v-icon>
               </v-btn>
@@ -52,6 +88,18 @@
               <h3 v-if="timer" class="mr-3">
                 {{ setCount }} / {{ block.values[0] }}
               </h3>
+              <v-btn
+                v-if="timer"
+                color="secondary"
+                min-width="0"
+                @click="
+                  finished = true
+                  $emit('block-finish')
+                "
+                class="px-3 py-2"
+              >
+                <v-icon dark x-small> fa-check </v-icon>
+              </v-btn>
               <v-btn v-if="!timer" color="secondary" @click="startTABATATimer">
                 <v-icon dark x-small> fa-play </v-icon>
               </v-btn>
@@ -81,7 +129,7 @@
                 "
                 class="px-3 py-2"
               >
-                Mark done
+                <v-icon dark x-small> fa-check </v-icon>
               </v-btn>
             </div>
           </div>
@@ -143,6 +191,7 @@
 
 <script>
 import moment from 'moment'
+import NoSleep from 'nosleep.js'
 import { WORKOUT_BLOCK_OPTIONS_INFO } from '../../constants'
 
 export default {
@@ -157,6 +206,7 @@ export default {
       finished: false,
       timer: '',
       workOrRest: 'Work',
+      NoSleep: null,
     }
   },
   methods: {
@@ -188,6 +238,7 @@ export default {
       )
     },
     startTimer(minutes = 0, seconds = 0, resets = 0, seconds2 = 0) {
+      this.NoSleep.enable()
       var duration = moment.duration({
         minutes: minutes,
         seconds: seconds,
@@ -226,6 +277,7 @@ export default {
                 }
               }
             } else {
+              this.NoSleep.disable()
               this.$emit('block-finish')
               this.finished = true
             }
@@ -235,6 +287,9 @@ export default {
         duration = moment.duration(duration.asSeconds() - 1, 'seconds')
       }, 1000)
     },
+  },
+  created() {
+    this.NoSleep = new NoSleep()
   },
 }
 </script>
