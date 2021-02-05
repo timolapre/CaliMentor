@@ -18,9 +18,3 @@ export default new Vuetify({
     },
   },
 })
-
-import VueGtag from "vue-gtag";
-
-Vue.use(VueGtag, {
-  config: { id: "G-NYCLJZS6RM" }
-});

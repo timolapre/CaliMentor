@@ -30,11 +30,11 @@
         ></div>
 
         <div
-          @click="$router.push({ name: 'results' })"
+          @click="$router.push({ name: 'dashboard' })"
           class="col-3 pb-1 cursor-pointer d-flex flex-column align-center"
         >
           <v-icon>fa-chart-bar</v-icon>
-          <p class="small-text">results</p>
+          <p class="small-text">dashboard</p>
         </div>
         <div
           @click="$router.push({ name: 'account' })"

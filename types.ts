@@ -3,7 +3,7 @@ export interface User {
   username: string
   password: string
   email: string
-  type: 'free' | 'premium' | 'gifted_premium'
+  type: 'free' | 'premium' | 'gifted_premium' | 'canceled' | 'expired'
   createdAt: Date
   updatedAt: Date
   workouts: Workout[]

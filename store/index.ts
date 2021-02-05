@@ -49,7 +49,11 @@ export const actions = {
       const data = (await this.$axios.$get('user/me')) as User
       state.LOGGEDIN = data.id ? true : false
       state.PREMIUMUSER =
-        data.type == 'premium' || data.type == 'gifted_premium' ? true : false
+        data.type == 'premium' ||
+        data.type == 'gifted_premium' ||
+        data.type == 'canceled'
+          ? true
+          : false
       state.LOGGEDINUSER = data
     }
   },

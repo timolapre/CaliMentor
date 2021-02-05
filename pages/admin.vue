@@ -3,12 +3,24 @@
     <div class="page">
       <h1 class="text-center">Users</h1>
       <v-form id="gift-premium-form" @submit.prevent="giftPremium()">
-        <v-text-field label="username" v-model="selecterUser"></v-text-field>
+        <v-text-field
+          label="username"
+          v-model="selecterUser"
+          hide-details
+        ></v-text-field>
+        <v-text-field
+          hide-details
+          suffix="Months"
+          type="number"
+          min="0"
+          max="99"
+          v-model="months"
+        ></v-text-field>
         <p v-if="giftMessage">{{ giftMessage }}</p>
         <v-btn
           type="submit"
           form="gift-premium-form"
-          class="mt-1"
+          class="mt-3"
           color="primary"
           block
         >
@@ -17,21 +29,54 @@
       </v-form>
 
       <div class="mt-10" v-if="usersInfo">
-        <h1>{{ totalUsers }} total users</h1>
-        <h1>{{ usersInfo.premiumUsers[1] }} premium users</h1>
-        <span v-for="user in usersInfo.premiumUsers[0]" :key="user.id">
-          {{ user.username }} -
-        </span>
-
-        <h1>{{ usersInfo.giftedPremiumUsers[1] }} gifted premium users</h1>
-        <span v-for="user in usersInfo.giftedPremiumUsers[0]" :key="user.id">
-          {{ user.username }} -
-        </span>
-
-        <h1>{{ usersInfo.freeUsers[1] }} free users</h1>
-        <span v-for="user in usersInfo.freeUsers[0]" :key="user.id">
-          {{ user.username }} -
-        </span>
+        <v-card class="pa-2 text-center mb-3">
+          <h3>{{ totalUsers }} total users</h3>
+        </v-card>
+        <v-row>
+          <v-col cols="6" sm="3">
+            <v-card class="pa-2 text-center">
+              <h3>{{ usersInfo.premiumUsers[1] }} premium</h3>
+              <span v-for="user in usersInfo.premiumUsers[0]" :key="user.id">
+                {{ user.username }} -
+              </span>
+            </v-card>
+          </v-col>
+          <v-col cols="6" sm="3">
+            <v-card class="pa-2 text-center">
+              <h3>{{ usersInfo.giftedPremiumUsers[1] }} gifted premium</h3>
+              <span
+                v-for="user in usersInfo.giftedPremiumUsers[0]"
+                :key="user.id"
+              >
+                {{ user.username }} -
+              </span>
+            </v-card>
+          </v-col>
+          <v-col cols="6" sm="3">
+            <v-card class="pa-2 text-center">
+              <h3>{{ usersInfo.freeUsers[1] }} free</h3>
+              <span v-for="user in usersInfo.freeUsers[0]" :key="user.id">
+                {{ user.username }} -
+              </span>
+            </v-card>
+          </v-col>
+          <v-col cols="6" sm="3">
+            <v-card class="pa-2 text-center">
+              <h3>{{ usersInfo.expiredUsers[1] }} expired</h3>
+              <span v-for="user in usersInfo.expiredUsers[0]" :key="user.id">
+                {{ user.username }} -
+              </span>
+            </v-card>
+          </v-col>
+          <v-col cols="6" sm="3">
+            <v-card class="pa-2 text-center">
+              <h3>{{ usersInfo.canceledUsers[1] }} canceled</h3>
+              <span v-for="user in usersInfo.canceledUsers[0]" :key="user.id">
+                {{ user.username }} -
+              </span>
+            </v-card>
+          </v-col>
+        </v-row>
       </div>
 
       <h1 class="mt-10 text-center">Exercises</h1>
@@ -101,12 +146,14 @@ export default {
       exerciseName: '',
       exerciseMessage: null,
       exercisesInfo: null,
+      months: 2,
     }
   },
   methods: {
     async giftPremium() {
       const data = await this.$axios.$post('admin/premiumgift', {
         username: this.selecterUser,
+        months: this.months,
       })
 
       this.selecterUser = ''
@@ -145,7 +192,9 @@ export default {
     this.totalUsers =
       this.usersInfo.premiumUsers[1] +
       this.usersInfo.giftedPremiumUsers[1] +
-      this.usersInfo.freeUsers[1]
+      this.usersInfo.freeUsers[1] +
+      this.usersInfo.expiredUsers[1] +
+      this.usersInfo.canceledUsers[1]
 
     const exercisesData = await this.$axios.$get('admin/exercises/info')
     this.exercisesInfo = exercisesData
@@ -160,3 +209,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+span {
+  font-size: small;
+}
+</style>

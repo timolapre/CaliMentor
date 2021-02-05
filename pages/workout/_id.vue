@@ -73,6 +73,15 @@
           </v-col>
         </v-row>
       </div>
+
+      <div class="d-flex justify-end">
+        <v-switch
+          v-model="NoSleepActive"
+          label="Keep phone active"
+          hide-details
+        ></v-switch>
+      </div>
+
       <div
         class="d-flex justify-end mt-5"
         v-if="workout.user.id === $store.state.LOGGEDINUSER.id"
@@ -136,6 +145,7 @@
 
 <script lang="ts">
 import moment from 'moment'
+import NoSleep from 'nosleep.js'
 import confetti from 'canvas-confetti'
 import { log } from 'util'
 import { Workout } from '../../types'
@@ -151,6 +161,8 @@ export default {
       likeOrDislike: 0,
       changedLike: 0,
       DeleteWorkoutDialog: false,
+      NoSleep: null,
+      NoSleepActive: false,
     }
   },
   methods: {
@@ -264,6 +276,9 @@ export default {
     }
     this.increaseView()
   },
+  mounted() {
+    this.NoSleep = new NoSleep()
+  },
   computed: {
     date() {
       return moment(this.workout.createdAt).fromNow()
@@ -282,6 +297,13 @@ export default {
       if (loggedin) {
         this.getLike()
         this.getFavorite()
+      }
+    },
+    NoSleepActive(x) {
+      if (x) {
+        this.NoSleep.enable()
+      } else {
+        this.NoSleep.disable()
       }
     },
   },

@@ -191,7 +191,6 @@
 
 <script>
 import moment from 'moment'
-import NoSleep from 'nosleep.js'
 import { WORKOUT_BLOCK_OPTIONS_INFO } from '../../constants'
 
 export default {
@@ -238,7 +237,7 @@ export default {
       )
     },
     startTimer(minutes = 0, seconds = 0, resets = 0, seconds2 = 0) {
-      this.NoSleep.enable()
+      var audio = new Audio(require('../../assets/sounds/countdown.wav'))
       var duration = moment.duration({
         minutes: minutes,
         seconds: seconds,
@@ -255,12 +254,20 @@ export default {
         duration = moment.duration(duration.asSeconds() - 1, 'seconds')
       }, 1000)
 
-      var timer = setInterval(() => {
+      const timer = setInterval(() => {
+        if (this.finished) {
+          clearInterval(timer)
+        }
+
         var min = duration.minutes()
         var sec = duration.seconds()
 
         if (min < 10 && min.length != 2) min = '0' + min
         if (sec < 10 && length.sec != 2) sec = '0' + sec
+
+        if (min == 0 && sec == 3) {
+          audio.play()
+        }
 
         this.timer = min + ':' + sec
         if (min == 0 && sec == 0) {
@@ -277,7 +284,6 @@ export default {
                 }
               }
             } else {
-              this.NoSleep.disable()
               this.$emit('block-finish')
               this.finished = true
             }
@@ -287,9 +293,6 @@ export default {
         duration = moment.duration(duration.asSeconds() - 1, 'seconds')
       }, 1000)
     },
-  },
-  created() {
-    this.NoSleep = new NoSleep()
   },
 }
 </script>

@@ -92,7 +92,7 @@ export default {
         append: this.append,
       })
 
-      this.$router.push({ name: 'results' })
+      this.$router.push({ name: 'dashboard' })
     },
   },
   async created() {

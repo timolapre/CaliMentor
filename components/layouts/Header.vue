@@ -8,8 +8,8 @@
         class="ml-auto d-none d-md-flex justify-center align-center"
         v-if="$store.state.LOGGEDIN"
       >
-        <v-btn @click="$router.push({ name: 'results' })">
-          <v-icon class="mr-2" small>fa-chart-bar</v-icon>Results</v-btn
+        <v-btn @click="$router.push({ name: 'dashboard' })">
+          <v-icon class="mr-2" small>fa-chart-bar</v-icon>Dashboard</v-btn
         >
 
         <v-menu offset-y>
@@ -62,34 +62,18 @@
           <v-icon class="mr-2" small>fa-plus</v-icon>Create workout</v-btn
         >
 
-        <v-menu offset-y>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn v-bind="attrs" v-on="on" class="ml-2 px-1">
-              <v-icon small>fa-user</v-icon>
-            </v-btn>
-          </template>
+        <v-btn class="ml-2 px-1" @click="$router.push({ name: 'account' })">
+          <v-icon small>fa-user</v-icon>
+        </v-btn>
 
-          <v-list>
-            <v-list-item link>
-              <v-list-item-title
-                v-text="'Sign out'"
-                @click="logout"
-              ></v-list-item-title>
-            </v-list-item>
-            <v-list-item link @click="$router.push({ name: 'account' })">
-              <v-list-item-title v-text="'My profile'"></v-list-item-title>
-            </v-list-item>
-            <v-list-item
-              link
-              v-if="!$store.state.PREMIUMUSER"
-              @click="$router.push({ name: 'account-edit' })"
-            >
-              <v-list-item-title
-                v-text="'Upgrade to premium'"
-              ></v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
+        <v-btn
+          color="primary"
+          class="ml-2"
+          v-if="!$store.state.PREMIUMUSER"
+          @click="$router.push({ name: 'upgrade' })"
+        >
+          Upgrade
+        </v-btn>
 
         <!-- <v-btn class="v-btn ml-2" @click="logout">Logout</v-btn> -->
       </div>

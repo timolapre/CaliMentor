@@ -48,7 +48,7 @@
 </template>
 
 <script lang="ts">
-import { User } from '../../types'
+import { User } from '../types'
 
 export default {
   data() {
@@ -116,17 +116,6 @@ export default {
         await this.$store.dispatch('logoutUser')
         this.$router.push({ name: 'login' })
       }
-    },
-    async buyPremium() {
-      const data = await this.$axios.$post('payment/create-checkout-session')
-      this.$stripe
-        .redirectToCheckout({
-          sessionId: data.sessionId,
-        })
-        .then(() => {
-          console.log('did it wkr?')
-        })
-      console.log('charge premium', data)
     },
     async getPersonalRecords() {
       const data = await this.$axios.$get('personalrecord/all')

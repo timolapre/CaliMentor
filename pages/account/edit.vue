@@ -1,14 +1,10 @@
 <template>
   <div class="register-container d-flex align-center justify-center">
     <div class="page">
-      <h1 class="text-center">Edit account</h1>
-      <v-btn class="mt-3" block @click="$router.push({ name: 'account' })">
-        Back
-      </v-btn>
+      <v-btn block @click="$router.push({ name: 'account' })"> Back </v-btn>
+      <h1 class="text-center mt-3">Edit account</h1>
 
-      <v-btn block color="primary" class="mt-5"> Upgrade to premium </v-btn>
-
-      <div class="mt-15">
+      <div class="mt-5">
         <v-form id="update-account-form" @submit.prevent="saveAccount()">
           <v-text-field
             label="Username"

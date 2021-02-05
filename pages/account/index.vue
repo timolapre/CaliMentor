@@ -14,7 +14,7 @@
         <v-icon class="mr-3" small>fa-sign-out-alt</v-icon> Sign out
       </v-btn>
 
-      <v-card class="mb-5">
+      <v-card class="mb-2">
         <v-card-text>
           <v-btn
             @click="$router.push({ name: 'account-edit' })"
@@ -22,10 +22,44 @@
             class="float-right"
             >Edit</v-btn
           >
+          <p class="text--disabled">Personal details</p>
           <h3 class="my-3">{{ $store.state.LOGGEDINUSER.username }}</h3>
           <h3 class="my-3">{{ $store.state.LOGGEDINUSER.email }}</h3>
         </v-card-text>
       </v-card>
+
+      <v-card
+        class="mb-2"
+        v-if="
+          $store.state.PREMIUMUSER ||
+          $store.state.LOGGEDINUSER.type == 'expired'
+        "
+      >
+        <v-card-text>
+          <v-btn
+            @click="$router.push({ name: 'payment-edit' })"
+            color="secondary"
+            class="float-right"
+            >Edit</v-btn
+          >
+          <p class="text--disabled">Payment details</p>
+          <h3 class="my-3">{{ accountType }} account</h3>
+          <h3 class="my-3">Expire date: {{ expireDate }}</h3>
+          <h3 class="my-3">
+            Payment method: {{ $store.state.LOGGEDINUSER.paymentMethod }}
+          </h3>
+        </v-card-text>
+      </v-card>
+
+      <v-btn
+        v-if="!$store.state.PREMIUMUSER"
+        block
+        color="primary"
+        class="mb-2"
+        @click="$router.push({ name: 'upgrade' })"
+      >
+        Upgrade account
+      </v-btn>
 
       <v-btn block @click="$router.push({ name: 'workout-history' })">
         <v-icon class="mr-3" small>fa-history</v-icon> My workout history
@@ -37,76 +71,18 @@
       >
         <v-icon class="mr-3" small>fa-dumbbell</v-icon> My workouts
       </v-btn>
-      <v-btn
-        class="mt-2"
-        block
-        @click="$router.push({ name: 'workout-create' })"
-      >
-        <v-icon class="mr-3" small>fa-plus</v-icon> Create workout
-      </v-btn>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import moment from 'moment'
 import { User } from '../../types'
 
 export default {
   data() {
     return {
       user: {} as User,
-      PRs: [],
-      achievements: [
-        { id: 1, tooltip: 'Buy premium', icon: 'hand-holding-usd', size: '' },
-        {
-          id: 2,
-          tooltip: 'Finish your first workout',
-          icon: 'dumbbell',
-          size: 'x-small',
-        },
-        {
-          id: 3,
-          tooltip: 'Finish 10 workouts',
-          icon: 'dumbbell',
-          size: 'small',
-        },
-        {
-          id: 4,
-          tooltip: 'Finish 25 workouts',
-          icon: 'dumbbell',
-          size: 'medium',
-        },
-        {
-          id: 5,
-          tooltip: 'Finish 100 workouts',
-          icon: 'dumbbell',
-          size: 'large',
-        },
-        {
-          id: 6,
-          tooltip: 'Create your first workout',
-          icon: 'pen',
-          size: 'x-small',
-        },
-        {
-          id: 7,
-          tooltip: 'Create 10 workouts',
-          icon: 'pen',
-          size: 'small',
-        },
-        {
-          id: 8,
-          tooltip: 'Create 25 workouts',
-          icon: 'pen',
-          size: 'medium',
-        },
-        {
-          id: 9,
-          tooltip: 'Create 100 workouts',
-          icon: 'pen',
-          size: 'large',
-        },
-      ],
     }
   },
   methods: {
@@ -118,24 +94,35 @@ export default {
         this.$router.push({ name: 'login' })
       }
     },
-    async buyPremium() {
-      const data = await this.$axios.$post('payment/create-checkout-session')
-      this.$stripe
-        .redirectToCheckout({
-          sessionId: data.sessionId,
-        })
-        .then(() => {
-          console.log('did it wkr?')
-        })
-      console.log('charge premium', data)
-    },
-    async getPersonalRecords() {
-      const data = await this.$axios.$get('personalrecord/all')
-      this.PRs = data || []
-    },
   },
-  created() {
-    this.getPersonalRecords()
+  computed: {
+    accountType() {
+      switch (this.$store.state.LOGGEDINUSER.type) {
+        case 'free':
+          return 'Default'
+          break
+        case 'premium':
+          return 'Premium'
+          break
+        case 'gifted_premium':
+          return 'Gifted premium'
+          break
+        case 'expired':
+          return 'Expired'
+          break
+        case 'canceled':
+          return 'Canceled'
+          break
+        default:
+          return ''
+          break
+      }
+    },
+    expireDate() {
+      return moment(this.$store.state.LOGGEDINUSER.premiumExpireDate).format(
+        'DD-MM-YYYY'
+      )
+    },
   },
 }
 </script>
