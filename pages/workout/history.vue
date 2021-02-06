@@ -11,13 +11,18 @@
         event-color="orange accent-4"
         @update:picker-date="getHistory"
       ></v-date-picker>
-      <HistoryCard
-        class="mt-3 pa-3"
-        v-for="h in showHistory"
-        :key="h.id"
-        :history="h"
-      >
-      </HistoryCard>
+      <div v-if="allowed">
+        <HistoryCard
+          class="mt-3 pa-3"
+          v-for="h in showHistory"
+          :key="h.id"
+          :history="h"
+        >
+        </HistoryCard>
+      </div>
+      <v-card class="mt-2 pa-3" v-else>
+        <h3>You need a premium account to see this</h3>
+      </v-card>
     </div>
   </div>
 </template>
@@ -50,6 +55,15 @@ export default {
   computed: {
     showHistory() {
       return this.history.filter((x) => x.createdAt.split('T')[0] == this.date)
+    },
+    allowed() {
+      if (this.$store.state.PREMIUMUSER) {
+        return true
+      }
+      const date = new Date()
+      const date2 = new Date(this.date)
+
+      return date.getMonth() === date2.getMonth()
     },
   },
 }

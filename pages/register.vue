@@ -10,7 +10,7 @@
         ></v-text-field>
         <v-text-field
           v-model="email"
-          label="email"
+          label="E-mail"
           :error="!!errors.email"
           :error-messages="errors.email"
         ></v-text-field>
@@ -37,19 +37,6 @@
           :error="!!errors.country"
           :error-messages="errors.country"
         ></v-autocomplete>
-
-        <v-select
-          v-model="premium"
-          class="pa-1 pt-4 ma-0"
-          item-value="id"
-          item-text="name"
-          :items="premiumOptions"
-          label="Free / Premium"
-        ></v-select>
-
-        <div v-if="premium == 1">
-          <v-text-field label="Banking info"></v-text-field>
-        </div>
 
         <v-btn
           type="submit"
@@ -79,17 +66,12 @@ export default {
   name: 'Register',
   data() {
     return {
-      premiumOptions: [
-        { name: 'Free', id: 0 },
-        { name: 'Premium €2,99 / month', id: 1 },
-      ],
       countries: CountryList.getData(),
       username: '',
       password: '',
       repeatPassword: '',
       email: '',
       country: '',
-      premium: null,
       errors: {},
     }
   },
@@ -102,8 +84,12 @@ export default {
         email: this.email,
         country: this.country,
       })
-      this.errors = data.errors
+      if (data.errors) {
+        this.errors = data.errors
+        return
+      }
       await this.$store.dispatch('getLoggedinUser')
+      this.$router.push({ name: 'dashboard' })
     },
   },
 }

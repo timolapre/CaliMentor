@@ -126,7 +126,7 @@
           <v-col cols="12" sm="6" align-self="start">
             <v-card class="pa-7">
               <h1>Premium</h1>
-              <p class="mb-0">&euro; 2,99 / month</p>
+              <p class="mb-0">&euro; 1,99 / month</p>
               <v-divider class="my-3"></v-divider>
               <div class="d-flex justify-center">
                 <div class="text-left">

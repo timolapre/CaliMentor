@@ -1,7 +1,7 @@
 <template>
   <v-tooltip top data-html="true">
     <template v-slot:activator="{ on, attrs }">
-      <v-avatar color="secondary" size="60" v-bind="attrs" v-on="on">
+      <v-avatar color="secondary" size="50" v-bind="attrs" v-on="on">
         <v-icon
           :x-small="'x-small' == achievement.size"
           :small="'small' == achievement.size"

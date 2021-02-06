@@ -17,7 +17,7 @@
           <v-icon @click="deleteBlock" class="mr-6" small>fa-trash</v-icon>
         </div>
         <v-divider class="my-2"></v-divider>
-        <div v-if="!['Rest', 'Text'].includes(block.type)">
+        <div v-if="!['Rest', 'Text', 'Video'].includes(block.type)">
           <v-row
             v-for="exercise in block.exercises"
             :key="exercise.id"
@@ -92,6 +92,7 @@
             </v-col>
           </v-row>
         </div>
+        <!-- Rest -->
         <div v-else-if="block.type === 'Rest'">
           <v-row
             v-for="exercise in block.exercises"
@@ -128,6 +129,7 @@
             </v-col>
           </v-row>
         </div>
+        <!-- Text -->
         <div v-else-if="block.type === 'Text'">
           <v-textarea
             flat
@@ -142,6 +144,23 @@
             maxlength="2000"
           ></v-textarea>
         </div>
+
+        <!-- Video -->
+        <div v-else-if="block.type === 'Video'">
+          <v-textarea
+            flat
+            solo
+            dense
+            hide-details
+            auto-grow
+            placeholder="Paste your youtube link"
+            rows="3"
+            class="mx-2 mb-0"
+            v-model="block.values[0]"
+            maxlength="2000"
+          ></v-textarea>
+        </div>
+
         <v-divider
           v-if="!['Single', 'For time', 'Rest'].includes(block.type)"
           class="my-2"

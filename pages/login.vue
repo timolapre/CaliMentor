@@ -66,7 +66,7 @@ export default {
       this.user = data
       this.errors = data.errors ? data.errors : {}
       if (!data.errors) {
-        this.$router.push({ name: 'account' })
+        this.$router.push({ name: 'dashboard' })
         await this.$store.dispatch('getLoggedinUser')
       }
     },

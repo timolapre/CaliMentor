@@ -14,6 +14,7 @@ export const WORKOUT_BLOCK_OPTIONS = [
   'For time',
   'Rest',
   'Text',
+  'Video',
 ]
 
 export const WORKOUT_BLOCK_OPTIONS_INFO = {
@@ -27,4 +28,5 @@ export const WORKOUT_BLOCK_OPTIONS_INFO = {
   'For time': 'Do the exercises as fast as possible in good form',
   Rest: 'Take some rest and drink some water',
   Text: 'Do as described',
+  Video: 'Play the video and follow the instructions',
 }

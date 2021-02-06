@@ -31,7 +31,7 @@
         <h3 class="mt-2" v-if="savedUser">Successfully updated account info</h3>
       </div>
 
-      <div class="mt-15">
+      <div class="mt-15" v-if="$store.state.LOGGEDINUSER.loginType === 'email'">
         <v-form id="change-password-form" @submit.prevent="changePassword()">
           <v-text-field
             type="password"

@@ -163,6 +163,7 @@ export default {
       DeleteWorkoutDialog: false,
       NoSleep: null,
       NoSleepActive: false,
+      error: null,
     }
   },
   methods: {
@@ -172,6 +173,12 @@ export default {
       )
 
       const data = await this.$axios.$post('workout/id', { id })
+
+      if (data == 'unauthorized') {
+        this.$router.push({ name: 'unauthorized' })
+        return
+      }
+
       this.creator = data.user?.username
       this.workout = data
       this.loading = false

@@ -141,7 +141,7 @@
           </div>
         </div>
         <v-divider class="my-2"></v-divider>
-        <div v-if="!['Rest', 'Text'].includes(block.type)">
+        <div v-if="!['Rest', 'Text', 'Video'].includes(block.type)">
           <WorkoutBlockExercise
             v-for="exercise in block.exercises"
             :key="exercise.id"
@@ -156,6 +156,22 @@
         <div v-else-if="block.type === 'Text'" class="text-center">
           <h3 class="mx-5">{{ block.values[0] }}</h3>
         </div>
+        <div
+          v-else-if="
+            block.type === 'Video' &&
+            block.values[0].includes('youtube') &&
+            block.values[0].includes('watch?v=')
+          "
+          class="text-center"
+        >
+          <iframe
+            width="420"
+            height="315"
+            :src="block.values[0].replace('watch?v=', 'embed/')"
+          >
+          </iframe>
+        </div>
+
         <v-divider
           v-if="!['Single', 'For time', 'Rest'].includes(block.type)"
           class="my-2"
