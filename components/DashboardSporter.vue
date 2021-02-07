@@ -43,7 +43,9 @@
         <v-col v-for="(day, i) in days" :key="day" class="pa-1">
           <v-card
             flat
-            :color="i == new Date().getDay() - 1 ? 'primary' : 'secondary'"
+            :color="
+              i == (new Date().getDay() + 6) % 7 ? 'primary' : 'secondary'
+            "
             class="pa-1 text-center"
           >
             <p class="mb-0 day-text">{{ day }}</p>
@@ -220,7 +222,7 @@ export default {
   },
   computed: {
     todayType() {
-      const dayOfWeek = new Date().getDay() - 1
+      const dayOfWeek = (new Date().getDay() + 6) % 7
       return this.routineType[Object.keys(this.routineType)[dayOfWeek]]
     },
     routine() {

@@ -25,7 +25,7 @@ export default {
   },
 
   env: {
-    STRIPE_PUBLIC_KEY: "pk_test_51IC5WGEWDRtjeSYYhQUB8gZpYasuQujVXseNBJgqCMvsggKDnjrzoaRd3XleySkaxFIvOYkhoFPwNtCPXsYXM9DW00Z3bVjLzC"
+    STRIPE_PUBLIC_KEY: process.env.STRIPE_PUBLIC_KEY
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)

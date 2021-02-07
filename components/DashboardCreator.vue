@@ -6,9 +6,15 @@
       <div v-if="totalLoading" class="d-flex align-center justify-center">
         <Loading />
       </div>
-      <div v-else>
-        <h3>{{ totalData.workoutsCount }} workouts</h3>
-        <h3>{{ totalData.finishesCount }} finishes</h3>
+      <div class="d-flex" v-else>
+        <v-card class="py-2 px-3 mr-2 d-flex" color="secondary">
+          <v-icon small class="mr-2">fa-dumbbell</v-icon>
+          <h3>{{ totalData.workoutsCount }} workouts</h3>
+        </v-card>
+        <v-card class="py-2 px-3 d-flex" color="secondary">
+          <v-icon small class="mr-2">fa-flag-checkered</v-icon>
+          <h3>{{ totalData.finishesCount }} finishes</h3>
+        </v-card>
       </div>
     </v-card>
 
@@ -32,9 +38,20 @@
       <div v-show="!monthlyLoading">
         <canvas id="lineGraphCanvas"></canvas>
 
-        <h3>{{ monthlyData.workoutsCount }} workouts added</h3>
-        <h3>{{ finishesHistoryLength }} finishes</h3>
-        <h3>{{ finishPercentage }}% of total finishes</h3>
+        <div class="d-flex mt-4">
+          <v-card class="py-2 px-3 mr-2 d-flex" color="secondary">
+            <v-icon small class="mr-2">fa-dumbbell</v-icon>
+            <h3>{{ monthlyData.workoutsCount }} workouts added</h3>
+          </v-card>
+          <v-card class="py-2 px-3 mr-2 d-flex" color="secondary">
+            <v-icon small class="mr-2">fa-flag-checkered</v-icon>
+            <h3>{{ finishesHistoryLength }} finishes</h3>
+          </v-card>
+          <v-card class="py-2 px-3 d-flex" color="secondary">
+            <v-icon small class="mr-2">fa-flag-checkered</v-icon>
+            <h3>{{ finishPercentage }}% of total finishes</h3>
+          </v-card>
+        </div>
         <!-- <h3>$x paid or coming end of month</h3> -->
 
         <!-- <v-card color="secondary" class="py-2 px-3 my-3">
@@ -88,7 +105,7 @@ export default {
           labels: Array.from({ length: daysInMonth }, (_, i) => i + 1),
           datasets: [
             {
-              label: 'Finishes count',
+              label: 'Finishes',
               // backgroundColor: '#19D24B',
               borderColor: '#19D24B',
               data: dayValues,

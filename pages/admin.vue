@@ -218,6 +218,11 @@ export default {
     },
   },
   async created() {
+    await this.$store.dispatch('getLoggedinUser')
+    if (this.$store.state.LOGGEDINUSER?.username?.toLowerCase() !== 'timo') {
+      this.$router.push({ name: 'index' })
+      return
+    }
     const usersData = await this.$axios.$get('admin/users/info')
 
     this.usersInfo = usersData
