@@ -12,7 +12,19 @@
           <v-icon class="mr-2" small>fa-chart-bar</v-icon>Dashboard</v-btn
         >
 
-        <v-menu offset-y>
+        <v-btn
+          v-bind="attrs"
+          v-on="on"
+          class="ml-2 px-4"
+          @click="
+            $router.push({
+              name: 'workouts',
+            })
+          "
+        >
+          <v-icon class="mr-2" small>fa-dumbbell</v-icon> Workouts
+        </v-btn>
+        <!-- <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
             <v-btn v-bind="attrs" v-on="on" class="ml-2 px-4">
               <v-icon class="mr-2" small>fa-dumbbell</v-icon> Workouts
@@ -56,7 +68,7 @@
               ></v-list-item-title>
             </v-list-item>
           </v-list>
-        </v-menu>
+        </v-menu> -->
 
         <v-btn class="ml-2" @click="$router.push({ name: 'workout-create' })">
           <v-icon class="mr-2" small>fa-plus</v-icon>Create workout</v-btn

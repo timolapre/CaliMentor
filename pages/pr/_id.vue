@@ -3,56 +3,33 @@
     <div class="page text-center">
       <v-btn @click="$router.go(-1)" block class="mb-10">Back</v-btn>
 
-      <v-form id="pr-form" @submit.prevent="editPersonalRecord()">
-        <v-row class="mx-2 mb-3">
-          <v-col class="px-0 pb-0">
-            <v-combobox
-              flat
-              solo
-              dense
-              hide-details
-              background-color="secondary"
-              :items="exercises"
-              placeholder="Exercise"
-              class="block-input"
-              v-model="exercise"
-            ></v-combobox>
-          </v-col>
-          <v-col
-            cols="3"
-            sm="2"
-            class="d-flex align-center justify-end px-1 pb-0"
-          >
-            <v-text-field
-              flat
-              solo
-              dense
-              hide-details
-              type="number"
-              background-color="secondary"
-              v-model="count"
-            ></v-text-field>
-          </v-col>
-          <v-col
-            cols="3"
-            sm="2"
-            class="d-flex align-center justify-end px-0 pb-0"
-          >
-            <v-select
-              flat
-              solo
-              dense
-              hide-details
-              background-color="secondary"
-              :items="['x', 's', 'm']"
-              v-model="append"
-            ></v-select>
-          </v-col>
-          <v-btn type="submit" form="pr-form" color="primary" class="mt-3" block
-            >save</v-btn
-          >
-        </v-row>
+      <v-form id="pr-form" class="mb-5" @submit.prevent="addPersonalRecord()">
+        <h1 color="secondary">{{ pr.exercise }}</h1>
+        <div class="d-flex align-center mt-2">
+          <v-text-field
+            flat
+            solo
+            dense
+            hide-details
+            type="number"
+            background-color="secondary"
+            class="mr-4"
+            v-model="pr.count"
+          ></v-text-field>
+          <h3 class="mr-4">{{ pr.append }}</h3>
+        </div>
+        <v-btn type="submit" form="pr-form" color="primary" class="mt-3" block
+          >add</v-btn
+        >
       </v-form>
+
+      <PersonalRecordHistoryBlock
+        v-for="h in pr.history"
+        :key="h.id"
+        :append="pr.append"
+        :history="h"
+      >
+      </PersonalRecordHistoryBlock>
     </div>
   </div>
 </template>
@@ -61,9 +38,7 @@
 export default {
   data() {
     return {
-      exercise: '',
-      count: 1,
-      append: 'x',
+      pr: [],
     }
   },
   methods: {
@@ -75,24 +50,19 @@ export default {
         id,
       })
       if (data) {
-        this.exercise = data.exercise
-        this.count = data.count
-        this.append = data.append
+        this.pr = data
       }
     },
-    async editPersonalRecord() {
+    async addPersonalRecord() {
       const id = this.$route.path.substring(
         this.$route.path.lastIndexOf('/') + 1
       )
 
-      const data = await this.$axios.$post('personalrecord/edit', {
+      const data = await this.$axios.$post('personalrecord/add', {
         id,
-        exercise: this.exercise,
-        count: this.count,
-        append: this.append,
+        count: this.pr.count,
       })
-
-      this.$router.push({ name: 'dashboard' })
+      this.getPersonalRecord()
     },
   },
   async created() {

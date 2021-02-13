@@ -3,8 +3,20 @@
     <div class="page text-center">
       <v-btn @click="$router.go(-1)" block class="mb-10">Back</v-btn>
 
-      <v-form id="pr-form" @submit.prevent="addPersonalRecord()">
-        <v-row class="mx-2 mb-3">
+      <v-form id="pr-form" @submit.prevent="addGoal()">
+        <v-date-picker
+          full-width
+          v-model="date"
+          color="primary"
+          event-color="orange accent-4"
+          :disabled="noDate"
+        ></v-date-picker>
+        <v-checkbox
+          v-model="noDate"
+          hide-details
+          label="No deadline date"
+        ></v-checkbox>
+        <v-row class="mx-0 mb-3 my-1">
           <v-col class="px-0 pb-0">
             <v-combobox
               flat
@@ -61,19 +73,22 @@
 export default {
   data() {
     return {
+      date: new Date().toISOString().substr(0, 10),
       exercise: '',
       count: 1,
       append: 'x',
+      noDate: false,
     }
   },
   methods: {
-    async addPersonalRecord() {
-      const data = await this.$axios.$post('personalrecord/add', {
+    async addGoal() {
+      const data = await this.$axios.$post('goal/add', {
         exercise: this.exercise,
         count: this.count,
         append: this.append,
+        deadline: this.noDate ? null : this.date,
       })
-      if (data) {
+      if (data.id) {
         this.$router.push({ name: 'dashboard' })
       }
     },

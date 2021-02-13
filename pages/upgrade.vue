@@ -5,7 +5,48 @@
 
       <h1 class="text-center my-5">Upgrade to premium</h1>
 
-      <v-form id="upgrade-form" class="mt-5" @submit.prevent="buyPremium()">
+      <!-- Free vs premium -->
+      <div class="mt-5 text-center">
+        <v-row class="d-flex align-center">
+          <v-col cols="12" sm="6" align-self="start">
+            <v-card class="pa-7">
+              <h1>Free</h1>
+              <v-divider class="my-3"></v-divider>
+              <div class="d-flex justify-center">
+                <div class="text-left">
+                  <p class="mb-1">✅ Access to all workouts</p>
+                  <p class="mb-1">✅ Create your own workouts</p>
+                  <p class="mb-1">✅ Favorite workouts</p>
+                  <p class="mb-1">🟠 View workout history</p>
+                  <p class="mb-1">🟠 Track progress and personal records</p>
+                  <p class="mb-1">❌ Earn achievements</p>
+                  <p class="mb-1">❌ Ads removed</p>
+                </div>
+              </div>
+            </v-card>
+          </v-col>
+          <v-col cols="12" sm="6" align-self="start">
+            <v-card class="pa-7">
+              <h1>Premium</h1>
+              <p class="mb-0">&euro; 1,99 / month</p>
+              <v-divider class="my-3"></v-divider>
+              <div class="d-flex justify-center">
+                <div class="text-left">
+                  <p class="mb-1">✅ Access to all workouts</p>
+                  <p class="mb-1">✅ Create your own workouts</p>
+                  <p class="mb-1">✅ Favorite workouts</p>
+                  <p class="mb-1">✅ View workouts history</p>
+                  <p class="mb-1">✅ Track progress and personal records</p>
+                  <p class="mb-1">✅ Earn achievements</p>
+                  <p class="mb-1">✅ Ads removed</p>
+                </div>
+              </div>
+            </v-card>
+          </v-col>
+        </v-row>
+      </div>
+
+      <v-form id="upgrade-form" class="mt-8" @submit.prevent="buyPremium()">
         <v-select
           hide-details
           v-model="paymentMethod"

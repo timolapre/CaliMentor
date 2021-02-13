@@ -116,10 +116,12 @@
               </v-btn>
             </div>
 
-            <!-- Single, Text -->
+            <!-- Single, Text, Video -->
             <div
               class="d-flex align-center"
-              v-if="['Single', 'Text', 'For time'].includes(block.type)"
+              v-if="
+                ['Single', 'Text', 'For time', 'Video'].includes(block.type)
+              "
             >
               <v-btn
                 color="secondary"
@@ -162,12 +164,17 @@
             block.values[0].includes('youtube') &&
             block.values[0].includes('watch?v=')
           "
-          class="text-center"
+          class="text-center px-5"
         >
           <iframe
-            width="420"
-            height="315"
+            width="100%"
+            height="350px"
             :src="block.values[0].replace('watch?v=', 'embed/')"
+            allowfullscreen="allowfullscreen"
+            mozallowfullscreen="mozallowfullscreen"
+            msallowfullscreen="msallowfullscreen"
+            oallowfullscreen="oallowfullscreen"
+            webkitallowfullscreen="webkitallowfullscreen"
           >
           </iframe>
         </div>
@@ -253,7 +260,14 @@ export default {
       )
     },
     startTimer(minutes = 0, seconds = 0, resets = 0, seconds2 = 0) {
-      var audio = new Audio(require('../../assets/sounds/countdown.wav'))
+      var audioBeep = new Audio(require('../../assets/sounds/countdown.wav'))
+      var audioWork = new Audio(require('../../assets/sounds/Work.mp3'))
+      var audioRest = new Audio(require('../../assets/sounds/Rest.mp3'))
+      var audioHalfway = new Audio(require('../../assets/sounds/Halfway.mp3'))
+      var audioLastRound = new Audio(
+        require('../../assets/sounds/LastRound.mp3')
+      )
+
       var duration = moment.duration({
         minutes: minutes,
         seconds: seconds,
@@ -282,12 +296,22 @@ export default {
         if (sec < 10 && length.sec != 2) sec = '0' + sec
 
         if (min == 0 && sec == 3) {
-          audio.play()
+          audioBeep.play()
+        }
+
+        if (
+          minutes * 60 + seconds >= 20 &&
+          min * 60 + sec == Math.floor((minutes * 60 + seconds) / 2)
+        ) {
+          audioHalfway.play()
         }
 
         this.timer = min + ':' + sec
         if (min == 0 && sec == 0) {
           setTimeout(() => {
+            if (resets == 2) {
+              audioLastRound.play()
+            }
             if (resets > 1) {
               if (!seconds2) {
                 this.startTimer(minutes, seconds, resets - 1)
@@ -295,6 +319,11 @@ export default {
               } else {
                 this.startTimer(minutes, seconds2, resets - 1, seconds)
                 this.workOrRest = resets % 2 ? 'Work' : 'Rest'
+                if (this.workOrRest == 'Work') {
+                  audioWork.play()
+                } else {
+                  audioRest.play()
+                }
                 if (resets % 2) {
                   this.setCount++
                 }

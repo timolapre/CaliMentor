@@ -1,28 +1,26 @@
 <template>
   <div class="register-container d-flex align-center justify-center">
     <div class="page">
-      <div>
-        <v-row class="mb-5">
-          <v-col cols="12" sm="6" class="py-1">
-            <v-btn
-              block
-              :color="selectedDashboard == 'Sporter' ? 'primary' : ''"
-              @click="selectedDashboard = 'Sporter'"
-            >
-              Sporter
-            </v-btn>
-          </v-col>
-          <v-col cols="12" sm="6" class="py-1">
-            <v-btn
-              block
-              :color="selectedDashboard == 'Creator' ? 'primary' : ''"
-              @click="selectedDashboard = 'Creator'"
-            >
-              Creator
-            </v-btn>
-          </v-col>
-        </v-row>
-      </div>
+      <v-row class="mb-5 mx-0">
+        <v-col cols="12" sm="6" class="py-1">
+          <v-btn
+            block
+            :color="selectedDashboard == 'Sporter' ? 'primary' : ''"
+            @click="selectedDashboard = 'Sporter'"
+          >
+            Sporter
+          </v-btn>
+        </v-col>
+        <v-col cols="12" sm="6" class="py-1">
+          <v-btn
+            block
+            :color="selectedDashboard == 'Creator' ? 'primary' : ''"
+            @click="selectedDashboard = 'Creator'"
+          >
+            Creator
+          </v-btn>
+        </v-col>
+      </v-row>
 
       <v-divider class="mb-3"></v-divider>
 

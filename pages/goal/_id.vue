@@ -3,8 +3,20 @@
     <div class="page text-center">
       <v-btn @click="$router.go(-1)" block class="mb-10">Back</v-btn>
 
-      <v-form id="pr-form" @submit.prevent="addPersonalRecord()">
-        <v-row class="mx-2 mb-3">
+      <v-form id="pr-form" @submit.prevent="editGoal()">
+        <v-date-picker
+          full-width
+          v-model="date"
+          color="primary"
+          event-color="orange accent-4"
+          :disabled="noDate"
+        ></v-date-picker>
+        <v-checkbox
+          v-model="noDate"
+          hide-details
+          label="No deadline date"
+        ></v-checkbox>
+        <v-row class="mx-0 mb-3 my-1">
           <v-col class="px-0 pb-0">
             <v-combobox
               flat
@@ -44,7 +56,7 @@
               dense
               hide-details
               background-color="secondary"
-              :items="['x', 's', 'kg', 'm']"
+              :items="['x', 's', 'm']"
               v-model="append"
             ></v-select>
           </v-col>
@@ -61,25 +73,51 @@
 export default {
   data() {
     return {
+      date: new Date().toISOString().substr(0, 10),
       exercise: '',
       count: 1,
       append: 'x',
+      noDate: false,
     }
   },
   methods: {
-    async addPersonalRecord() {
-      const data = await this.$axios.$post('personalrecord/add', {
+    async getGoal() {
+      const id = this.$route.path.substring(
+        this.$route.path.lastIndexOf('/') + 1
+      )
+      const data = await this.$axios.$post('goal/one', {
+        id,
+      })
+      if (data) {
+        this.exercise = data.exercise
+        this.count = data.count
+        this.append = data.append
+        if (data.deadline) {
+          this.date = data.deadline.substr(0, 10)
+        } else {
+          this.noDate = true
+        }
+      }
+    },
+    async editGoal() {
+      const id = this.$route.path.substring(
+        this.$route.path.lastIndexOf('/') + 1
+      )
+
+      const data = await this.$axios.$post('goal/edit', {
+        id,
         exercise: this.exercise,
         count: this.count,
         append: this.append,
+        deadline: this.noDate ? null : this.date,
       })
-      if (data) {
-        this.$router.push({ name: 'dashboard' })
-      }
+
+      this.$router.push({ name: 'dashboard' })
     },
   },
   async created() {
     await this.$store.dispatch('setWorkoutDurationOptions')
+    this.getGoal()
   },
   computed: {
     exercises() {

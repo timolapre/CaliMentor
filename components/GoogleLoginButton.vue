@@ -1,5 +1,6 @@
 <template>
-  <a :href="googleAuthUrl">
+  <div class="mt-3">
+    <!-- <a :href="googleAuthUrl">
     <img
       class="mt-2 cursor-pointer"
       :src="require(`~/assets/images/google/${googleLoginImage}.png`)"
@@ -11,7 +12,18 @@
       @mouseleave="googleLoginImage = 'normal'"
       @click="googleLoginImage = 'focus'"
     />
-  </a>
+  </a> -->
+    <v-btn :href="googleAuthUrl">
+      <v-img
+        max-width="20"
+        contain
+        class="mr-3"
+        :src="require(`~/assets/images/google/google.png`)"
+      >
+      </v-img>
+      Sign in with Google</v-btn
+    >
+  </div>
 
   <!-- 
   <v-btn class="mt-2" height="40" width="auto" contain color="primary">

@@ -35,11 +35,11 @@
         </v-btn>
       </v-form>
 
-      <GoogleLoginButton />
       <div class="mt-4 d-flex float-right align-center">
         <p class="mb-0 mr-3">No account yet?</p>
         <v-btn @click="$router.push({ name: 'register' })"> Register </v-btn>
       </div>
+      <GoogleLoginButton />
     </div>
   </div>
 </template>
@@ -66,8 +66,8 @@ export default {
       this.user = data
       this.errors = data.errors ? data.errors : {}
       if (!data.errors) {
-        this.$router.push({ name: 'dashboard' })
         await this.$store.dispatch('getLoggedinUser')
+        this.$router.push({ name: 'dashboard' })
       }
     },
   },

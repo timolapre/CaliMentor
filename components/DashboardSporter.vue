@@ -3,7 +3,8 @@
     <!-- Achievements -->
     <v-card class="pa-4">
       <p class="text--disabled">Achievements</p>
-      <v-row class="text-center">
+      <h3>Coming soon</h3>
+      <!-- <v-row class="text-center">
         <v-col
           cols="3"
           sm="1"
@@ -12,106 +13,66 @@
         >
           <Achievement v-bind:achievement="achievement" />
         </v-col>
-      </v-row>
+      </v-row> -->
     </v-card>
 
     <!-- Routine -->
-    <v-card class="mt-3 pa-4">
-      <v-btn
-        v-if="routine.difficulty"
-        class="float-right"
-        color="secondary"
-        @click="$router.push({ name: 'routine' })"
-      >
-        <v-icon small>fa-pen</v-icon>
-      </v-btn>
-      <p class="text--disabled">Routine</p>
-      <v-btn
-        v-if="!routine.difficulty"
-        class="float-right mb-2"
-        color="primary"
-        block
-        @click="$router.push({ name: 'routine' })"
-      >
-        <v-icon small class="mr-2">fa-pen</v-icon>Configure routine
-      </v-btn>
-      <div v-if="routine.difficulty">
-        <DifficultyBar class="mb-1" :difficulty="routine.difficulty" />
-        {{ difficultyText }}
-      </div>
-      <v-row class="mt-1 px-2">
-        <v-col v-for="(day, i) in days" :key="day" class="pa-1">
-          <v-card
-            flat
-            :color="
-              i == (new Date().getDay() + 6) % 7 ? 'primary' : 'secondary'
-            "
-            class="pa-1 text-center"
-          >
-            <p class="mb-0 day-text">{{ day }}</p>
-            <!-- <v-icon class="my-1"
-              >fa-{{ typeToIcon[routineType[day.toLowerCase()]] }}</v-icon
-            > -->
-            <p class="mb-0">
-              {{ routineType[day.toLowerCase()] }}
-            </p>
-          </v-card>
-        </v-col>
-      </v-row>
-      <v-btn
-        class="mt-5"
-        color="primary"
-        @click="searchWOD"
-        v-if="todayType !== '' && todayType !== 'Rest'"
-        >Search workout for today</v-btn
-      >
-      <h3 v-else-if="todayType == 'Rest'" class="mt-4">Enjoy your rest day</h3>
-    </v-card>
+    <Routine />
 
     <!-- Goals -->
     <v-card class="mt-3 pa-4">
       <p class="text--disabled">Goals</p>
-      <v-row>
-        <v-col v-for="pr in PRs" :key="pr.id" cols="12" sm="6" class="pa-1">
-          <v-card
-            flat
-            color="secondary"
-            block
-            class="py-1 text-center"
-            @click="$router.push({ name: 'pr-id', params: { id: pr.id } })"
-          >
-            <h2>{{ pr.exercise }} {{ pr.count }}{{ pr.append }}</h2>
-          </v-card>
-        </v-col>
-        <v-col cols="12" sm="6" class="pa-1 d-flex align-center">
-          <v-btn
-            color="primary"
-            @click="$router.push({ name: 'pr-add' })"
-            outlined
-            block
-          >
-            <h2>Add exercise</h2>
-          </v-btn>
-        </v-col>
-      </v-row>
+      <div v-if="goals.length == 0" class="mt-0 mb-3">
+        <h3>
+          You have finished all your goals. Add a new one and keep training
+          hard!
+        </h3>
+      </div>
+      <GoalBlock
+        @remove-goal="removeGoal"
+        v-for="goal in goals"
+        :key="goal.id"
+        :goal="goal"
+        class="my-1"
+      />
+      <v-btn
+        color="primary"
+        @click="$router.push({ name: 'goal-add' })"
+        outlined
+        block
+      >
+        <h2>Add goal</h2>
+      </v-btn>
     </v-card>
 
     <!-- Personal Records and progress -->
     <v-card class="mt-3 pa-4">
       <p class="text--disabled">Personal records</p>
-      <v-row>
-        <v-col v-for="pr in PRs" :key="pr.id" cols="12" sm="6" class="pa-1">
+      <v-row class="ma-0">
+        <v-col
+          v-for="pr in PRs"
+          :key="pr.id"
+          cols="12"
+          sm="6"
+          class="pa-0 pt-1 px-sm-1"
+        >
           <v-card
+            style="width: 100%"
             flat
             color="secondary"
             block
-            class="py-1 text-center"
+            class="py-1 px-2"
             @click="$router.push({ name: 'pr-id', params: { id: pr.id } })"
           >
-            <h2>{{ pr.exercise }} {{ pr.count }}{{ pr.append }}</h2>
+            <div class="d-flex">
+              <h2>{{ pr.exercise }}</h2>
+              <h2 class="mr-2 ml-auto">
+                {{ pr.history[0].count }}{{ pr.append }}
+              </h2>
+            </div>
           </v-card>
         </v-col>
-        <v-col cols="12" sm="6" class="pa-1 d-flex align-center">
+        <v-col cols="12" sm="6" class="pa-0 pt-1 px-sm-1 d-flex align-center">
           <v-btn
             color="primary"
             @click="$router.push({ name: 'pr-add' })"
@@ -122,6 +83,19 @@
           </v-btn>
         </v-col>
       </v-row>
+    </v-card>
+
+    <!-- Workout history -->
+    <v-card class="mt-3 pa-4">
+      <p class="text--disabled">Workout history</p>
+
+      <v-btn
+        color="secondary"
+        block
+        @click="$router.push({ name: 'workout-history' })"
+      >
+        <v-icon class="mr-3" small>fa-history</v-icon> View my workout history
+      </v-btn>
     </v-card>
   </div>
 </template>
@@ -131,6 +105,7 @@ export default {
   data() {
     return {
       PRs: [],
+      goals: [],
       achievements: [
         { id: 1, tooltip: 'Buy premium', icon: 'hand-holding-usd', size: '' },
         {
@@ -182,15 +157,6 @@ export default {
           size: 'large',
         },
       ],
-      days: [
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-        'Sunday',
-      ],
       typeToIcon: {
         Rest: 'bed',
       },
@@ -201,16 +167,15 @@ export default {
       const data = await this.$axios.$get('personalrecord/all')
       this.PRs = data || []
     },
-    searchWOD() {
-      this.$router.push({
-        name: 'workouts',
-        query: {
-          difficulty: this.routine.difficulty,
-          type: this.$store.state.WORKOUT_TYPE_OPTIONS.filter(
-            (x) => x.text == this.todayType
-          )[0].id,
-        },
-      })
+    async getGoals() {
+      const data = await this.$axios.$get('goal/all')
+      this.goals = data || []
+    },
+    removeGoal(goal) {
+      const index = this.goals.indexOf(goal)
+      if (index > -1) {
+        this.goals.splice(index, 1)
+      }
     },
   },
   async beforeCreate() {
@@ -219,65 +184,9 @@ export default {
   },
   async created() {
     this.getPersonalRecords()
-  },
-  computed: {
-    todayType() {
-      const dayOfWeek = (new Date().getDay() + 6) % 7
-      return this.routineType[Object.keys(this.routineType)[dayOfWeek]]
-    },
-    routine() {
-      if (!this.$store.state.LOGGEDINUSER.routine) {
-        return { days: {} }
-      }
-      try {
-        return JSON.parse(this.$store.state.LOGGEDINUSER.routine)
-      } catch (e) {
-        return { days: {} }
-      }
-    },
-    routineType() {
-      if (!this.$store.state.WORKOUT_TYPE_OPTIONS) {
-        return {}
-      }
-      const routine = {
-        monday: '',
-        tuesday: '',
-        wednesday: '',
-        thursday: '',
-        friday: '',
-        saturday: '',
-        sunday: '',
-      }
-      Object.keys(this.routine.days).forEach((day) => {
-        const x = this.$store.state.WORKOUT_TYPE_OPTIONS.filter(
-          (x) => x.id == this.routine.days[day]
-        )[0]
-        routine[day] = x ? x.text : 'Rest'
-      })
-
-      return routine
-    },
-    difficultyText() {
-      if (!this.$store.state.WORKOUT_DIFFICULTY_OPTIONS) {
-        return ''
-      }
-      const x = this.$store.state.WORKOUT_DIFFICULTY_OPTIONS.filter(
-        (x) => x.id == this.routine.difficulty
-      )
-      if (x.length) {
-        return x[0].text
-      } else return ''
-    },
+    this.getGoals()
   },
 }
 </script>
 
-<style lang="scss" scoped>
-.day-text {
-  min-width: 90px;
-}
-
-.routine-text {
-  font-size: small;
-}
-</style>
+<style lang="scss" scoped></style>

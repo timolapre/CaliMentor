@@ -20,7 +20,7 @@ export default {
     const data = await this.$axios.$post('google/login', { code })
     this.loading = false
     if (data.id) {
-      this.$router.push({ name: 'account' })
+      this.$router.push({ name: 'dashboard' })
     } else {
       this.message = 'Something went wrong'
     }

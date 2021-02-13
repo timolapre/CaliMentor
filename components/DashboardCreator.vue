@@ -6,16 +6,20 @@
       <div v-if="totalLoading" class="d-flex align-center justify-center">
         <Loading />
       </div>
-      <div class="d-flex" v-else>
-        <v-card class="py-2 px-3 mr-2 d-flex" color="secondary">
-          <v-icon small class="mr-2">fa-dumbbell</v-icon>
-          <h3>{{ totalData.workoutsCount }} workouts</h3>
-        </v-card>
-        <v-card class="py-2 px-3 d-flex" color="secondary">
-          <v-icon small class="mr-2">fa-flag-checkered</v-icon>
-          <h3>{{ totalData.finishesCount }} finishes</h3>
-        </v-card>
-      </div>
+      <v-row class="d-flex mt-1" v-else>
+        <v-col cols="12" sm="6" class="pt-0">
+          <v-card class="py-2 px-3 d-flex" color="secondary">
+            <v-icon small class="mr-2">fa-dumbbell</v-icon>
+            <h3>{{ totalData.workoutsCount }} workouts</h3>
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="6" class="pt-0">
+          <v-card class="py-2 px-3 d-flex" color="secondary">
+            <v-icon small class="mr-2">fa-flag-checkered</v-icon>
+            <h3>{{ totalData.finishesCount }} finishes</h3>
+          </v-card>
+        </v-col>
+      </v-row>
     </v-card>
 
     <!-- Monthly -->
@@ -38,20 +42,35 @@
       <div v-show="!monthlyLoading">
         <canvas id="lineGraphCanvas"></canvas>
 
-        <div class="d-flex mt-4">
-          <v-card class="py-2 px-3 mr-2 d-flex" color="secondary">
-            <v-icon small class="mr-2">fa-dumbbell</v-icon>
-            <h3>{{ monthlyData.workoutsCount }} workouts added</h3>
-          </v-card>
-          <v-card class="py-2 px-3 mr-2 d-flex" color="secondary">
-            <v-icon small class="mr-2">fa-flag-checkered</v-icon>
-            <h3>{{ finishesHistoryLength }} finishes</h3>
-          </v-card>
-          <v-card class="py-2 px-3 d-flex" color="secondary">
-            <v-icon small class="mr-2">fa-flag-checkered</v-icon>
-            <h3>{{ finishPercentage }}% of total finishes</h3>
-          </v-card>
-        </div>
+        <v-row class="d-flex mt-4 mb-3">
+          <v-col cols="12" sm="6" class="py-1 pr-sm-1">
+            <v-card class="py-2 px-3 d-flex" color="secondary">
+              <v-icon small class="mr-2">fa-dumbbell</v-icon>
+              <h3>{{ monthlyData.workoutsCount }} workouts added</h3>
+            </v-card>
+          </v-col>
+          <v-col cols="12" sm="6" class="py-1 pl-sm-1">
+            <v-card class="py-2 px-3 d-flex" color="secondary">
+              <v-icon small class="mr-2">fa-flag-checkered</v-icon>
+              <h3>{{ finishesHistoryLength }} finishes</h3>
+            </v-card>
+          </v-col>
+        </v-row>
+        <v-row class="d-flex mb-1">
+          <v-col cols="12" sm="6" class="py-1 pr-sm-1">
+            <v-card class="py-2 px-3 d-flex" color="secondary">
+              <v-icon small class="mr-2">fa-flag-checkered</v-icon>
+              <h3>{{ finishPercentage }}% of total finishes</h3>
+            </v-card>
+          </v-col>
+          <v-col cols="12" sm="6" class="py-1 pl-sm-1">
+            <v-card class="py-2 px-3 d-flex" color="secondary">
+              <v-icon small class="mr-2">fa-money-bill</v-icon>
+              <h3>&euro;0.00 paid (coming soon)</h3>
+            </v-card>
+          </v-col>
+        </v-row>
+
         <!-- <h3>$x paid or coming end of month</h3> -->
 
         <!-- <v-card color="secondary" class="py-2 px-3 my-3">
@@ -100,14 +119,13 @@ export default {
       )
       const ctx = canvas.getContext('2d')
       var myLineChart = new Chart(ctx, {
-        type: 'line',
+        type: 'bar',
         data: {
           labels: Array.from({ length: daysInMonth }, (_, i) => i + 1),
           datasets: [
             {
               label: 'Finishes',
-              // backgroundColor: '#19D24B',
-              borderColor: '#19D24B',
+              backgroundColor: '#19D24B',
               data: dayValues,
             },
           ],

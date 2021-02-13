@@ -138,7 +138,7 @@
         :index="i"
       />
 
-      <canvas id="confettiCanvas" class="d-none"></canvas>
+      <Confetti :confetti="confetti" @false="confetti = false" />
     </div>
   </div>
 </template>
@@ -164,6 +164,7 @@ export default {
       NoSleep: null,
       NoSleepActive: false,
       error: null,
+      confetti: false,
     }
   },
   methods: {
@@ -232,47 +233,10 @@ export default {
       const data = await this.$axios.$post('workout/finish', {
         id: this.workout.id,
       })
-      this.fireConfetti(0.25, {
-        spread: 26,
-        startVelocity: 55,
-      })
-      this.fireConfetti(0.2, {
-        spread: 60,
-      })
-      this.fireConfetti(0.35, {
-        spread: 100,
-        decay: 0.91,
-        scalar: 0.8,
-      })
-      this.fireConfetti(0.1, {
-        spread: 120,
-        startVelocity: 25,
-        decay: 0.92,
-        scalar: 1.2,
-      })
-      this.fireConfetti(0.1, {
-        spread: 120,
-        startVelocity: 45,
-      })
+      this.confetti = true
     },
     async increaseView() {
       await this.$axios.$post('workout/view', { id: this.workout.id })
-    },
-    fireConfetti(particleRatio, opts) {
-      var myCanvas = document.getElementById('confettiCanvas')
-      var count = 200
-      var defaults = {
-        origin: { y: 0.8 },
-      }
-      var myConfetti = confetti.create(myCanvas, {
-        resize: true,
-        useWorker: true,
-      })
-      confetti(
-        Object.assign({}, defaults, opts, {
-          particleCount: Math.floor(count * particleRatio),
-        })
-      )
     },
   },
   created() {

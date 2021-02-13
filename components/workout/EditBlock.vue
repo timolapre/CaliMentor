@@ -2,15 +2,20 @@
   <li>
     <v-card class="my-4">
       <v-container class="px-0">
-        <div class="d-flex justify-content handle">
+        <div class="d-flex justify-content">
           <h3 class="ml-3">{{ block.type }}</h3>
           <!-- <v-icon @click="deleteBlock" class="mr-6 ml-auto" small
             >fa-arrow-up</v-icon
           >
           <v-icon @click="deleteBlock" class="mr-6" small>fa-arrow-down</v-icon> -->
           <v-icon
+            class="mr-6 ml-auto no-background-hover handle"
+            small
+            >fa-arrows-alt</v-icon
+          >
+          <v-icon
             @click="copyBlock"
-            class="mr-6 ml-auto no-background-hover"
+            class="mr-6 no-background-hover"
             small
             >fa-copy</v-icon
           >

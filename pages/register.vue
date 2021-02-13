@@ -48,11 +48,11 @@
           Register
         </v-btn>
       </v-form>
-      <GoogleLoginButton />
       <div class="mt-4 d-flex float-right align-center">
         <p class="mb-0 mr-3">Already have an account?</p>
         <v-btn @click="$router.push({ name: 'login' })"> Login </v-btn>
       </div>
+      <GoogleLoginButton />
     </div>
   </div>
 </template>
