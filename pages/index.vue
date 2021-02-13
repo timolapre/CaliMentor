@@ -218,19 +218,6 @@ export default {
     this.getWorkoutCount()
     this.getUserCount()
   },
-  head() {
-    return {
-      title: 'CaliMentor - The only calisthenics workouts you need',
-      meta: [
-        // hid is used as unique identifier. Do not use `vmid` for it as it will not work
-        {
-          hid: 'description1',
-          name: 'description2',
-          content: 'My custom description',
-        },
-      ],
-    }
-  },
 }
 </script>
 
