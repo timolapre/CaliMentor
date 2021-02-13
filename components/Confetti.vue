@@ -6,9 +6,20 @@
 import confetti from 'canvas-confetti'
 
 export default {
-  props: { confetti: { default: false, type: Boolean } },
+  props: {
+    confetti: { default: false, type: Boolean },
+    sound: { default: true },
+  },
   methods: {
     async confettiGun() {
+      if (this.sound) {
+        const sounds = ['GoodJob', 'GreatWork', 'WellDone']
+        const random = Math.floor(Math.random() * sounds.length)
+        const audio = new Audio(
+          require('../assets/sounds/' + sounds[random] + '.mp3')
+        )
+        audio.play()
+      }
       this.fireConfetti(0.25, {
         spread: 26,
         startVelocity: 55,
