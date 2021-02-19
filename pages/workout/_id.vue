@@ -2,7 +2,7 @@
   <div class="register-container d-flex align-center justify-center">
     <div v-if="loading" class="text-center"><Loading /></div>
     <div v-else class="mx-4 page">
-      <v-btn @click="$router.go(-1)" block>Back</v-btn>
+      <v-btn @click="$router.go(-1)" block class="mb-5">Back</v-btn>
       <v-container class="text-center">
         <div class="workout-stats">
           <v-icon class="mr-0" x-small>fa-thumbs-up</v-icon>
@@ -137,6 +137,7 @@
         @block-finish="blockFinishCount += 1"
         :index="i"
       />
+      <Ad v-if="workout.blocks.length < 4" />
 
       <Confetti :confetti="confetti" @false="confetti = false" />
     </div>

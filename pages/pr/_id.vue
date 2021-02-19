@@ -4,7 +4,16 @@
       <v-btn @click="$router.go(-1)" block class="mb-10">Back</v-btn>
 
       <v-form id="pr-form" class="mb-5" @submit.prevent="addPersonalRecord()">
-        <h1 color="secondary">{{ pr.exercise }}</h1>
+        <div class="d-flex">
+          <v-btn
+            class="float-left align-self-center"
+            color="red"
+            @click="deletePR"
+          >
+            <v-icon small>fa-trash</v-icon>
+          </v-btn>
+        </div>
+        <h1 color="secondary" class="text-center">{{ pr.exercise }}</h1>
         <div class="d-flex align-center mt-2">
           <v-text-field
             flat
@@ -63,6 +72,17 @@ export default {
         count: this.pr.count,
       })
       this.getPersonalRecord()
+    },
+    async deletePR() {
+      const id = this.$route.path.substring(
+        this.$route.path.lastIndexOf('/') + 1
+      )
+
+      const data = await this.$axios.$post('personalrecord/delete', {
+        id,
+      })
+
+      this.$router.push({ name: 'dashboard' })
     },
   },
   async created() {

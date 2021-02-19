@@ -11,7 +11,7 @@
       <!-- LOGGEDIN -->
       <div class="row" v-if="$store.state.LOGGEDIN">
         <div
-          @click="$router.push({ name: 'workouts', query: { favorited: 0 } })"
+          @click="$router.push({ name: 'workouts', query: { favorited: undefined } })"
           class="col-2 pb-1 cursor-pointer d-flex flex-column align-center"
         >
           <v-icon>fa-dumbbell</v-icon>

@@ -73,9 +73,7 @@ export default {
         count: this.count,
         append: this.append,
       })
-      if (data) {
-        this.$router.push({ name: 'dashboard' })
-      }
+      this.$router.push({ name: 'dashboard' })
     },
   },
   async created() {

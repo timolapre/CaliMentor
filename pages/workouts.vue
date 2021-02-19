@@ -124,19 +124,6 @@ export default {
       this.getWorkouts()
     },
   },
-  head() {
-    return {
-      title: 'CaliMentor -' + this.workoutsCount + ' calisthenics workouts',
-      meta: [
-        // hid is used as unique identifier. Do not use `vmid` for it as it will not work
-        {
-          hid: 'description workouts',
-          name: 'description2 workouts',
-          content: 'All calisthenics workouts you need',
-        },
-      ],
-    }
-  },
 }
 </script>
 

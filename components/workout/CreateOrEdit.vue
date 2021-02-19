@@ -1,6 +1,7 @@
 <template>
   <div class="register-container d-flex align-center justify-center">
     <div class="mx-4 page">
+      <v-btn @click="$router.go(-1)" block class="mb-5">Back without saving</v-btn>
       <h1 class="text-center">Create Workout</h1>
       <v-row class="mt-3">
         <!-- Name -->
@@ -188,6 +189,26 @@ export default {
       this.$router.push({ name: 'workout-id', params: { id: data } })
     },
     async saveEditWorkout() {
+      const errors = {
+        name: !this.workout.name.length ? 'Name is required' : undefined,
+        type: !this.workout.type ? 'Type is required' : undefined,
+        difficulty: !this.workout.difficulty
+          ? 'Difficulty is required'
+          : undefined,
+        duration: !this.workout.duration ? 'Duraton is required' : undefined,
+        block:
+          this.workout.blocks.length == 0
+            ? 'At least one exercise block is required'
+            : undefined,
+      }
+
+      for (const error in errors) {
+        if (errors[error]) {
+          this.errors = errors
+          return
+        }
+      }
+
       await this.$axios.$post('workout/edit', {
         id: this.workoutId,
         workout: this.workout,

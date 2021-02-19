@@ -43,7 +43,7 @@
         </v-row>
       </v-container>
     </v-card>
-    <Ad v-if="index == 3 || (index > 3 && index % 10 == 0)" />
+    <Ad v-if="index == 4" />
   </div>
 </template>
 

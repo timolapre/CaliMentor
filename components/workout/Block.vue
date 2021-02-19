@@ -23,10 +23,7 @@
                 v-if="timer"
                 color="secondary"
                 min-width="0"
-                @click="
-                  finished = true
-                  $emit('block-finish')
-                "
+                @click="blockFinished"
                 class="px-3 py-2"
               >
                 <v-icon dark x-small> fa-check </v-icon>
@@ -46,10 +43,7 @@
                 v-if="timer"
                 color="secondary"
                 min-width="0"
-                @click="
-                  finished = true
-                  $emit('block-finish')
-                "
+                @click="blockFinished"
                 class="px-3 py-2"
               >
                 <v-icon dark x-small> fa-check </v-icon>
@@ -66,10 +60,7 @@
                 v-if="timer"
                 color="secondary"
                 min-width="0"
-                @click="
-                  finished = true
-                  $emit('block-finish')
-                "
+                @click="blockFinished"
                 class="px-3 py-2"
               >
                 <v-icon dark x-small> fa-check </v-icon>
@@ -92,10 +83,7 @@
                 v-if="timer"
                 color="secondary"
                 min-width="0"
-                @click="
-                  finished = true
-                  $emit('block-finish')
-                "
+                @click="blockFinished"
                 class="px-3 py-2"
               >
                 <v-icon dark x-small> fa-check </v-icon>
@@ -123,14 +111,7 @@
                 ['Single', 'Text', 'For time', 'Video'].includes(block.type)
               "
             >
-              <v-btn
-                color="secondary"
-                @click="
-                  finished = true
-                  $emit('block-finish')
-                "
-                class="px-3 py-2"
-              >
+              <v-btn color="secondary" @click="blockFinished" class="px-3 py-2">
                 <v-icon dark x-small> fa-check </v-icon>
               </v-btn>
             </div>
@@ -208,7 +189,7 @@
         </div>
       </v-container>
     </v-card>
-    <Ad v-if="index == 2 || (index > 5 && index % 5 == 0)" />
+    <Ad v-if="index == 3" />
   </div>
 </template>
 
@@ -229,6 +210,7 @@ export default {
       timer: '',
       workOrRest: 'Work',
       NoSleep: null,
+      timerInterval: null,
     }
   },
   methods: {
@@ -245,13 +227,16 @@ export default {
         this.block.values[1] == 'Seconds' ? this.block.values[0] : 0
       )
     },
-    startEMOMTimer() {
+    async startEMOMTimer() {
+      await this.timerStartCountdown()
       this.startTimer(0, this.block.values[0], this.block.values[1])
     },
-    startAMRAPTimer() {
+    async startAMRAPTimer() {
+      await this.timerStartCountdown()
       this.startTimer(this.block.values[0])
     },
-    startTABATATimer() {
+    async startTABATATimer() {
+      await this.timerStartCountdown()
       this.startTimer(
         0,
         this.block.values[1],
@@ -284,11 +269,7 @@ export default {
         duration = moment.duration(duration.asSeconds() - 1, 'seconds')
       }, 1000)
 
-      const timer = setInterval(() => {
-        if (this.finished) {
-          clearInterval(timer)
-        }
-
+      this.timerInterval = setInterval(() => {
         var min = duration.minutes()
         var sec = duration.seconds()
 
@@ -309,6 +290,7 @@ export default {
         this.timer = min + ':' + sec
         if (min == 0 && sec == 0) {
           setTimeout(() => {
+            clearInterval(this.timerInterval)
             if (resets == 2) {
               audioLastRound.play()
             }
@@ -329,14 +311,42 @@ export default {
                 }
               }
             } else {
-              this.$emit('block-finish')
-              this.finished = true
+              this.blockFinished()
             }
-            clearInterval(timer)
           }, 950)
         }
         duration = moment.duration(duration.asSeconds() - 1, 'seconds')
       }, 1000)
+    },
+    timerStartCountdown() {
+      return new Promise((resolve) => {
+        var audioBeep = new Audio(require('../../assets/sounds/countdown.wav'))
+        var duration = moment.duration({
+          seconds: 10,
+        })
+
+        var sec = duration.seconds()
+        this.timer = 'Start in ' + sec
+
+        this.timerInterval = setInterval(() => {
+          duration = moment.duration(duration.asSeconds() - 1, 'seconds')
+          var sec = duration.seconds()
+          this.timer = 'Start in ' + sec
+          if (sec == 3) {
+            audioBeep.play()
+          }
+          if (sec == 0) {
+            clearInterval(this.timerInterval)
+            this.timer = ''
+            resolve()
+          }
+        }, 1000)
+      })
+    },
+    blockFinished() {
+      clearInterval(this.timerInterval)
+      this.finished = true
+      this.$emit('block-finish')
     },
   },
 }

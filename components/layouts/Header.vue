@@ -13,8 +13,6 @@
         >
 
         <v-btn
-          v-bind="attrs"
-          v-on="on"
           class="ml-2 px-4"
           @click="
             $router.push({

@@ -35,7 +35,9 @@
         :goal="goal"
         class="my-1"
       />
+
       <v-btn
+        v-if="$store.state.PREMIUMUSER || goals.length < 2"
         color="primary"
         @click="$router.push({ name: 'goal-add' })"
         outlined
@@ -43,6 +45,7 @@
       >
         <h2>Add goal</h2>
       </v-btn>
+      <h3 v-else class="mt-2">You need premium to add more</h3>
     </v-card>
 
     <!-- Personal Records and progress -->
@@ -74,6 +77,7 @@
         </v-col>
         <v-col cols="12" sm="6" class="pa-0 pt-1 px-sm-1 d-flex align-center">
           <v-btn
+            v-if="$store.state.PREMIUMUSER || PRs.length < 4"
             color="primary"
             @click="$router.push({ name: 'pr-add' })"
             outlined
@@ -81,6 +85,7 @@
           >
             <h2>Add exercise</h2>
           </v-btn>
+          <h3 v-else class="mt-2">You need premium to add more</h3>
         </v-col>
       </v-row>
     </v-card>

@@ -3,7 +3,7 @@
     <div class="page text-center">
       <h1>Thank you!</h1>
       <p>You have succesfully upgraded to a premium account.</p>
-      <Confetti :confetti="confetti" @false="confetti = false" />
+      <Confetti :confetti="confetti" :sound="false" @false="confetti = false" />
     </div>
   </div>
 </template>
