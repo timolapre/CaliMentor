@@ -205,7 +205,7 @@
             dense
             hide-details
             prefix="for"
-            suffix="minutes"
+            suffix="rounds"
             background-color="secondary"
             type="number"
             class="block-input px-2"

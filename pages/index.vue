@@ -13,19 +13,19 @@
       <div class="mt-8 text-center">
         <v-row class="d-flex align-center">
           <v-col cols="12" sm="4">
-            <v-card class="pa-7">
+            <v-card class="pa-7" @click="$router.push({ name: 'workouts' })">
               <v-icon class="mb-5" large>fa-dumbbell</v-icon>
               <h2>{{ workoutCount }} Workouts</h2>
             </v-card>
           </v-col>
           <v-col cols="12" sm="4">
-            <v-card class="pa-7">
+            <v-card class="pa-7" @click="$router.push({ name: 'register' })">
               <v-icon class="mb-5" large>fa-users</v-icon>
               <h2>{{ userCount }} Users</h2>
             </v-card>
           </v-col>
           <v-col cols="12" sm="4">
-            <v-card class="pa-7">
+            <v-card class="pa-7" @click="$router.push({ name: 'workouts' })">
               <v-icon class="mb-5" large>fa-fist-raised</v-icon>
               <h2>A lot of gains</h2>
             </v-card>
@@ -180,6 +180,7 @@
           </v-col>
         </v-row>
       </div>
+      <Contact class="mt-5" />
 
       <!-- <div class="mt-5">
         <div class="row">

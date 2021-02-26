@@ -173,7 +173,7 @@
         <!-- EMOM -->
         <div v-if="block.type == 'EMOM'">
           <h3 class="text-center">Every {{ block.values[0] }} seconds</h3>
-          <h3 class="text-center">for {{ block.values[1] }} minutes</h3>
+          <h3 class="text-center">for {{ block.values[1] }} rounds</h3>
         </div>
 
         <!-- AMRAP -->
@@ -291,10 +291,10 @@ export default {
         if (min == 0 && sec == 0) {
           setTimeout(() => {
             clearInterval(this.timerInterval)
-            if (resets == 2) {
+            if (resets == 3) {
               audioLastRound.play()
             }
-            if (resets > 1) {
+            if (resets > 2) {
               if (!seconds2) {
                 this.startTimer(minutes, seconds, resets - 1)
                 this.setCount++
