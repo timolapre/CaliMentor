@@ -24,6 +24,14 @@ export default {
         async: true
       },
       { src: "https://js.stripe.com/v3/" },
+      {
+        type: "text/javascript",
+        innerHTML: "window._mNHandle = window._mNHandle || {}; window._mNHandle.queue = window._mNHandle.queue || []; medianet_versionId = '3121199'",
+      },
+      {
+        src: "https://contextual.media.net/dmedianet.js?cid=8CUU44VP0",
+        async: true,
+      },
       // { src: "https://code.jquery.com/jquery-3.5.1.min.js" },
       // { src: "https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" }
     ]
