@@ -18,7 +18,7 @@
         max-width="20"
         contain
         class="mr-3"
-        :src="require(`~/assets/images/google/google.png`)"
+        :src="require(`~/assets/images/google/google.webp`)"
       >
       </v-img>
       Sign in with Google</v-btn

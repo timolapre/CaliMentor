@@ -16,15 +16,16 @@
       <v-col cols="12" sm="6">
         <a
           target="_blank"
+          rel="noopener"
           href="https://www.instagram.com/cali.mentor/"
           class="d-flex"
         >
           <img
             class="ma-0 mr-2"
-            :src="require(`~/assets/images/social/instagram.png`)"
+            :src="require(`~/assets/images/social/instagram.webp`)"
             alt="instagram"
             width="25"
-            height="auto"
+            height="25"
           />
           <p class="ma-0">cali.mentor</p>
         </a>

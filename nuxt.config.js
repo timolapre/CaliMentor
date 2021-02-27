@@ -8,21 +8,16 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
-      {
-        hid: 'description',
-        name: 'description',
-        content: "Working out today but don't know exactly what to do? Just pick one of the many calisthenics workouts on calimentor. Or do you have experience creating the best workouts? Start earning money by doing so."
-      }
+      { hid: 'description', name: 'description', content: 'Working out today but don\'t know exactly what to do? Just pick one of the many calisthenics workouts on calimentor.' },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     script: [
-      {
-        src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
-        'data-ad-client': 'ca-pub-8433512426340061',
-        'data-adtest': "on",
-        async: true
-      },
+      // {
+      //   src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
+      //   'data-ad-client': 'ca-pub-8433512426340061',
+      //   'data-adtest': "on",
+      //   async: true
+      // },
       { src: "https://js.stripe.com/v3/" },
       {
         type: "text/javascript",

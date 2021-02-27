@@ -8,15 +8,16 @@
         </a>
         <a
           target="_blank"
+          rel="noopener"
           href="https://www.instagram.com/cali.mentor/"
           class="ml-4 d-flex align-center"
         >
           <img
             class="ma-0"
-            :src="require(`~/assets/images/social/instagram.png`)"
+            :src="require(`~/assets/images/social/instagram.webp`)"
             alt="instagram"
             width="17"
-            height="auto"
+            height="17"
           />
         </a>
       </div>
