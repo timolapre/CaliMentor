@@ -1,7 +1,6 @@
 # CaliMentor
-## All calisthenics workouts you need
 
-## Build Setup
+## All calisthenics workouts you need
 
 ```bash
 # install dependencies

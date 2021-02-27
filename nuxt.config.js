@@ -4,15 +4,15 @@ const webpack = require("webpack");
 export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
-    title: 'CaliMentor',
+    title: 'CaliMentor - All the calisthenics workouts you need',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
       {
-        hid: 'description1',
-        name: 'description2',
-        content: 'my website description'
+        hid: 'description',
+        name: 'description',
+        content: "Working out today but don't know exactly what to do? Just pick one of the many calisthenics workouts on calimentor. Or do you have experience creating the best workouts? Start earning money by doing so."
       }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
