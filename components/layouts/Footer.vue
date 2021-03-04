@@ -131,7 +131,6 @@ export default {
 }
 
 a {
-  color: blue;
   text-decoration: none; /* no underline */
 }
 </style>

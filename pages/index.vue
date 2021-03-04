@@ -222,4 +222,8 @@ export default {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+a {
+  text-decoration: none; /* no underline */
+}
+</style>

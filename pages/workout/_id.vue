@@ -109,7 +109,7 @@
                     Cancel
                   </v-btn>
                   <v-btn
-                    color="green"
+                    color="red"
                     text
                     @click="
                       deleteWorkout()

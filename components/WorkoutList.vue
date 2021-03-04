@@ -18,7 +18,7 @@
               {{ workout.type.text }}
             </v-col>
             <v-col cols="6" sm="2" class="d-flex justify-center py-1">
-              <div class="text-left">
+              <div class="text-left"> 
                 <DifficultyBar
                   class="mb-1"
                   :difficulty="workout.difficulty.id"
@@ -74,5 +74,9 @@ export default {
 .workout-stats {
   position: absolute;
   margin: 0.3rem 0 0 0.5rem;
+}
+
+a {
+  text-decoration: none; /* no underline */
 }
 </style>

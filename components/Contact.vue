@@ -40,7 +40,6 @@ export default {}
 
 <style lang="scss" scoped>
 a {
-  color: blue;
   text-decoration: none; /* no underline */
 }
 </style>
