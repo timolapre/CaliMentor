@@ -1,24 +1,80 @@
 <template>
-  <div class="d-flex align-center justify-center">
-    <v-card class="pa-3">
-      <h2>{{ exercises.length }}</h2>
-      <p
-        class="mb-0"
-        v-for="exercise in exercises"
-        :key="exercise.toLowerCase().replace(/\s/g, '')"
+  <div class="workout-container d-flex align-center justify-center">
+    <div class="page">
+      <v-btn
+        v-for="(type, i) in types"
+        :key="type"
+        class="mx-2 my-1"
+        @click="getExercises(i)"
+        :color="selectedType == i ? 'primary' : ''"
       >
-        {{ exercise }}
-      </p>
-    </v-card>
+        {{ type }}
+      </v-btn>
+      <div v-if="loading" class="d-flex justify-center mt-5">
+        <Loading />
+      </div>
+      <v-row v-if="!loading" class="mt-3">
+        <v-col
+          v-for="exercise in exercises"
+          :key="exercise.name"
+          cols="12"
+          sm="6"
+        >
+          <Exercise :exercise="exercise" />
+        </v-col>
+      </v-row>
+
+      <div class="mt-15 d-flex align-center justify-center">
+        <v-card class="pa-3">
+          <h2>{{ oldExercises.length }}</h2>
+          <p
+            class="mb-0"
+            v-for="exercise in oldExercises"
+            :key="exercise.toLowerCase().replace(/\s/g, '')"
+          >
+            {{ exercise }}
+          </p>
+        </v-card>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 export default {
+  methods: {
+    async getExercises(i) {
+      this.loading = true
+      this.selectedType = i
+
+      const exercises = await this.$axios.$post('/exercise', {
+        type: this.selectedType,
+      })
+      this.exercises = exercises
+      this.loading = false
+    },
+  },
+  created() {
+    this.getExercises(0)
+  },
   data() {
     return {
-      exercises: [
+      loading: true,
+      selectedType: 0,
+      types: [
+        'All',
+        'Back and Biceps',
+        'Chest and Triceps',
+        'Shoulders',
+        'Legs',
+        'Core',
+        'Advanced',
+        'Statics',
+        'Freestyle',
+      ],
+      exercises: [],
+      oldExercises: [
         'Pull ups',
         'Australian pull ups',
         'Muscle ups',
@@ -103,6 +159,54 @@ export default {
         'V-crunches',
         'Small stance squats',
       ],
+      /*
+          Pull-Up
+          Chin-Up
+          Wide Pull-Up
+          Narrow Pull-Up
+          Archer Pull-Up
+          Back Extension
+          Australian Pull-Up
+          Dips
+          Push-Ups
+          Diamond Push-Ups
+          Wide Push-Ups
+          Incline Push-Ups
+          Spiderman Push-Up
+          Straight Bar Dip
+          Pike Push-Up
+          Hindu Push-Up
+          Pseudo Push-Up
+          Helicopter
+          Decline Push-Up
+          Korean Dip
+          Squat
+          Lunges
+          Wall Sit
+          Sumo Squat
+          Calf Raise
+          Hollow Body Hold
+          Superman Hold
+          Plank
+          Leg raises
+          Sit-Ups
+          Glute bridges
+          Russian twists
+          Windshield wipers
+          Good mornings
+          Muscle-Up
+          Front Lever
+          Back Lever
+          Planche
+          Handstand
+          Human Flag
+          360
+          Shrimp Flip
+          Alley oop
+          Giant
+          Switch Blade
+          Frontflip Regrab
+      */
     }
   },
 }

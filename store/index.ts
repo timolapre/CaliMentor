@@ -36,7 +36,7 @@ export const actions = {
   },
   async setExerciseOptions({ state }: any) {
     if (!state.EXERCISES) {
-      const data = await this.$axios.$get('workout/exercises')
+      const data = await this.$axios.$get('exercise')
       // const exercises = []
       // data.forEach((exercise) => {
       //   exercises.push(exercise.name)

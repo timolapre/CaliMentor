@@ -1,0 +1,172 @@
+<template>
+  <div>
+    <div
+      v-for="level in exercise.levels.filter((x) => x.order < 0)"
+      :key="level.id"
+    >
+      <div class="d-flex my-1 d-flex align-center">
+        <v-text-field
+          flat
+          solo
+          dense
+          hide-details
+          background-color="secondary"
+          v-model="level.name"
+          class="mr-1"
+        ></v-text-field>
+        <v-text-field
+          flat
+          solo
+          dense
+          hide-details
+          type="number"
+          background-color="secondary"
+          class="mr-1"
+          v-model="level.order"
+        ></v-text-field>
+        <v-btn color="red" @click="deleteExerciseLevel(level.id)"
+          ><v-icon small>fa-trash</v-icon></v-btn
+        >
+      </div>
+    </div>
+    <div class="d-flex align-center">
+      <v-text-field
+        flat
+        solo
+        dense
+        hide-details
+        background-color="secondary"
+        v-model="exercise.name"
+        class="mr-1"
+      ></v-text-field>
+      <v-btn color="red" @click="DeleteExerciseModal = true"
+        ><v-icon small>fa-trash</v-icon></v-btn
+      >
+    </div>
+    <div
+      v-for="level in exercise.levels.filter((x) => x.order >= 0)"
+      :key="level.id"
+    >
+      <div class="d-flex my-1 d-flex align-center">
+        <v-text-field
+          flat
+          solo
+          dense
+          hide-details
+          background-color="secondary"
+          v-model="level.name"
+          class="mr-1"
+        ></v-text-field>
+        <v-text-field
+          flat
+          solo
+          dense
+          hide-details
+          type="number"
+          background-color="secondary"
+          v-model="level.order"
+          class="mr-1"
+        ></v-text-field>
+        <v-btn color="red" @click="deleteExerciseLevel(level.id)"
+          ><v-icon small>fa-trash</v-icon></v-btn
+        >
+      </div>
+    </div>
+    <v-btn color="secondary" class="mt-2" @click="saveExerciseLevels"
+      >Save</v-btn
+    >
+
+    <div class="d-flex mt-2 d-flex align-center">
+      <v-text-field
+        flat
+        solo
+        dense
+        hide-details
+        background-color="secondary"
+        class="mr-1"
+        v-model="newExerciseName"
+      ></v-text-field>
+      <v-text-field
+        flat
+        solo
+        dense
+        hide-details
+        background-color="secondary"
+        class="mr-1"
+        v-model="newExerciseOrder"
+      ></v-text-field>
+      <v-btn color="primary" @click="addExerciseLevel"
+        ><v-icon small>fa-plus</v-icon></v-btn
+      >
+    </div>
+
+    <v-dialog v-model="DeleteExerciseModal" persistent max-width="290">
+      <v-card>
+        <v-card-title class="headline"> Delete exercise </v-card-title>
+        <v-card-text>
+          Are you sure you want to delete this exercise permanently?
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green" text @click="DeleteExerciseModal = false">
+            Cancel
+          </v-btn>
+          <v-btn
+            color="red"
+            text
+            @click="
+              deleteExercise()
+              DeleteExerciseModal = false
+            "
+          >
+            Delete
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-divider class="my-4" color="white"></v-divider>
+  </div>
+</template>
+
+<script>
+export default {
+  props: { exercise: {} },
+  data() {
+    return {
+      newExerciseName: '',
+      newExerciseOrder: 1,
+      DeleteExerciseModal: false,
+    }
+  },
+  methods: {
+    async saveExerciseLevels() {
+      await this.$axios.$post('admin/exercises/order', {
+        exercise: this.exercise,
+      })
+    },
+    async addExerciseLevel() {
+      const data = await this.$axios.$post('admin/exercises/level/add', {
+        id: this.exercise.id,
+        exercise: this.newExerciseName,
+        order: this.newExerciseOrder,
+      })
+      console.log(data)
+      this.exercise.levels.push(data)
+    },
+    async deleteExerciseLevel(id) {
+      this.exercise.levels = this.exercise.levels.filter((x) => x.id != id)
+      await this.$axios.$post('admin/exercises/level/delete', {
+        id,
+      })
+    },
+    async deleteExercise() {
+      await this.$axios.$post('admin/exercises/delete/id', {
+        id: this.exercise.id,
+      })
+      this.exercise.name = 'DELETED'
+      this.exercise.levels = []
+    },
+  },
+}
+</script>
