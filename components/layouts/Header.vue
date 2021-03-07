@@ -16,6 +16,17 @@
           class="ml-2 px-4"
           @click="
             $router.push({
+              name: 'exercises',
+            })
+          "
+        >
+          <v-icon class="mr-2" small>fa-running</v-icon> Exercises
+        </v-btn>
+
+        <v-btn
+          class="ml-2 px-4"
+          @click="
+            $router.push({
               name: 'workouts',
             })
           "

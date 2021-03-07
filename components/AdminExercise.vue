@@ -1,5 +1,19 @@
 <template>
   <div>
+    <v-select
+      v-model="exercise.type"
+      solo
+      dense
+      hide-details
+      class="pt-0 pb-5 ma-0"
+      item-value="id"
+      item-text="name"
+      :items="exerciseTypes"
+      label="Type"
+      single-line
+      background-color="secondary"
+      prepend-icon="fa-dumbbell"
+    ></v-select>
     <div
       v-for="level in exercise.levels.filter((x) => x.order < 0)"
       :key="level.id"
@@ -72,7 +86,7 @@
         >
       </div>
     </div>
-    <v-btn color="secondary" class="mt-2" @click="saveExerciseLevels"
+    <v-btn color="primary" class="mt-2" @click="saveExerciseLevels"
       >Save</v-btn
     >
 
@@ -137,11 +151,22 @@ export default {
       newExerciseName: '',
       newExerciseOrder: 1,
       DeleteExerciseModal: false,
+      exerciseTypes: [
+        { id: 0, name: 'None' },
+        { id: 1, name: 'Back and biceps' },
+        { id: 2, name: 'Chest and triceps' },
+        { id: 3, name: 'Shoulders' },
+        { id: 4, name: 'Legs' },
+        { id: 5, name: 'Core' },
+        { id: 6, name: 'Advanced' },
+        { id: 7, name: 'Statics' },
+        { id: 8, name: 'Freestyle' },
+      ],
     }
   },
   methods: {
     async saveExerciseLevels() {
-      await this.$axios.$post('admin/exercises/order', {
+      await this.$axios.$post('admin/exercises/update', {
         exercise: this.exercise,
       })
     },

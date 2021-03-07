@@ -12,21 +12,23 @@ export default {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     script: [
-      // {
-      //   src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
-      //   'data-ad-client': 'ca-pub-8433512426340061',
-      //   'data-adtest': "on",
-      //   async: true
-      // },
+      //Google adsense
+      {
+        src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
+        'data-ad-client': 'ca-pub-8433512426340061',
+        'data-adtest': "on",
+        async: true
+      },
       { src: "https://js.stripe.com/v3/" },
-      {
-        type: "text/javascript",
-        innerHTML: "window._mNHandle = window._mNHandle || {}; window._mNHandle.queue = window._mNHandle.queue || []; medianet_versionId = '3121199'",
-      },
-      {
-        src: "https://contextual.media.net/dmedianet.js?cid=8CUU44VP0",
-        async: true,
-      },
+      // media.net ads
+      // {
+      //   type: "text/javascript",
+      //   innerHTML: "window._mNHandle = window._mNHandle || {}; window._mNHandle.queue = window._mNHandle.queue || []; medianet_versionId = '3121199'",
+      // },
+      // {
+      //   src: "https://contextual.media.net/dmedianet.js?cid=8CUU44VP0",
+      //   async: true,
+      // },
       // { src: "https://code.jquery.com/jquery-3.5.1.min.js" },
       // { src: "https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" }
     ]
