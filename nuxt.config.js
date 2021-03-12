@@ -105,6 +105,12 @@ export default {
     baseURL: process.env.API_BASE_URL
   },
 
+  pwa: {
+    icon: {
+      fileName: 'appicon.png',
+    },
+  },
+
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
     loaders: {
