@@ -1,7 +1,7 @@
 <template>
   <div class="header-container">
-    <div class="container d-flex align-center justify-center">
-      <h1 class="cursor-pointer" @click="$router.push({ name: 'index' })">
+    <div class="container d-flex align-center justify-center px-md-0 px-12">
+      <h1 class="cursor-pointer pr-3" @click="$router.push({ name: 'index' })">
         CaliMentor
       </h1>
       <div
@@ -105,6 +105,23 @@
         <v-btn class="v-btn ml-2" @click="$router.push({ name: 'register' })"
           >Register</v-btn
         >
+      </div>
+      <div
+        class="ml-auto d-flex d-md-none justify-self-end align-center"
+        v-if="$store.state.LOGGEDIN"
+      >
+        <v-btn class="ml-2 px-1" @click="$router.push({ name: 'account' })">
+          <v-icon small>fa-user</v-icon>
+        </v-btn>
+        <v-btn
+          small
+          color="primary"
+          class="ml-2"
+          v-if="!$store.state.PREMIUMUSER"
+          @click="$router.push({ name: 'upgrade' })"
+        >
+          Upgrade
+        </v-btn>
       </div>
     </div>
   </div>

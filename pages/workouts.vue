@@ -51,13 +51,14 @@
           block
           >Load more...</v-btn
         > -->
-        <v-pagination
-          v-if="$store.state.LOGGEDIN"
-          :length="pagesCount"
-          @input="changePage"
-          :total-visible="7"
-          :value="pageSelected"
-        ></v-pagination>
+        <div class="pagination">
+          <v-pagination
+            v-if="$store.state.LOGGEDIN"
+            :length="pagesCount + 5"
+            @input="changePage"
+            :value="pageSelected"
+          ></v-pagination>
+        </div>
       </div>
     </div>
   </div>
@@ -127,4 +128,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.pagination {
+  max-width: 90vw;
+}
+</style>

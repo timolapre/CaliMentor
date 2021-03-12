@@ -71,12 +71,12 @@
 
     <div v-if="$route.name == 'workouts' && $store.state.LOGGEDIN">
       <v-card
-        class="pa-2 mb-sm-10 mb-2 d-sm-flex d-none align-center flex-sm-row flex-column"
+        class="pa-2 mb-md-10 mb-2 d-md-flex d-none align-center flex-md-row flex-column"
       >
         <v-btn
           @click="RandomWorkout"
           color="secondary"
-          class="mr-3 d-sm-block d-none"
+          class="mr-3 d-md-block d-none"
         >
           <v-icon class="mr-2" small>fa-random</v-icon>Random workout</v-btn
         >
@@ -98,7 +98,7 @@
             @click="searchWorkouts()"
           ></v-checkbox>
         </div>
-        <div class="d-flex ml-sm-auto mt-3 mt-sm-0 justify-center">
+        <div class="d-flex ml-md-auto mt-3 mt-md-0 justify-center">
           <v-icon class="mr-3 pt-1" small>fa-arrow-up</v-icon>
           <div class="filterby-dropdown">
             <v-select
@@ -120,7 +120,7 @@
         </div>
       </v-card>
 
-      <div class="d-sm-none d-block">
+      <div class="d-md-none d-block">
         <div class="d-flex mb-3">
           <v-checkbox
             hide-details
@@ -139,7 +139,7 @@
             @click="searchWorkouts()"
           ></v-checkbox>
         </div>
-        <v-card flat class="d-flex ml-sm-auto mt-3 mt-sm-0 justify-center">
+        <v-card flat class="d-flex ml-md-auto mt-3 mt-md-0 justify-center">
           <v-icon class="mr-1 ml-3" small>fa-arrow-up</v-icon>
           <v-select
             dense
@@ -157,7 +157,7 @@
             @change="searchWorkouts()"
           ></v-select>
         </v-card>
-        <v-btn block @click="RandomWorkout" class="d-sm-none d-block mt-5">
+        <v-btn block @click="RandomWorkout" class="d-md-none d-block mt-5">
           <v-icon class="mr-2" small>fa-random</v-icon>Random workout</v-btn
         >
       </div>

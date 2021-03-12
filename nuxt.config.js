@@ -35,7 +35,10 @@ export default {
   },
 
   env: {
-    STRIPE_PUBLIC_KEY: process.env.STRIPE_PUBLIC_KEY
+    STRIPE_PUBLIC_KEY: process.env.STRIPE_PUBLIC_KEY,
+    AWS_S3_ACCESSKEY: process.env.AWS_S3_ACCESSKEY,
+    AWS_S3_SECRETACCESSKEY: process.env.AWS_S3_SECRETACCESSKEY,
+    AWS_S3_BUCKET: process.env.AWS_S3_BUCKET,
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)

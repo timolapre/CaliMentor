@@ -3,7 +3,7 @@
     <img
       v-if="selectedExercise.video"
       class="ma-0"
-      :src="require(`~/assets/images/exercises/${selectedExercise.name}.gif`)"
+      :src="`${bucket}/exercises/${selectedExercise.name}.${selectedExercise.fileType}`"
       :alt="'Video of ' + selectedExercise.name"
       width="100%"
       height="auto"
@@ -57,6 +57,7 @@ export default {
   props: { selected: {}, reset: {}, exercise: {} },
   data() {
     return {
+      bucket: process.env.AWS_S3_BUCKET,
       exercises: [
         ...this.exercise.levels.filter((x) => x.order < 0),
         this.exercise,
