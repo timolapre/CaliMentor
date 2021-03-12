@@ -29,7 +29,6 @@
 
 <script>
 import axios from 'axios'
-import AWS from 'aws-sdk'
 
 export default {
   data() {
