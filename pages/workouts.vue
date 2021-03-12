@@ -54,7 +54,7 @@
         <div class="pagination">
           <v-pagination
             v-if="$store.state.LOGGEDIN"
-            :length="pagesCount + 5"
+            :length="pagesCount"
             @input="changePage"
             :value="pageSelected"
           ></v-pagination>
