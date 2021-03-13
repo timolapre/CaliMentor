@@ -1,6 +1,6 @@
 <template>
   <div v-if="!$store.state.PREMIUMUSER">
-    <div id="766925772">
+    <!-- <div id="766925772">
       <script type="text/javascript">
         try {
           window._mNHandle.queue.push(function () {
@@ -8,9 +8,9 @@
           })
         } catch (error) {}
       </script>
-    </div>
+    </div> -->
 
-    <!-- <script
+    <script
       async
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
     ></script>
@@ -24,6 +24,6 @@
     ></ins>
     <script>
       ;(adsbygoogle = window.adsbygoogle || []).push({})
-    </script> -->
+    </script>
   </div>
 </template>

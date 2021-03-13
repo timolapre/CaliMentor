@@ -189,7 +189,7 @@
         </div>
       </v-container>
     </v-card>
-    <Ad v-if="index == 3" />
+    <Ad v-if="index == 4" />
   </div>
 </template>
 
