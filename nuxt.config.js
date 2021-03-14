@@ -16,7 +16,6 @@ export default {
       {
         src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
         'data-ad-client': 'ca-pub-8433512426340061',
-        'data-adtest': "on",
         async: true
       },
       { src: "https://js.stripe.com/v3/" },
