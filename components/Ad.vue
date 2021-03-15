@@ -31,6 +31,6 @@
 
 <style lang="scss">
 .ad {
-  height: 200px;
+  height: 300px;
 }
 </style>
