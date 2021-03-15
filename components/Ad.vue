@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!$store.state.PREMIUMUSER">
+  <div v-if="!$store.state.PREMIUMUSER" class="ad">
     <!-- <div id="766925772">
       <script type="text/javascript">
         try {
@@ -28,3 +28,9 @@
     </script>
   </div>
 </template>
+
+<style lang="scss">
+.ad {
+  height: 200px;
+}
+</style>
