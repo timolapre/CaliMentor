@@ -137,7 +137,7 @@
         @block-finish="blockFinishCount += 1"
         :index="i"
       />
-      <Ad v-if="workout.blocks.length < 4" />
+      <adsbygoogle v-if="workout.blocks.length < 4" />
 
       <Confetti :confetti="confetti" @false="confetti = false" />
     </div>

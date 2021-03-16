@@ -189,7 +189,7 @@
         </div>
       </v-container>
     </v-card>
-    <Ad v-if="index == 4" />
+    <adsbygoogle v-if="index == 4" />
   </div>
 </template>
 

@@ -13,11 +13,11 @@ export default {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     script: [
       //Google adsense
-      {
-        src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
-        'data-ad-client': 'ca-pub-8433512426340061',
-        async: true
-      },
+      // {
+      //   src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
+      //   'data-ad-client': 'ca-pub-8433512426340061',
+      //   async: true
+      // },
       { src: "https://js.stripe.com/v3/" },
       // media.net ads
       // {
@@ -96,6 +96,9 @@ export default {
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
     '@nuxtjs/style-resources',
+    ['@nuxtjs/google-adsense', {
+      id: 'ca-pub-8433512426340061'
+    }]
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
