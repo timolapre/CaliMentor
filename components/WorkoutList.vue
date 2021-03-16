@@ -43,7 +43,7 @@
         </v-container>
       </v-card>
     </NuxtLink>
-    <adsbygoogle v-if="index == 6" />
+    <Ad v-if="index == 6" />
   </div>
 </template>
 
