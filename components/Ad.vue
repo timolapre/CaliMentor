@@ -23,14 +23,15 @@
       data-ad-format="auto"
       data-full-width-responsive="true"
     ></ins>
-    <script>
-      ;(adsbygoogle = window.adsbygoogle || []).push({})
-    </script>
   </div>
 </template>
 
-<style lang="scss">
-.ad {
-  height: 300px;
+<script>
+export default {
+  mounted() {
+    ;(adsbygoogle = window.adsbygoogle || []).push({})
+  },
 }
-</style>
+</script>
+
+<style lang="scss"></style>
