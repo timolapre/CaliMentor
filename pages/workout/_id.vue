@@ -184,6 +184,7 @@ export default {
       this.creator = data.user?.username
       this.workout = data
       this.loading = false
+      this.increaseView()
     },
     async getLike() {
       const id = this.$route.path.substring(
@@ -237,7 +238,9 @@ export default {
       this.confetti = true
     },
     async increaseView() {
-      await this.$axios.$post('workout/view', { id: this.workout.id })
+      const data = await this.$axios.$post('workout/view', {
+        id: this.workout.id,
+      })
     },
   },
   created() {
@@ -246,7 +249,6 @@ export default {
       this.getLike()
       this.getFavorite()
     }
-    this.increaseView()
   },
   mounted() {
     this.NoSleep = new NoSleep()

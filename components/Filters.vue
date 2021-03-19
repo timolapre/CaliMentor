@@ -345,7 +345,22 @@ export default {
       this.meFilter = q.me
     },
     async RandomWorkout() {
-      const data = await this.$axios.$get('workout/random')
+      const query = {
+        type: this.typeFilterSelect ? this.typeFilterSelect : undefined,
+        difficulty: this.difficultyFilterSelect
+          ? this.difficultyFilterSelect
+          : undefined,
+        duration: this.durationFilterSelect
+          ? this.durationFilterSelect
+          : undefined,
+        date: this.dateFilterSelect ? this.dateFilterSelect : undefined,
+        creator: this.creatorSelect !== '' ? this.creatorSelect : undefined,
+        name: this.searchName !== '' ? this.searchName : undefined,
+        favorited: this.favoritedFilter ? 1 : undefined,
+        me: this.meFilter ? true : undefined,
+        top: this.filterTop,
+      }
+      const data = await this.$axios.$post('workout/random', { filters: query })
       this.$router.push({ name: 'workout-id', params: { id: data } })
     },
   },
