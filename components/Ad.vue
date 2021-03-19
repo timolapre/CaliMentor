@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!$store.state.PREMIUMUSER" class="ad">
+  <div v-if="!$store.state.PREMIUMUSER" class="ad mt-3">
     <adsbygoogle />
   </div>
 </template>

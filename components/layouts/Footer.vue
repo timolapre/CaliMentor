@@ -30,6 +30,28 @@
       <!-- LOGGEDIN -->
       <div class="row" v-if="$store.state.LOGGEDIN">
         <div
+          @click="
+            $router.push({ name: 'workouts', query: { favorited: undefined } })
+          "
+          class="col-3 pb-1 cursor-pointer d-flex flex-column align-center"
+        >
+          <v-icon>fa-dumbbell</v-icon>
+          <p class="small-text">workouts</p>
+        </div>
+
+        <div
+          @click="$router.push({ name: 'workouts', query: { favorited: 1 } })"
+          class="col-2 pb-1 cursor-pointer d-flex flex-column align-center"
+        >
+          <v-icon>fa-heart</v-icon>
+          <p class="small-text">favorite</p>
+        </div>
+
+        <div
+          class="col-2 pb-1 cursor-pointer d-flex flex-column align-center"
+        ></div>
+
+        <div
           @click="$router.push({ name: 'exercises' })"
           class="col-2 pb-1 cursor-pointer d-flex flex-column align-center"
         >
@@ -43,28 +65,6 @@
         >
           <v-icon>fa-chart-bar</v-icon>
           <p class="small-text">dashboard</p>
-        </div>
-
-        <div
-          class="col-2 pb-1 cursor-pointer d-flex flex-column align-center"
-        ></div>
-
-        <div
-          @click="$router.push({ name: 'workouts', query: { favorited: 1 } })"
-          class="col-2 pb-1 cursor-pointer d-flex flex-column align-center"
-        >
-          <v-icon>fa-heart</v-icon>
-          <p class="small-text">favorite</p>
-        </div>
-
-        <div
-          @click="
-            $router.push({ name: 'workouts', query: { favorited: undefined } })
-          "
-          class="col-3 pb-1 cursor-pointer d-flex flex-column align-center"
-        >
-          <v-icon>fa-dumbbell</v-icon>
-          <p class="small-text">workouts</p>
         </div>
       </div>
       <div class="add-button cursor-pointer" v-if="$store.state.LOGGEDIN">
@@ -82,21 +82,28 @@
       <div class="row" v-if="!$store.state.LOGGEDIN">
         <div
           @click="$router.push({ name: 'workouts' })"
-          class="col-4 pb-1 cursor-pointer d-flex flex-column align-center"
+          class="col-3 pb-1 cursor-pointer d-flex flex-column align-center"
         >
           <v-icon>fa-dumbbell</v-icon>
           <p class="small-text">workouts</p>
         </div>
         <div
+          @click="$router.push({ name: 'exercises' })"
+          class="col-3 pb-1 cursor-pointer d-flex flex-column align-center"
+        >
+          <v-icon>fa-running</v-icon>
+          <p class="small-text">exercises</p>
+        </div>
+        <div
           @click="$router.push({ name: 'register' })"
-          class="col-4 pb-1 cursor-pointer d-flex flex-column align-center"
+          class="col-3 pb-1 cursor-pointer d-flex flex-column align-center"
         >
           <v-icon>fa-user</v-icon>
           <p class="small-text">register</p>
         </div>
         <div
           @click="$router.push({ name: 'login' })"
-          class="col-4 pb-1 cursor-pointer d-flex flex-column align-center"
+          class="col-3 pb-1 cursor-pointer d-flex flex-column align-center"
         >
           <v-icon>fa-user</v-icon>
           <p class="small-text">login</p>

@@ -1,60 +1,63 @@
 <template>
-  <v-card class="pa-3">
-    <img
-      v-if="selectedExercise.video"
-      class="ma-0"
-      :src="`${bucket}/exercises/${selectedExercise.name}.${selectedExercise.fileType}`"
-      :alt="'Video of ' + selectedExercise.name"
-      width="100%"
-      height="auto"
-    />
-    <img
-      v-else
-      :src="require('~/assets/images/exercises/novideo.png')"
-      alt="No Video"
-      width="100%"
-      height="auto"
-    />
-    <div>
-      <div class="d-flex mt-2 align-center" v-if="exercises.length > 1">
-        <v-btn
-          height="38px"
-          color="secondary"
-          small
-          :disabled="this.currentIndex == 0"
-          @click="changeLevel(-1)"
-        >
-          <v-icon x-small>fa-minus</v-icon>
-        </v-btn>
-        <v-select
-          background-color="secondary"
-          v-model="selectedExerciseName"
-          hide-details
-          solo
-          dense
-          class="py-0 px-1"
-          :items="exercises"
-          item-text="name"
-          item-value="name"
-        ></v-select>
-        <v-btn
-          height="38px"
-          color="secondary"
-          small
-          :disabled="this.currentIndex == this.exercises.length - 1"
-          @click="changeLevel(1)"
-        >
-          <v-icon x-small>fa-plus</v-icon>
-        </v-btn>
+  <div>
+    <v-card class="pa-3">
+      <img
+        v-if="selectedExercise.video"
+        class="ma-0"
+        :src="`${bucket}/exercises/${selectedExercise.name}.${selectedExercise.fileType}`"
+        :alt="'Video of ' + selectedExercise.name"
+        width="100%"
+        height="auto"
+      />
+      <img
+        v-else
+        :src="require('~/assets/images/exercises/novideo.png')"
+        alt="No Video"
+        width="100%"
+        height="auto"
+      />
+      <div>
+        <div class="d-flex mt-2 align-center" v-if="exercises.length > 1">
+          <v-btn
+            height="38px"
+            color="secondary"
+            small
+            :disabled="this.currentIndex == 0"
+            @click="changeLevel(-1)"
+          >
+            <v-icon x-small>fa-minus</v-icon>
+          </v-btn>
+          <v-select
+            background-color="secondary"
+            v-model="selectedExerciseName"
+            hide-details
+            solo
+            dense
+            class="py-0 px-1"
+            :items="exercises"
+            item-text="name"
+            item-value="name"
+          ></v-select>
+          <v-btn
+            height="38px"
+            color="secondary"
+            small
+            :disabled="this.currentIndex == this.exercises.length - 1"
+            @click="changeLevel(1)"
+          >
+            <v-icon x-small>fa-plus</v-icon>
+          </v-btn>
+        </div>
+        <h3 class="text-center" v-else>{{ selectedExerciseName }}</h3>
       </div>
-      <h3 class="text-center" v-else>{{ selectedExerciseName }}</h3>
-    </div>
-  </v-card>
+    </v-card>
+    <Ad v-if="(index - 2) % 18 == 0" />
+  </div>
 </template>
 
 <script>
 export default {
-  props: { selected: {}, reset: {}, exercise: {} },
+  props: { selected: {}, reset: {}, exercise: {}, index: {} },
   data() {
     return {
       bucket: process.env.AWS_S3_BUCKET,

@@ -38,6 +38,7 @@ export default {
     AWS_S3_ACCESSKEY: process.env.AWS_S3_ACCESSKEY,
     AWS_S3_SECRETACCESSKEY: process.env.AWS_S3_SECRETACCESSKEY,
     AWS_S3_BUCKET: process.env.AWS_S3_BUCKET,
+    DEVELOPER: process.env.DEVELOPER,
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
@@ -97,7 +98,8 @@ export default {
     '@nuxtjs/pwa',
     '@nuxtjs/style-resources',
     ['@nuxtjs/google-adsense', {
-      id: 'ca-pub-8433512426340061'
+      id: 'ca-pub-8433512426340061',
+      test: process.env.DEVELOPER,
     }]
   ],
 

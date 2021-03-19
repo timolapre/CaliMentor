@@ -1,10 +1,10 @@
 <template>
   <div>
     <!-- Achievements -->
-    <v-card class="pa-4">
+    <!-- <v-card class="pa-4">
       <p class="text--disabled">Achievements</p>
       <h3>Coming soon</h3>
-      <!-- <v-row class="text-center">
+      <v-row class="text-center">
         <v-col
           cols="3"
           sm="1"
@@ -13,8 +13,8 @@
         >
           <Achievement v-bind:achievement="achievement" />
         </v-col>
-      </v-row> -->
-    </v-card>
+      </v-row>
+    </v-card> -->
 
     <!-- Routine -->
     <Routine />

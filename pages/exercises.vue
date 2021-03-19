@@ -2,27 +2,50 @@
   <div class="workout-container d-flex align-center justify-center">
     <div class="page">
       <v-btn
-        v-for="(type, i) in types"
-        :key="type"
-        class="mx-2 my-1"
-        @click="getExercises(i)"
-        :color="selectedType == i ? 'primary' : ''"
+        class="py-10 my-5 no-text-transform"
+        color="primary"
+        v-if="!$store.state.LOGGEDIN"
+        block
+        @click="$router.push({ name: 'register' })"
       >
-        {{ type }}
+        Please create an account <br />
+        to see all exercises
       </v-btn>
+
+      <div v-if="$store.state.LOGGEDIN">
+        <v-btn
+          v-for="(type, i) in types"
+          :key="type"
+          class="mx-2 my-1"
+          @click="getExercises(i)"
+          :color="selectedType == i ? 'primary' : ''"
+        >
+          {{ type }}
+        </v-btn>
+      </div>
       <div v-if="loading" class="d-flex justify-center mt-5">
         <Loading />
       </div>
       <v-row v-if="!loading" class="mt-3">
         <v-col
-          v-for="exercise in exercises"
+          v-for="(exercise, i) in filteredExercises"
           :key="exercise.name"
           cols="12"
           sm="6"
         >
-          <Exercise :exercise="exercise" />
+          <Exercise :exercise="exercise" :index="i" />
         </v-col>
       </v-row>
+      <v-btn
+        class="py-10 my-5 no-text-transform"
+        color="primary"
+        v-if="!$store.state.LOGGEDIN"
+        block
+        @click="$router.push({ name: 'register' })"
+      >
+        Please create an account <br />
+        to see all exercises
+      </v-btn>
     </div>
   </div>
 </template>
@@ -76,6 +99,14 @@ export default {
   },
   async created() {
     this.getExercises(0)
+  },
+  computed: {
+    filteredExercises() {
+      if (!this.$store.state.LOGGEDIN) {
+        return this.exercises.slice(0, 25)
+      }
+      return this.exercises
+    },
   },
 }
 </script>
