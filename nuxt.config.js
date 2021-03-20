@@ -99,7 +99,6 @@ export default {
     '@nuxtjs/style-resources',
     ['@nuxtjs/google-adsense', {
       id: 'ca-pub-8433512426340061',
-      test: process.env.DEVELOPER,
     }]
   ],
 
