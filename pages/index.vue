@@ -19,13 +19,13 @@
             </v-card>
           </v-col>
           <v-col cols="12" sm="4">
-            <v-card class="pa-7" @click="$router.push({ name: 'register' })">
-              <v-icon class="mb-5" large>fa-users</v-icon>
-              <h2>{{ userCount }} Users</h2>
+            <v-card class="pa-7" @click="$router.push({ name: 'exercises' })">
+              <v-icon class="mb-5" large>fa-running</v-icon>
+              <h2>{{ exercisesCount }} Exercises</h2>
             </v-card>
           </v-col>
           <v-col cols="12" sm="4">
-            <v-card class="pa-7" @click="$router.push({ name: 'workouts' })">
+            <v-card class="pa-7" @click="$router.push({ name: 'register' })">
               <v-icon class="mb-5" large>fa-fist-raised</v-icon>
               <h2>A lot of gains</h2>
             </v-card>
@@ -202,7 +202,7 @@ export default {
   data() {
     return {
       workoutCount: 0,
-      userCount: 0,
+      exercisesCount: 0,
     }
   },
   methods: {
@@ -210,14 +210,14 @@ export default {
       const data = await this.$axios.$get('workout/count')
       this.workoutCount = data
     },
-    async getUserCount() {
-      const data = await this.$axios.$get('user/count')
-      this.userCount = data
+    async getexercisesCount() {
+      const data = await this.$axios.$get('exercise/count')
+      this.exercisesCount = data
     },
   },
   mounted() {
     this.getWorkoutCount()
-    this.getUserCount()
+    this.getexercisesCount()
   },
 }
 </script>
