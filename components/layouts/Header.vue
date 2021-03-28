@@ -1,9 +1,15 @@
 <template>
   <div class="header-container">
-    <div class="container d-flex align-center justify-center px-md-0 px-12">
-      <h1 class="cursor-pointer pr-3" @click="$router.push({ name: 'index' })">
-        CaliMentor
-      </h1>
+    <div
+      class="container d-flex align-center justify-center px-md-0 px-12 py-1"
+    >
+      <img
+        width="auto"
+        height="70"
+        :src="require(`~/assets/images/logo/FlagLogoWhite.png`)"
+        class="cursor-pointer pr-3"
+        @click="$router.push({ name: 'index' })"
+      />
       <div
         class="ml-auto d-none d-md-flex justify-center align-center"
         v-if="$store.state.LOGGEDIN"
