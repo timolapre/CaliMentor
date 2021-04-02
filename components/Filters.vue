@@ -69,7 +69,7 @@
       </v-btn>
     </div>
 
-    <div v-if="$route.name == 'workouts' && $store.state.LOGGEDIN">
+    <div v-if="$store.state.LOGGEDIN">
       <v-card
         class="pa-2 mb-md-10 mb-2 d-md-flex d-none align-center flex-md-row flex-column"
       >

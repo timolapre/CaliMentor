@@ -5,9 +5,9 @@
     >
       <img
         width="auto"
-        height="70"
+        height="50"
         :src="require(`~/assets/images/logo/FlagLogoWhite.png`)"
-        class="cursor-pointer pr-3"
+        class="cursor-pointer pr-md-3"
         @click="$router.push({ name: 'index' })"
       />
       <div

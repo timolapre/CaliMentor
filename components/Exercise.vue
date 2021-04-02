@@ -2,6 +2,7 @@
   <div>
     <v-card class="pa-3">
       <img
+        loading="lazy"
         v-if="selectedExercise.video"
         class="ma-0"
         :src="`${bucket}/exercises/${selectedExercise.name}.${selectedExercise.fileType}`"
@@ -10,6 +11,7 @@
         height="auto"
       />
       <img
+        loading="lazy"
         v-else
         :src="require('~/assets/images/exercises/novideo.png')"
         alt="No Video"
