@@ -81,6 +81,13 @@
       <!-- NOT LOGGED IN-->
       <div class="row" v-if="!$store.state.LOGGEDIN">
         <div
+          @click="$router.push({ name: 'index' })"
+          class="col-3 pb-1 cursor-pointer d-flex flex-column align-center"
+        >
+          <v-icon>fa-home</v-icon>
+          <p class="small-text">Home</p>
+        </div>
+        <div
           @click="$router.push({ name: 'workouts' })"
           class="col-3 pb-1 cursor-pointer d-flex flex-column align-center"
         >
@@ -93,13 +100,6 @@
         >
           <v-icon>fa-running</v-icon>
           <p class="small-text">exercises</p>
-        </div>
-        <div
-          @click="$router.push({ name: 'register' })"
-          class="col-3 pb-1 cursor-pointer d-flex flex-column align-center"
-        >
-          <v-icon>fa-user</v-icon>
-          <p class="small-text">register</p>
         </div>
         <div
           @click="$router.push({ name: 'login' })"

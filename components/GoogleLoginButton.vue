@@ -13,7 +13,7 @@
       @click="googleLoginImage = 'focus'"
     />
   </a> -->
-    <v-btn :href="googleAuthUrl">
+    <v-btn :href="googleAuthUrl" class="mt-2 mt-sm-0">
       <v-img
         max-width="20"
         contain

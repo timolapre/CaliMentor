@@ -18,12 +18,11 @@
         </div>
         <v-row>
           <v-col v-for="(workout, i) in workouts" :key="workout.id" cols="12" md="6">
-            <WorkoutList2 :workout="workout" :index="i" />
+            <WorkoutList :workout="workout" :index="i" />
           </v-col>
         </v-row>
         <v-btn
-          class="py-10 no-text-transform"
-          color="primary"
+          class="py-10 mt-10 no-text-transform"
           v-if="!$store.state.LOGGEDIN && workouts.length >= 1"
           block
           @click="$router.push({ name: 'register' })"

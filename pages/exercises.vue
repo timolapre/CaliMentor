@@ -5,18 +5,16 @@
         <Loading />
       </div>
       <div v-if="!loading">
+        <v-btn
+          class="py-10 my-5 no-text-transform"
+          v-if="!$store.state.LOGGEDIN"
+          block
+          @click="$router.push({ name: 'register' })"
+        >
+          Please create an account <br />
+          to see all exercises
+        </v-btn>
         <v-row class="mt-3">
-          <v-btn
-            class="py-10 my-5 no-text-transform"
-            color="primary"
-            v-if="!$store.state.LOGGEDIN"
-            block
-            @click="$router.push({ name: 'register' })"
-          >
-            Please create an account <br />
-            to see all exercises
-          </v-btn>
-
           <div v-if="$store.state.LOGGEDIN">
             <v-btn
               v-for="(type, i) in types"
@@ -39,7 +37,6 @@
         </v-row>
         <v-btn
           class="py-10 my-5 no-text-transform"
-          color="primary"
           v-if="!$store.state.LOGGEDIN"
           block
           @click="$router.push({ name: 'register' })"

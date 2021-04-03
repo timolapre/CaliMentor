@@ -3,46 +3,57 @@
     <div v-if="loading" class="text-center"><Loading /></div>
     <div v-else class="mx-4 page">
       <v-btn @click="$router.go(-1)" block class="mb-5">Back</v-btn>
-      <v-container class="text-center">
-        <div class="workout-stats">
-          <v-icon class="mr-0" x-small>fa-thumbs-up</v-icon>
+
+      <div>
+        <div class="workout-stats d-inline-block ml-4 px-1 py-1">
+          <v-icon class="mr-1" x-small>fa-thumbs-up</v-icon>
           {{ workout.likes }}
-          <v-icon class="mr-0 ml-3" x-small>fa-flag-checkered</v-icon>
+        </div>
+        <div class="workout-stats d-inline-block px-1 py-1">
+          <v-icon class="mr-1" x-small>fa-flag-checkered</v-icon>
           {{ workout.finishes }}
         </div>
-        <h2 class="mb-sm-3 mb-6 mt-8 mt-sm-0">
-          {{ workout.name }}
-        </h2>
-        <v-row justify="center" align="center">
-          <v-col class="py-1" cols="6" sm="2">
-            <v-icon class="mr-1" small>fa-dumbbell</v-icon>
-            {{ workout.type.text }}
-          </v-col>
-          <v-col cols="6" sm="2" class="d-flex justify-center py-1">
-            <div class="text-left">
-              <DifficultyBar class="mb-1" :difficulty="workout.difficulty.id" />
+      </div>
+      <div class="workoutlist difficultyborder">
+        <v-container class="pb-0 text-center">
+          <div class="d-flex align-center justify-center">
+            <div>
+              <h2 class="font-weight-medium">
+                {{ workout.name }}
+              </h2>
+              <p class="text--disabled mb-0">By {{ workout.user.username }}</p>
+            </div>
+          </div>
+          <v-divider class="my-2" />
+          <v-row justify="center" align="center" class="ma-0">
+            <v-col class="pa-1" cols="4">
+              <v-icon class="mr-1" small>fa-dumbbell</v-icon><br />
+              <p class="ma-0 pt-1">
+                {{ workout.type.text }}
+              </p>
+            </v-col>
+            <v-col class="pa-1" cols="4">
+              <v-icon class="mr-1" small>fa-clock</v-icon><br />
+              <p class="ma-0 pt-1">
+                {{ workout.duration.text }}
+              </p>
+            </v-col>
+            <v-col class="pa-1" cols="4">
+              <v-icon class="mr-1" small>fa-calendar-day</v-icon><br />
+              <p class="ma-0 pt-1">
+                {{ date }}
+              </p>
+            </v-col>
+          </v-row>
+          <div class="d-flex justify-center">
+            <div class="difficulty mt-3" :class="difficultyColor">
               {{ workout.difficulty.text }}
             </div>
-          </v-col>
-          <v-col class="py-1" cols="6" sm="2">
-            <v-icon class="mr-1" small>fa-clock</v-icon>
-            {{ workout.duration.text }}
-          </v-col>
-          <v-col class="py-1" cols="6" sm="2">
-            <v-icon class="mr-1" small>fa-user</v-icon>
-            {{ workout.user.username }}
-          </v-col>
-          <v-col class="py-1" cols="6" sm="2">
-            <v-icon class="mr-1" small>fa-calendar-day</v-icon>
-            {{ date }}
-          </v-col>
-          <v-col class="py-1" cols="6" sm="0"> </v-col>
-        </v-row>
-        <h3 class="mb-3 mt-4" v-if="workout.description !== ''">
-          {{ workout.description }}
-        </h3>
-      </v-container>
-      <div class="d-flex justify-end mt-5" v-if="$store.state.LOGGEDIN">
+          </div>
+        </v-container>
+      </div>
+
+      <div class="d-flex justify-end mt-8" v-if="$store.state.LOGGEDIN">
         <v-row>
           <v-col cols="2" sm="1">
             <v-btn
@@ -52,6 +63,10 @@
             >
               <v-icon small>fa-thumbs-up</v-icon>
             </v-btn>
+            <!-- <div class="workout-stats">
+            <v-icon class="mr-0 ml-3" x-small>fa-flag-checkered</v-icon>
+            {{ workout.finishes }}
+          </div> -->
           </v-col>
           <v-col cols="2" sm="1">
             <v-btn
@@ -260,6 +275,20 @@ export default {
     LOGGEDIN() {
       return this.$store.state.LOGGEDIN
     },
+    difficultyColor() {
+      const difficulty = this.workout.difficulty.id
+      switch (difficulty) {
+        case 1:
+          return 'greencolor'
+          break
+        case 2:
+          return 'orangecolor'
+          break
+        case 3:
+          return 'redcolor'
+          break
+      }
+    },
   },
   watch: {
     blockFinishCount(x) {
@@ -286,7 +315,25 @@ export default {
 
 <style lang="scss" scoped>
 .workout-stats {
-  position: absolute;
-  margin: 0.3rem 0 0 0.5rem;
+  border-radius: 4px;
+  max-width: 100px;
+  margin-right: auto;
+}
+
+.difficulty {
+  border-radius: 10px;
+  width: 150px;
+
+  &.greencolor {
+    background-color: $green;
+  }
+
+  &.orangecolor {
+    background-color: $orange;
+  }
+
+  &.redcolor {
+    background-color: $red;
+  }
 }
 </style>
