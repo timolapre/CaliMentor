@@ -16,12 +16,11 @@
             No workouts found with these filters
           </h2>
         </div>
-        <WorkoutList
-          v-for="(workout, i) in workouts"
-          :key="workout.id"
-          :workout="workout"
-          :index="i"
-        />
+        <v-row>
+          <v-col v-for="(workout, i) in workouts" :key="workout.id" cols="12" md="6">
+            <WorkoutList2 :workout="workout" :index="i" />
+          </v-col>
+        </v-row>
         <v-btn
           class="py-10 no-text-transform"
           color="primary"
@@ -51,7 +50,7 @@
           block
           >Load more...</v-btn
         > -->
-        <div class="pagination">
+        <div class="pagination mt-7">
           <v-pagination
             v-if="$store.state.LOGGEDIN"
             :length="pagesCount"
@@ -75,7 +74,7 @@ export default {
       skip: 0,
       pageSelected: 1,
       pagesCount: null,
-      showWorkoutCount: 15,
+      showWorkoutCount: 14,
     }
   },
   methods: {
