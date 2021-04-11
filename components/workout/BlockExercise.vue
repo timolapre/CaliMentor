@@ -26,7 +26,12 @@
             />
             </span>
           </v-tooltip> -->
-          <v-dialog v-model="showVideo" max-width="500">
+          <v-dialog
+            v-model="showVideo"
+            max-width="500"
+            overlay-opacity="0.9"
+            overlay-color="black"
+          >
             <v-card>
               <div v-if="exerciseData">
                 <v-btn

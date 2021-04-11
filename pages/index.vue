@@ -96,9 +96,11 @@
                 for you to write down your workouts.
               </p>
             </v-col>
+          </v-row>
 
-            <!-- <v-col cols="12" sm="4">
-              <v-icon large>fa-dumbbell</v-icon>
+          <v-row class="d-flex align-stretch align-center" v-if="showMore">
+            <v-col cols="12" sm="4">
+              <v-icon large>fa-calendar-alt</v-icon>
 
               <h2 class="mb-3 mt-2 text-large">Routine</h2>
               <p>
@@ -108,7 +110,7 @@
             </v-col>
 
             <v-col cols="12" sm="4">
-              <v-icon large>fa-dumbbell</v-icon>
+              <v-icon large>fa-history</v-icon>
 
               <h2 class="mb-3 mt-2 text-large">History</h2>
               <p>
@@ -118,14 +120,14 @@
             </v-col>
 
             <v-col cols="12" sm="4">
-              <v-icon large>fa-dumbbell</v-icon>
+              <v-icon large>fa-medal</v-icon>
 
               <h2 class="mb-3 mt-2 text-large">Progress</h2>
               <p>Keep track of your personal records and progress.</p>
             </v-col>
 
             <v-col cols="12" sm="4">
-              <v-icon large>fa-dumbbell</v-icon>
+              <v-icon large>fa-tasks</v-icon>
 
               <h2 class="mb-3 mt-2 text-large">Goals</h2>
               <p>
@@ -135,26 +137,32 @@
             </v-col>
 
             <v-col cols="12" sm="4">
-              <v-icon large>fa-dumbbell</v-icon>
+              <v-icon large>fa-stopwatch</v-icon>
 
               <h2 class="mb-3 mt-2 text-large">Built in timers</h2>
               <p>No need to open any other app for a stopwatch or timer.</p>
             </v-col>
 
             <v-col cols="12" sm="4">
-              <v-icon large>fa-dumbbell</v-icon>
+              <v-icon large>fa-money-bill-alt</v-icon>
 
               <h2 class="mb-3 mt-2 text-large">Earn money</h2>
               <p>
                 Every month we pay our workout creators based on the amount of
                 users that finished their workouts.
               </p>
-            </v-col> -->
-
-            <v-col cols="12">
-              <h2 class="mb-3 mt-2 text-large">And a lot more!</h2>
             </v-col>
           </v-row>
+
+          <div class="d-flex justify-center">
+            <v-btn
+              large
+              @click="showMore = true"
+              v-if="!showMore"
+              class="mb-3 mt-2 text-large"
+              >And a lot more!</v-btn
+            >
+          </div>
         </div>
 
         <div hidden>
@@ -327,6 +335,7 @@ export default {
     return {
       workoutCount: 0,
       exercisesCount: 0,
+      showMore: false,
       images: [
         {
           id: 0,

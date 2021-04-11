@@ -12,7 +12,7 @@
               dense
               hide-details
               background-color="secondary"
-              :items="exercises"
+              :items="$store.state.EXERCISENAMES"
               placeholder="Exercise"
               class="block-input"
               v-model="exercise"
@@ -78,15 +78,6 @@ export default {
   },
   async created() {
     await this.$store.dispatch('setWorkoutDurationOptions')
-  },
-  computed: {
-    exercises() {
-      const exercises = []
-      this.$store.state.EXERCISES?.forEach((exercise) => {
-        exercises.push(exercise.name)
-      })
-      return exercises
-    },
   },
 }
 </script>

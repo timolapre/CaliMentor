@@ -89,14 +89,5 @@ export default {
     await this.$store.dispatch('setWorkoutDurationOptions')
     this.getPersonalRecord()
   },
-  computed: {
-    exercises() {
-      const exercises = []
-      this.$store.state.EXERCISES?.forEach((exercise) => {
-        exercises.push(exercise.name)
-      })
-      return exercises
-    },
-  },
 }
 </script>

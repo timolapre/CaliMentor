@@ -1,31 +1,33 @@
 <template>
-  <div class="d-flex my-1">
-    <v-card
-      style="width: 100%"
-      flat
-      :color="
-        goal.deadline && new Date(goal.deadline) < new Date()
-          ? 'red'
-          : 'secondary'
-      "
-      block
-      class="py-1 px-2 mr-1"
-      @click="$router.push({ name: 'goal-id', params: { id: goal.id } })"
-    >
-      <div class="d-flex flex-sm-row flex-column">
-        <h2>{{ goal.exercise }} {{ goal.count }}{{ goal.append }}</h2>
-        <h2 class="mr-2 ml-auto">{{ deadline }}</h2>
-      </div>
-    </v-card>
-    <v-btn
-      height="44px"
-      color="primary"
-      class="align-self-center"
-      x-small
-      @click="goalDone"
-    >
-      <v-icon>fa-check</v-icon>
-    </v-btn>
+  <div>
+    <div class="d-flex">
+      <v-card width="100%" class="py-2 px-5 rounded-r-0">
+        <div class="d-flex">
+          <h2>{{ goal.exercise }}</h2>
+          <h2 class="ml-auto">{{ goal.count }}{{ goal.append }}</h2>
+        </div>
+        <p
+          class="mb-0 text-left"
+          :class="
+            goal.deadline && new Date(goal.deadline) < new Date()
+              ? 'red--text'
+              : 'grey--text text-darken-4'
+          "
+        >
+          {{ deadline }}
+        </p>
+      </v-card>
+      <v-btn
+        color="secondary"
+        class="ml-auto rounded-l-0"
+        height="auto"
+        min-width="auto"
+        small
+        @click="goalDone"
+      >
+        <v-icon small>fa-check</v-icon>
+      </v-btn>
+    </div>
     <Confetti :confetti="confetti" @false="confetti = false" />
   </div>
 </template>
@@ -52,11 +54,17 @@ export default {
   computed: {
     deadline() {
       if (this.goal.deadline) {
-        return moment(this.goal.deadline).format('DD-MM-YYYY')
+        return moment(this.goal.deadline).fromNow()
       } else {
-        return ''
+        return 'No deadline'
       }
     },
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.check-button {
+  height: 100% !important;
+}
+</style>

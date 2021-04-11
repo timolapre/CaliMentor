@@ -35,7 +35,7 @@
                 dense
                 hide-details
                 background-color="secondary"
-                :items="exercises"
+                :items="$store.state.EXERCISENAMES"
                 placeholder="Exercise"
                 class="block-input"
                 v-model="exercise.name"
@@ -297,15 +297,6 @@ export default {
     },
     copyBlock() {
       this.$emit('copy-block', this.block.id)
-    },
-  },
-  computed: {
-    exercises() {
-      const exercises = []
-      this.$store.state.EXERCISES.forEach((exercise) => {
-        exercises.push(exercise.name)
-      })
-      return exercises
     },
   },
 }

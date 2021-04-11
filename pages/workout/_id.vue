@@ -103,7 +103,7 @@
       >
         <v-row>
           <v-col cols="6">
-            <v-dialog v-model="DeleteWorkoutDialog" persistent max-width="290">
+            <v-dialog v-model="DeleteWorkoutDialog" persistent max-width="290" overlay-opacity="0.9" overlay-color="black">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn block v-bind="attrs" v-on="on">
                   <v-icon small>fa-trash</v-icon>

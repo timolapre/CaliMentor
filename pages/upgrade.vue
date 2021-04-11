@@ -6,7 +6,7 @@
       <h1 class="text-center my-5">Upgrade to premium</h1>
 
       <!-- Free vs premium -->
-      <div class="mt-5 text-center">
+      <!-- <div class="mt-5 text-center">
         <v-row class="d-flex align-center">
           <v-col cols="12" sm="6" align-self="start">
             <v-card class="pa-7">
@@ -44,7 +44,7 @@
             </v-card>
           </v-col>
         </v-row>
-      </div>
+      </div> -->
 
       <v-form id="upgrade-form" class="mt-8" @submit.prevent="buyPremium()">
         <v-select
@@ -120,6 +120,13 @@ export default {
         .then((data) => {
           console.log(data)
         })
+    },
+  },
+  watch: {
+    months(x) {
+      if (x < 1) {
+        this.months = 1
+      }
     },
   },
 }

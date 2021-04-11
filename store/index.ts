@@ -11,6 +11,7 @@ export const state = () => ({
   WORKOUT_DIFFICULTY_OPTIONS: null,
   WORKOUT_DURATION_OPTIONS: null,
   EXERCISES: null,
+  EXERCISENAMES: [],
 })
 
 export const mutations = {}
@@ -42,6 +43,10 @@ export const actions = {
       //   exercises.push(exercise.name)
       // })
       state.EXERCISES = data
+      
+      state.EXERCISES.forEach((exercise) => {
+        state.EXERCISENAMES.push(exercise.name)
+      })
     }
   },
   async getLoggedinUser({ state }: any, force = false) {

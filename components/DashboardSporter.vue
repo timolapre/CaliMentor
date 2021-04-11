@@ -184,8 +184,9 @@ export default {
     },
   },
   async beforeCreate() {
-    await this.$store.dispatch('setWorkoutDifficultyOptions')
     await this.$store.dispatch('setWorkoutTypeOptions')
+    await this.$store.dispatch('setWorkoutDifficultyOptions')
+    await this.$store.dispatch('setWorkoutDurationOptions')
   },
   async created() {
     this.getPersonalRecords()

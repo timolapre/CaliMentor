@@ -6,10 +6,8 @@
     block
     class="py-1 px-2 my-1"
   >
-    <div class="d-flex">
-      <h2>{{ history.count }}{{ append }}</h2>
-      <h2 class="mr-2 ml-auto">{{ createdAt }}</h2>
-    </div>
+    <h2>{{ history.count }}{{ append }}</h2>
+    <p class="mb-0 text--disabled">{{ createdAt }}</p>
   </v-card>
 </template>
 

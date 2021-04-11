@@ -1,29 +1,25 @@
 <template>
-  <div class="d-flex align-center justify-center">
-    <div class="page">
-      <v-btn @click="$router.go(-1)" block>Back</v-btn>
-      <h1 class="text-center my-5">Workout history</h1>
-      <v-date-picker
-        full-width
-        v-model="date"
-        :events="dateEvents"
-        color="primary"
-        event-color="orange accent-4"
-        @update:picker-date="getHistory"
-      ></v-date-picker>
-      <div v-if="allowed">
-        <HistoryCard
-          class="mt-3 pa-3"
-          v-for="h in showHistory"
-          :key="h.id"
-          :history="h"
-        >
-        </HistoryCard>
-      </div>
-      <v-card class="mt-2 pa-3" v-else>
-        <h3>You need a premium account to see this</h3>
-      </v-card>
+  <div>
+    <v-date-picker
+      full-width
+      v-model="date"
+      :events="dateEvents"
+      color="primary"
+      event-color="orange accent-4"
+      @update:picker-date="getHistory"
+    ></v-date-picker>
+    <div v-if="allowed">
+      <HistoryCard
+        class="mt-3 pa-3"
+        v-for="h in showHistory"
+        :key="h.id"
+        :history="h"
+      >
+      </HistoryCard>
     </div>
+    <v-card class="mt-2 pa-3" v-else>
+      <h3>You need a premium account to see this</h3>
+    </v-card>
   </div>
 </template>
 

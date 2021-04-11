@@ -114,7 +114,7 @@
       >
     </div>
 
-    <v-dialog v-model="DeleteExerciseModal" persistent max-width="290">
+    <v-dialog v-model="DeleteExerciseModal" persistent max-width="290" overlay-opacity="0.9" overlay-color="black">
       <v-card>
         <v-card-title class="headline"> Delete exercise </v-card-title>
         <v-card-text>
