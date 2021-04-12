@@ -21,7 +21,7 @@ export default {
   },
   computed: {
     createdAt() {
-      return moment(history.createdAt).format('DD-MM-YYYY')
+      return moment(this.history.createdAt).format('DD-MM-YYYY')
     },
   },
 }
