@@ -14,7 +14,6 @@ export const WORKOUT_BLOCK_OPTIONS = [
   'For time',
   'Rest',
   'Text',
-  'Video',
 ]
 
 export const WORKOUT_BLOCK_OPTIONS_INFO = {

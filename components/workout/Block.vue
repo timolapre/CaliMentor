@@ -104,11 +104,11 @@
               </v-btn>
             </div>
 
-            <!-- Single, Text, Video -->
+            <!-- Single, Text -->
             <div
               class="d-flex align-center"
               v-if="
-                ['Single', 'Text', 'For time', 'Video'].includes(block.type)
+                ['Single', 'Text', 'For time'].includes(block.type)
               "
             >
               <v-btn color="secondary" @click="blockFinished" class="px-3 py-2">
@@ -124,7 +124,7 @@
           </div>
         </div>
         <v-divider class="my-2"></v-divider>
-        <div v-if="!['Rest', 'Text', 'Video'].includes(block.type)">
+        <div v-if="!['Rest', 'Text'].includes(block.type)">
           <WorkoutBlockExercise
             v-for="exercise in block.exercises"
             :key="exercise.id"
@@ -139,7 +139,7 @@
         <div v-else-if="block.type === 'Text'" class="text-center">
           <h3 class="mx-5">{{ block.values[0] }}</h3>
         </div>
-        <div
+        <!-- <div
           v-else-if="
             block.type === 'Video' &&
             block.values[0].includes('youtube') &&
@@ -158,7 +158,7 @@
             webkitallowfullscreen="webkitallowfullscreen"
           >
           </iframe>
-        </div>
+        </div> -->
 
         <v-divider
           v-if="!['Single', 'For time', 'Rest'].includes(block.type)"
