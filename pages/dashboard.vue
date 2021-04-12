@@ -448,8 +448,8 @@ export default {
         exercise: { ...this.selectedPR, count: this.selectedExerciseNewCount },
       })
       this.selectedPR = data
-      const PRIndex = this.PRs.findIndex((x => x.id == data.id));
-      this.PRs[PRIndex] = data;
+      const PRIndex = this.PRs.findIndex((x) => x.id == data.id)
+      this.PRs[PRIndex] = data
     },
     async deletePR() {
       const data = await this.$axios.$post('personalrecord/delete', {
@@ -571,8 +571,10 @@ export default {
     this.getPersonalRecords()
     this.getGoals()
   },
-  updated() {
-    this.scrollToWOD()
+  mounted() {
+    setTimeout(() => {
+      this.scrollToWOD()
+    }, 1000)
   },
 }
 </script>
