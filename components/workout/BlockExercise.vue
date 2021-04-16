@@ -56,7 +56,11 @@
       </div>
       <p v-if="exercise.info" class="ma-0">{{ exercise.info }}</p>
     </v-col>
-    <v-col cols="3" class="d-flex align-center justify-end">
+    <v-col
+      cols="3"
+      class="d-flex align-center justify-end"
+      v-if="!['AMRAP', 'TABATA'].includes(blockType)"
+    >
       <h3 class="ma-0">{{ exercise.count }} {{ exercise.append }}</h3>
     </v-col>
   </v-row>
@@ -70,7 +74,10 @@ export default {
       showVideo: false,
     }
   },
-  props: { exercise: { type: Object, default: {} } },
+  props: {
+    exercise: { type: Object, default: {} },
+    blockType: { type: String, default: '' },
+  },
   computed: {
     hasVideo() {
       const exercise = this.$store.state.EXERCISES?.filter(

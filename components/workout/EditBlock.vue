@@ -8,15 +8,10 @@
             >fa-arrow-up</v-icon
           >
           <v-icon @click="deleteBlock" class="mr-6" small>fa-arrow-down</v-icon> -->
-          <v-icon
-            class="mr-6 ml-auto no-background-hover handle"
-            small
+          <v-icon class="mr-6 ml-auto no-background-hover handle" small
             >fa-arrows-alt</v-icon
           >
-          <v-icon
-            @click="copyBlock"
-            class="mr-6 no-background-hover"
-            small
+          <v-icon @click="copyBlock" class="mr-6 no-background-hover" small
             >fa-copy</v-icon
           >
           <v-icon @click="deleteBlock" class="mr-6" small>fa-trash</v-icon>
@@ -42,6 +37,7 @@
               ></v-combobox>
             </v-col>
             <v-col
+              v-if="!['AMRAP', 'TABATA'].includes(block.type)"
               cols="3"
               sm="2"
               class="d-flex align-center justify-end px-1 pb-0"
@@ -57,6 +53,7 @@
               ></v-text-field>
             </v-col>
             <v-col
+              v-if="!['AMRAP', 'TABATA'].includes(block.type)"
               cols="3"
               sm="2"
               class="d-flex align-center justify-end px-0 pb-0"
@@ -84,7 +81,7 @@
               ></v-text-field
             ></v-col>
           </v-row>
-          <v-row class="mx-2">
+          <v-row class="mx-2" v-if="!['AMRAP'].includes(block.type)">
             <v-col cols="6" class="px-0 pr-1">
               <v-btn block @click="addExercise">
                 <v-icon class="mr-1" small>fa-plus</v-icon>

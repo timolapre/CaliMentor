@@ -130,6 +130,7 @@
             :key="exercise.id"
             class="mx-2"
             :exercise="exercise"
+            :blockType="block.type"
           >
           </WorkoutBlockExercise>
         </div>

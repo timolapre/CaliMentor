@@ -1,5 +1,23 @@
 <template>
   <div class="filter-container mb-0">
+    <div class="d-flex mb-1">
+      <v-text-field
+        v-model="searchName"
+        hide-details
+        filled
+        class="pa-0 ma-0 rounded-tr-0 rounded-br-0"
+        placeholder="Search..."
+        dense
+      ></v-text-field>
+      <v-btn
+        color="primary"
+        class="rounded-tl-0 rounded-bl-0"
+        height="2.6rem"
+        @click="searchWorkouts()"
+        >Search
+        <v-icon class="ml-2" size="medium">fa-search</v-icon>
+      </v-btn>
+    </div>
     <div class="filters">
       <!-- Type -->
       <v-select
@@ -44,30 +62,11 @@
         label="Date"
       ></v-select>
     </div>
-    <v-btn class="mb-2" block fluid @click="toggleFilters">
+    <v-btn class="mb-3" block fluid @click="toggleFilters">
       <v-icon v-if="filtersOpen" class="mr-2" size="medium">fa-caret-up</v-icon>
       <v-icon v-else class="mr-2" size="medium">fa-caret-down</v-icon>
       Filters
     </v-btn>
-
-    <div class="d-flex mb-3">
-      <v-text-field
-        v-model="searchName"
-        hide-details
-        filled
-        class="pa-0 ma-0 rounded-tr-0 rounded-br-0"
-        placeholder="Search..."
-        dense
-      ></v-text-field>
-      <v-btn
-        color="primary"
-        class="rounded-tl-0 rounded-bl-0"
-        height="2.6rem"
-        @click="searchWorkouts"
-        >Search
-        <v-icon class="ml-2" size="medium">fa-search</v-icon>
-      </v-btn>
-    </div>
 
     <div v-if="$store.state.LOGGEDIN">
       <v-card
@@ -294,15 +293,23 @@ export default {
     }
   },
   methods: {
-    toggleFilters() {
+    toggleFilters(forceOpenOrClose = 0) {
       const filters = document.getElementsByClassName('filters')[0] as any
 
-      if (this.filtersOpen) {
+      if (forceOpenOrClose == -1) {
         filters.style.maxHeight = 0 + 'px'
         this.filtersOpen = false
-      } else {
+      } else if (forceOpenOrClose == 1) {
         filters.style.maxHeight = filters.scrollHeight + 'px'
         this.filtersOpen = true
+      } else {
+        if (this.filtersOpen) {
+          filters.style.maxHeight = 0 + 'px'
+          this.filtersOpen = false
+        } else {
+          filters.style.maxHeight = filters.scrollHeight + 'px'
+          this.filtersOpen = true
+        }
       }
     },
     async searchWorkouts() {
@@ -323,6 +330,7 @@ export default {
       }
       this.$emit('reset-page')
       this.$router.push({ name: 'workouts', query })
+      this.toggleFilters(-1)
     },
     setFilters() {
       const q = this.$route.query

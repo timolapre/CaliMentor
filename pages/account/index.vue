@@ -61,9 +61,6 @@
         Upgrade account
       </v-btn>
 
-      <v-btn block @click="$router.push({ name: 'workout-history' })">
-        <v-icon class="mr-3" small>fa-history</v-icon> My workout history
-      </v-btn>
       <v-btn
         class="mt-2"
         block

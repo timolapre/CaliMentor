@@ -1,12 +1,12 @@
 <template>
   <div>
-    <v-card class="pa-3">
+    <v-card class="pb-1">
       <img
         loading="lazy"
-        v-if="selectedExercise.video"
+        v-if="selectedExercise && selectedExercise.video"
         class="ma-0"
         :src="`${bucket}/exercises/${selectedExercise.name}.${selectedExercise.fileType}`"
-        :alt="'Video of ' + selectedExercise.name"
+        :alt="selectedExercise.name"
         width="100%"
         height="auto"
       />
@@ -18,8 +18,8 @@
         width="100%"
         height="auto"
       />
-      <div>
-        <div class="d-flex mt-2 align-center" v-if="exercises.length > 1">
+      <div class="exercise-name-container">
+        <div class="d-flex align-center mx-1" v-if="exercises.length > 1">
           <v-btn
             height="38px"
             color="secondary"
@@ -50,7 +50,9 @@
             <v-icon x-small>fa-plus</v-icon>
           </v-btn>
         </div>
-        <h3 class="text-center" v-else>{{ selectedExerciseName }}</h3>
+        <h3 class="text-center mt-1" v-else>
+          {{ selectedExerciseName }}
+        </h3>
       </div>
     </v-card>
     <Ad v-if="(index - 2) % 18 == 0" />
@@ -63,17 +65,18 @@ export default {
   data() {
     return {
       bucket: process.env.AWS_S3_BUCKET,
-      exercises: [
-        ...this.exercise.levels.filter((x) => x.order < 0),
-        this.exercise,
-        ...this.exercise.levels.filter((x) => x.order >= 0),
-      ],
-      name: 'Test',
+      exercises: null,
+      name: '',
       selectedExerciseName: null,
     }
   },
   created() {
     this.selectedExerciseName = this.selected || this.exercise.name
+    this.exercises = [
+      ...this.exercise.levels.filter((x) => x.order < 0),
+      this.exercise,
+      ...this.exercise.levels.filter((x) => x.order >= 0),
+    ]
   },
   methods: {
     changeLevel(i) {
@@ -99,9 +102,20 @@ export default {
   watch: {
     reset(x) {
       if (x) {
+        this.exercises = [
+          ...this.exercise.levels.filter((x) => x.order < 0),
+          this.exercise,
+          ...this.exercise.levels.filter((x) => x.order >= 0),
+        ]
         this.selectedExerciseName = this.selected || this.exercise.name
       }
     },
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.exercise-name-container {
+  height: 38px;
+}
+</style>

@@ -99,7 +99,7 @@ export default {
   },
   created() {
     if (this.$store.state.LOGGEDINUSER.paymentMethod === 'None') {
-      this.$router.push({ name: 'upgrade' })
+      this.$router.replace({ name: 'upgrade' })
     }
   },
 }
