@@ -32,10 +32,22 @@
               ></div>
             </div>
             <div class="d-flex align-center my-2">
-              <div class="">
-                <h3 class="text--secondary mr-5">
-                  {{ currentBlockType }}
-                </h3>
+              <div>
+                <div class="d-flex">
+                  <h3 class="text--secondary">
+                    {{ currentBlockType }}
+                  </h3>
+                  <v-tooltip right data-html="true">
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-icon class="ml-3" dark small v-bind="attrs" v-on="on">
+                        fa-info-circle
+                      </v-icon>
+                    </template>
+                    <span>
+                      {{ WORKOUT_BLOCK_OPTIONS_INFO[currentBlockType] }}
+                    </span>
+                  </v-tooltip>
+                </div>
                 <h4
                   class="text--secondary"
                   v-if="
@@ -49,9 +61,17 @@
             </div>
           </div>
         </div>
+        <h3 v-if="!currentExercise">
+          {{
+            workout.blocks[this.currentBlock].exercises[
+              this.currentExerciseCount
+            ].name
+          }}
+        </h3>
         <Exercise
           v-if="
-            currentExercise && workout.blocks[this.currentBlock].type != 'Text'
+            currentExercise &&
+            !['Text', 'Rest'].includes(workout.blocks[this.currentBlock].type)
           "
           :exercise="currentExercise"
           :selected="
@@ -69,7 +89,13 @@
           {{ workout.blocks[this.currentBlock].values[0] }}
         </h3>
       </div>
-      <div v-if="workout.blocks[currentBlock].type != 'Text'">
+      <div
+        v-if="
+          !['Text', 'TABATA', 'AMRAP'].includes(
+            workout.blocks[currentBlock].type
+          )
+        "
+      >
         <h1 class="text-center font-weight-bold mt-3">
           {{
             workout.blocks[this.currentBlock].exercises[
@@ -90,7 +116,7 @@
           }}
         </h3>
       </div>
-      <div class="d-flex justify-center">
+      <div class="d-flex justify-center mt-5">
         <div class="next-button-container">
           <v-btn
             v-if="
@@ -114,12 +140,15 @@
             @click="startTimer"
             class="py-10 next-button"
             color="secondary"
-            >Start</v-btn
+            >Start timer</v-btn
           >
           <div v-if="timerStarted" class="mt-3">
             <h3
               class="text-center text--secondary"
-              v-if="workout.blocks[currentBlock].type == 'TABATA' && actualTimerStarted"
+              v-if="
+                workout.blocks[currentBlock].type == 'TABATA' &&
+                actualTimerStarted
+              "
             >
               {{ workOrRest }}
             </h3>
@@ -166,10 +195,12 @@ import NoSleep from 'nosleep.js'
 import confetti from 'canvas-confetti'
 import { log } from 'util'
 import { Workout } from '../../../types'
+import { WORKOUT_BLOCK_OPTIONS_INFO } from '../../../constants'
 
 export default {
   data() {
     return {
+      WORKOUT_BLOCK_OPTIONS_INFO: WORKOUT_BLOCK_OPTIONS_INFO,
       loading: true,
       workout: {},
       creator: '',
@@ -250,11 +281,11 @@ export default {
         this.workout.blocks[this.currentBlock].exercises.length
       ) {
         this.currentExerciseCount = 0
-        if (block.type == 'Circuit') {
+        if (['Circuit', 'Single', 'For time'].includes(block.type)) {
           this.currentSet++
         }
       }
-      if (block.type !== 'Circuit') {
+      if (!['Circuit', 'Single', 'For time'].includes(block.type)) {
         this.currentSet++
       }
 
@@ -278,13 +309,13 @@ export default {
         if (e.type == 'Circuit') {
           this.progressTotalExercises +=
             parseInt(e.values[0]) * e.exercises.length
-        } else if (e.type == 'Single') {
+        } else if (['Single', 'For time'].includes(e.type)) {
           this.progressTotalExercises += parseInt(e.exercises.length)
         } else if (e.type == 'EMOM') {
           this.progressTotalExercises += parseInt(e.values[1])
-        } else if (['AMRAP', 'For time', 'Text'].includes(e.type)) {
+        } else if (['AMRAP', 'Text'].includes(e.type)) {
           this.progressTotalExercises += 1
-        } else if (e.type == 'TABATA') {
+        } else if (['TABATA'].includes(e.type)) {
           this.progressTotalExercises += parseInt(e.values[0])
         }
       })
@@ -292,14 +323,12 @@ export default {
     setCurrentBlockSettings() {
       const block = this.workout.blocks[this.currentBlock]
       this.currentBlockType = block.type
-      if (block.type == 'Circuit') {
+      if (['Circuit', 'TABATA'].includes(block.type)) {
         this.currentBlockSetTotal = block.values[0]
       } else if (block.type == 'EMOM') {
         this.currentBlockSetTotal = block.values[1]
-      } else if (['Single', 'AMRAP', 'For time', 'Text'].includes(block.type)) {
+      } else if (['Single', 'For time', 'AMRAP', 'Text'].includes(block.type)) {
         this.currentBlockSetTotal = 1
-      } else if (block.type == 'TABATA') {
-        this.currentBlockSetTotal = block.values[0]
       }
     },
     startTimer() {
