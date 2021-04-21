@@ -199,7 +199,6 @@
           </div>
         </div>
       </div>
-      <div style="background-color: red; height: 500px; width: 2px"></div>
     </div>
 
     <!-- Workout finished dialog -->
