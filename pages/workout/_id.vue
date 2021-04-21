@@ -89,13 +89,32 @@
         </v-row>
       </div>
 
-      <div class="d-flex justify-end">
+      <!-- <div class="d-flex justify-end">
         <v-switch
           v-model="NoSleepActive"
           label="Keep phone active"
           hide-details
         ></v-switch>
+      </div> -->
+
+      <div class="d-flex justify-center mt-4">
+        <v-btn
+          @click="
+            $router.push({
+              name: 'workout-start-id',
+              params: { id: workout.id },
+            })
+          "
+          block
+          color="secondary"
+          class="py-6"
+          >Start workout</v-btn
+        >
       </div>
+
+      <!-- <div class="d-flex justify-center mt-4">
+        <v-btn block>View full workout</v-btn>
+      </div> -->
 
       <div
         class="d-flex justify-end mt-5"
@@ -107,7 +126,7 @@
               v-model="DeleteWorkoutDialog"
               persistent
               max-width="290"
-              overlay-opacity="0.9"
+              overlay-opacity="0.85"
               overlay-color="black"
             >
               <template v-slot:activator="{ on, attrs }">
@@ -160,6 +179,8 @@
       />
       <Ad v-if="workout.blocks.length < 4" />
 
+      <v-btn block @click="workoutFinished" v-if="!finished">Mark workout finished</v-btn>
+
       <Confetti :confetti="confetti" @false="confetti = false" />
     </div>
   </div>
@@ -187,6 +208,7 @@ export default {
       NoSleepActive: false,
       error: null,
       confetti: false,
+      finished: false,
     }
   },
   methods: {
@@ -257,6 +279,7 @@ export default {
         id: this.workout.id,
       })
       this.confetti = true
+      this.finished = true
     },
     async increaseView() {
       const data = await this.$axios.$post('workout/view', {

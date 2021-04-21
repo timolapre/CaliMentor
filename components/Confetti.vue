@@ -57,6 +57,7 @@ export default {
       confetti(
         Object.assign({}, defaults, opts, {
           particleCount: Math.floor(count * particleRatio),
+          zIndex: 300,
         })
       )
     },
@@ -70,3 +71,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+#confettiCanvas{
+  z-index: 300;
+}
+</style>

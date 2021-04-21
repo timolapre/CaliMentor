@@ -100,7 +100,7 @@
       <div v-else>
         <v-dialog
           max-width="768"
-          overlay-opacity="0.9"
+          overlay-opacity="0.85"
           overlay-color="black"
           v-model="dialog"
         >
@@ -136,7 +136,7 @@
             v-model="DeletePRDialog"
             persistent
             max-width="290"
-            overlay-opacity="0.9"
+            overlay-opacity="0.85"
             overlay-color="black"
           >
             <template v-slot:activator="{ on, attrs }">

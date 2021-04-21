@@ -2,6 +2,7 @@
   <div class="d-flex justify-center">
     <div v-if="loading" class="text-center"><Loading /></div>
     <div v-else class="mx-4 page">
+      <!-- Information header -->
       <div class="d-flex justify-center">
         <div class="workout-start-container d-flex justify-center">
           <div class="content">
@@ -11,7 +12,7 @@
               <div
                 class="percentage rounded-pill"
                 :class="
-                  (progressCurrentExercise / progressTotalExercises) * 100 > 50
+                  (progressCurrentExercise / progressTotalExercises) * 100 >= 50
                     ? 'green-bg'
                     : 'gray-bg'
                 "
@@ -32,7 +33,7 @@
               ></div>
             </div>
             <div class="d-flex align-center my-2">
-              <div>
+              <div v-if="!newBlock">
                 <div class="d-flex">
                   <h3 class="text--secondary">
                     {{ currentBlockType }}
@@ -57,79 +58,119 @@
                   {{ currentSet + 1 }} / {{ currentBlockSetTotal }}
                 </h4>
               </div>
-              <v-btn @click="$router.go(-1)" class="ml-auto">Stop</v-btn>
+              <v-btn @click="stopWorkoutDialog = true" class="ml-auto"
+                >Stop</v-btn
+              >
             </div>
           </div>
         </div>
-        <h3 v-if="!currentExercise">
-          {{
-            workout.blocks[this.currentBlock].exercises[
-              this.currentExerciseCount
-            ].name
-          }}
-        </h3>
-        <Exercise
-          v-if="
-            currentExercise &&
-            !['Text', 'Rest'].includes(workout.blocks[this.currentBlock].type)
-          "
-          :exercise="currentExercise"
-          :selected="
-            workout.blocks[this.currentBlock].exercises[
-              this.currentExerciseCount
-            ].name
-          "
-          :reset="resetVideo"
-          class="exercise-container"
-        />
-        <h3
-          class="mt-3 mb-15"
-          v-if="workout.blocks[this.currentBlock].type == 'Text'"
-        >
-          {{ workout.blocks[this.currentBlock].values[0] }}
-        </h3>
       </div>
-      <div
+
+      <!-- Exercise -->
+      <div class="d-flex justify-center">
+        <div v-if="!this.newBlock">
+          <div
+            v-if="
+              !['Text', 'Rest'].includes(workout.blocks[this.currentBlock].type)
+            "
+          >
+            <h3 v-if="!currentExercise">
+              {{
+                workout.blocks[this.currentBlock].exercises[
+                  this.currentExerciseCount
+                ].name
+              }}
+            </h3>
+            <Exercise
+              v-if="currentExercise"
+              :exercise="currentExercise"
+              :selected="
+                workout.blocks[this.currentBlock].exercises[
+                  this.currentExerciseCount
+                ].name
+              "
+              :reset="resetVideo"
+              class="exercise-container"
+            />
+          </div>
+          <h3
+            class="mt-3 mb-15"
+            v-if="workout.blocks[this.currentBlock].type == 'Text'"
+          >
+            {{ workout.blocks[this.currentBlock].values[0] }}
+          </h3>
+
+          <div
+            v-if="
+              !['Text', 'TABATA', 'AMRAP'].includes(
+                workout.blocks[currentBlock].type
+              )
+            "
+          >
+            <h1 class="text-center font-weight-bold mt-3">
+              {{
+                workout.blocks[this.currentBlock].exercises[
+                  this.currentExerciseCount
+                ].count
+              }}
+              {{
+                workout.blocks[this.currentBlock].exercises[
+                  this.currentExerciseCount
+                ].append
+              }}
+            </h1>
+            <h3 class="text-center text--secondary mb-3">
+              {{
+                workout.blocks[this.currentBlock].exercises[
+                  this.currentExerciseCount
+                ].info
+              }}
+            </h3>
+          </div>
+        </div>
+        <div style="width: 100%" v-else>
+          <h1 class="text-center">Next</h1>
+          <WorkoutBlock :block="workout.blocks[currentBlock]" />
+        </div>
+      </div>
+
+      <!-- Ad -->
+      <Ad
+        class="my-3"
         v-if="
-          !['Text', 'TABATA', 'AMRAP'].includes(
-            workout.blocks[currentBlock].type
-          )
+          (progressCurrentExercise + 3) % 6 == 0 ||
+          (progressCurrentExercise + 3) % 7 == 0
         "
-      >
-        <h1 class="text-center font-weight-bold mt-3">
-          {{
-            workout.blocks[this.currentBlock].exercises[
-              this.currentExerciseCount
-            ].count
-          }}
-          {{
-            workout.blocks[this.currentBlock].exercises[
-              this.currentExerciseCount
-            ].append
-          }}
-        </h1>
-        <h3 class="text-center text--secondary mb-3">
-          {{
-            workout.blocks[this.currentBlock].exercises[
-              this.currentExerciseCount
-            ].info
-          }}
-        </h3>
-      </div>
+      />
+
+      <!-- Next exercise buttons -->
       <div class="d-flex justify-center mt-5">
         <div class="next-button-container">
-          <v-btn
+          <div
             v-if="
               ['Circuit', 'Single', 'For time', 'Text'].includes(
                 workout.blocks[currentBlock].type
               )
             "
-            block
-            @click="nextExercise"
-            class="py-10 next-button"
-            color="secondary"
-            >Next</v-btn
           >
+            <v-btn
+              v-if="newBlock"
+              block
+              @click="nextExercise"
+              class="py-10 next-button"
+              color="secondary"
+              >Start</v-btn
+            >
+            <v-btn
+              v-else
+              block
+              @click="nextExercise"
+              class="py-10 next-button"
+              color="secondary"
+              >Next</v-btn
+            >
+          </div>
+
           <v-btn
             v-if="
               ['EMOM', 'TABATA', 'AMRAP', 'Rest'].includes(
@@ -158,34 +199,90 @@
           </div>
         </div>
       </div>
+      <div style="background-color: red; height: 500px; width: 2px"></div>
     </div>
+
+    <!-- Workout finished dialog -->
     <v-dialog
       v-model="workoutFinishedDialog"
       persistent
-      max-width="290"
-      overlay-opacity="0.9"
+      max-width="350"
+      overlay-opacity="0.85"
       overlay-color="black"
-      style="z-index: 100"
     >
       <v-card>
         <v-card-title class="headline"> Well done! </v-card-title>
-        <v-card-text> You have finished the workout. </v-card-text>
+        <v-card-text>
+          {{ compliments[randomComplimentNumber] }}
+        </v-card-text>
+
+        <div class="d-flex justify-end my-3 mx-5">
+          <v-row>
+            <v-col class="pa-2" cols="6">
+              <v-btn
+                block
+                :color="likeOrDislike == 1 ? 'primary' : 'secondary'"
+                @click="likeWorkout(true)"
+              >
+                <v-icon small>fa-thumbs-up</v-icon>
+              </v-btn>
+            </v-col>
+            <v-col class="pa-2" cols="6">
+              <v-btn
+                block
+                :color="likeOrDislike == -1 ? 'red' : 'secondary'"
+                @click="likeWorkout(false)"
+              >
+                <v-icon small>fa-thumbs-down</v-icon>
+              </v-btn>
+            </v-col>
+            <v-col class="pa-2" cols="12">
+              <v-btn
+                :color="favorited ? 'primary' : 'secondary'"
+                block
+                @click="favoriteWorkout"
+              >
+                <v-icon small class="mr-2">fa-heart</v-icon> Favorite
+              </v-btn>
+            </v-col>
+          </v-row>
+        </div>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green" text @click="workoutFinishedDialog = false">
-            Cancel
+          <v-btn text @click="$router.push({ name: 'dashboard' })">
+            See history
           </v-btn>
-          <v-btn color="red" text @click="workoutFinishedDialog = false">
-            Delete
+          <v-btn text @click="$router.push({ name: 'workouts' })">
+            Close
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <Confetti
-      :confetti="confetti"
-      @false="confetti = false"
-      style="z-index: 101"
-    />
+
+    <!-- Stop workout dialog -->
+    <v-dialog
+      v-model="stopWorkoutDialog"
+      max-width="350"
+      overlay-opacity="0.85"
+      overlay-color="black"
+    >
+      <v-card>
+        <v-card-title class="headline"> Stop workout </v-card-title>
+        <v-card-text>
+          Are you sure you want to stop the workout halfway?
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green" text @click="stopWorkoutDialog = false">
+            Cancel
+          </v-btn>
+          <v-btn color="red" text @click="stopWorkout"> Stop </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- Confetti -->
+    <Confetti :confetti="confetti" @false="confetti = false" />
   </div>
 </template>
 
@@ -200,6 +297,16 @@ import { WORKOUT_BLOCK_OPTIONS_INFO } from '../../../constants'
 export default {
   data() {
     return {
+      compliments: [
+        'You look stronger already!',
+        'WOOH another great workout done!',
+        'You... are a BEAST!',
+        'Enjoy the well deserved rest!',
+        'Very very impressive!',
+        'Muscle soreness incoming!',
+        'That... was amazing!',
+      ],
+      randomComplimentNumber: 0,
       WORKOUT_BLOCK_OPTIONS_INFO: WORKOUT_BLOCK_OPTIONS_INFO,
       loading: true,
       workout: {},
@@ -213,6 +320,7 @@ export default {
       NoSleepActive: false,
       error: null,
       confetti: false,
+      newBlock: true,
       currentExercise: null,
       currentExerciseCount: 0,
       currentBlock: 0,
@@ -231,6 +339,7 @@ export default {
       timerInterval: null,
       workoutFinished: false,
       workoutFinishedDialog: false,
+      stopWorkoutDialog: false,
     }
   },
   methods: {
@@ -272,6 +381,10 @@ export default {
       this.resetVideo = true
     },
     nextExercise() {
+      if (this.newBlock) {
+        this.newBlock = false
+        return
+      }
       this.progressCurrentExercise++
       this.currentExerciseCount++
 
@@ -298,7 +411,7 @@ export default {
         this.currentExerciseCount = 0
         this.currentSet = 0
         this.currentBlock++
-
+        this.newBlock = true
         this.setCurrentBlockSettings()
       }
 
@@ -332,6 +445,7 @@ export default {
       }
     },
     startTimer() {
+      this.nextExercise()
       this.timerStarted = true
       const block = this.workout.blocks[this.currentBlock]
       if (block.type == 'Rest') {
@@ -484,6 +598,10 @@ export default {
         }, 1000)
       })
     },
+    stopWorkout() {
+      clearInterval(this.timerInterval)
+      this.$router.go(-1)
+    },
     async getLike() {
       const id = this.$route.path.substring(
         this.$route.path.lastIndexOf('/') + 1
@@ -516,12 +634,15 @@ export default {
       this.workout.likes = data
     },
     async workoutfinish() {
+      this.randomComplimentNumber = Math.floor(
+        Math.random() * this.compliments.length
+      )
+      this.workoutFinishedDialog = true
       this.workoutFinished = true
       const data = await this.$axios.$post('workout/finish', {
         id: this.workout.id,
       })
       this.confetti = true
-      this.workoutFinishedDialog = true
     },
     async increaseView() {
       const data = await this.$axios.$post('workout/view', {
@@ -529,8 +650,8 @@ export default {
       })
     },
   },
-  created() {
-    this.getWorkout()
+  async created() {
+    await this.getWorkout()
     if (this.$store.state.LOGGEDIN) {
       this.getLike()
       this.getFavorite()
@@ -538,6 +659,7 @@ export default {
   },
   mounted() {
     this.NoSleep = new NoSleep()
+    this.NoSleepActive = true
   },
   computed: {
     LOGGEDIN() {
@@ -596,6 +718,7 @@ export default {
 
 .exercise-container {
   max-width: 420px;
+  width: 100%;
 }
 
 .next-button-container {

@@ -14,125 +14,12 @@
             </template>
             <span> {{ WORKOUT_BLOCK_OPTIONS_INFO[block.type] }} </span>
           </v-tooltip>
-
-          <div v-if="!finished" class="ml-auto mr-3">
-            <!-- Rest -->
-            <div v-if="block.type === 'Rest'" class="d-flex align-center">
-              <h3 class="mr-3">{{ timer }}</h3>
-              <v-btn
-                v-if="timer"
-                color="secondary"
-                min-width="0"
-                @click="blockFinished"
-                class="px-3 py-2"
-              >
-                <v-icon dark x-small> fa-check </v-icon>
-              </v-btn>
-              <v-btn v-if="!timer" color="secondary" @click="startRestTimer">
-                <v-icon dark x-small> fa-play </v-icon>
-              </v-btn>
-            </div>
-
-            <!-- EMOM -->
-            <div v-if="block.type === 'EMOM'" class="d-flex align-center">
-              <h3 class="mr-4">{{ timer }}</h3>
-              <h3 v-if="timer" class="mr-3">
-                {{ setCount }} / {{ block.values[1] }}
-              </h3>
-              <v-btn
-                v-if="timer"
-                color="secondary"
-                min-width="0"
-                @click="blockFinished"
-                class="px-3 py-2"
-              >
-                <v-icon dark x-small> fa-check </v-icon>
-              </v-btn>
-              <v-btn v-if="!timer" color="secondary" @click="startEMOMTimer">
-                <v-icon dark x-small> fa-play </v-icon>
-              </v-btn>
-            </div>
-
-            <!-- AMRAP -->
-            <div v-if="block.type === 'AMRAP'" class="d-flex align-center">
-              <h3 class="mr-3">{{ timer }}</h3>
-              <v-btn
-                v-if="timer"
-                color="secondary"
-                min-width="0"
-                @click="blockFinished"
-                class="px-3 py-2"
-              >
-                <v-icon dark x-small> fa-check </v-icon>
-              </v-btn>
-              <v-btn v-if="!timer" color="secondary" @click="startAMRAPTimer">
-                <v-icon dark x-small> fa-play </v-icon>
-              </v-btn>
-            </div>
-
-            <!-- TABATA -->
-            <div v-if="block.type === 'TABATA'" class="d-flex align-center">
-              <div class="d-flex flex-column mr-4 text-center">
-                <p class="ma-0" v-if="timer">{{ workOrRest }}</p>
-                <h3>{{ timer }}</h3>
-              </div>
-              <h3 v-if="timer" class="mr-3">
-                {{ setCount }} / {{ block.values[0] }}
-              </h3>
-              <v-btn
-                v-if="timer"
-                color="secondary"
-                min-width="0"
-                @click="blockFinished"
-                class="px-3 py-2"
-              >
-                <v-icon dark x-small> fa-check </v-icon>
-              </v-btn>
-              <v-btn v-if="!timer" color="secondary" @click="startTABATATimer">
-                <v-icon dark x-small> fa-play </v-icon>
-              </v-btn>
-            </div>
-
-            <!-- Circuit -->
-            <div
-              class="d-flex align-center"
-              v-if="['Circuit'].includes(block.type)"
-            >
-              <h3 class="mr-3">{{ setCount }} / {{ block.values[0] }}</h3>
-              <v-btn color="secondary" @click="increaseCount">
-                <v-icon dark x-small> fa-plus </v-icon>
-              </v-btn>
-            </div>
-
-            <!-- Single, Text -->
-            <div
-              class="d-flex align-center"
-              v-if="
-                ['Single', 'Text', 'For time'].includes(block.type)
-              "
-            >
-              <v-btn color="secondary" @click="blockFinished" class="px-3 py-2">
-                <v-icon dark x-small> fa-check </v-icon>
-              </v-btn>
-            </div>
-          </div>
-          <div v-else class="ml-auto mr-3">
-            <v-card color="secondary" class="px-3 py-2" flat>
-              Done
-              <v-icon dark x-small> fa-check </v-icon>
-            </v-card>
-          </div>
         </div>
         <v-divider class="my-2"></v-divider>
         <div v-if="!['Rest', 'Text'].includes(block.type)">
-          <WorkoutBlockExercise
-            v-for="exercise in block.exercises"
-            :key="exercise.id"
-            class="mx-2"
-            :exercise="exercise"
-            :blockType="block.type"
-          >
-          </WorkoutBlockExercise>
+          <WorkoutBlockExercise v-for="exercise in block.exercises"
+          :key="exercise.id" class="mx-2" :exercise="exercise"
+          :blockType="block.type" />
         </div>
         <div v-else-if="block.type === 'Rest'" class="text-center">
           <h3 class="ma-0">{{ block.values[0] }} {{ block.values[1] }}</h3>
@@ -162,7 +49,7 @@
         </div> -->
 
         <v-divider
-          v-if="!['Single', 'For time', 'Rest'].includes(block.type)"
+          v-if="!['Single', 'For time', 'Rest', 'Text'].includes(block.type)"
           class="my-2"
         ></v-divider>
 
