@@ -23,6 +23,7 @@
       </div>
     </v-footer>
     <v-footer
+      v-if="$route.name != 'workout-start-id'"
       class="d-md-none d-flex justify-center align-center text-center"
       height="60rem"
       fixed

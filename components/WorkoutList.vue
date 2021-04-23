@@ -10,7 +10,7 @@
         {{ workout.finishes }}
       </div>
     </div>
-    <NuxtLink :to="'/workout/' + workout.id">
+    <NuxtLink :to="'/workout/start/' + workout.id">
       <v-card class="workoutlist difficultyborder" :elevation="elevation" hover>
         <v-container class="pb-0 text-center">
           <div class="d-flex align-center justify-center">

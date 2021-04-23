@@ -2,8 +2,6 @@
   <div class="register-container d-flex align-center justify-center">
     <div v-if="loading" class="text-center"><Loading /></div>
     <div v-else class="mx-4 page">
-      <v-btn @click="$router.go(-1)" block class="mb-5">Back</v-btn>
-
       <div>
         <div class="workout-stats d-inline-block ml-4 px-1 py-1">
           <v-icon class="mr-1" x-small>fa-thumbs-up</v-icon>

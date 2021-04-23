@@ -33,7 +33,7 @@
               ></div>
             </div>
             <div class="d-flex align-center my-2">
-              <div v-if="!newBlock">
+              <div v-if="!newBlock" class="mr-3">
                 <div class="d-flex">
                   <h3 class="text--secondary">
                     {{ currentBlockType }}
@@ -58,6 +58,7 @@
                   {{ currentSet + 1 }} / {{ currentBlockSetTotal }}
                 </h4>
               </div>
+              <v-btn @click="nextBlock(true)">Skip</v-btn>
               <v-btn @click="stopWorkoutDialog = true" class="ml-auto"
                 >Stop</v-btn
               >
@@ -74,7 +75,7 @@
               !['Text', 'Rest'].includes(workout.blocks[this.currentBlock].type)
             "
           >
-            <h3 v-if="!currentExercise">
+            <h3 class="text-center" v-if="!currentExercise">
               {{
                 workout.blocks[this.currentBlock].exercises[
                   this.currentExerciseCount
@@ -196,6 +197,24 @@
             <h1 class="text-center mt-1">
               {{ timer }}
             </h1>
+          </div>
+          <div v-if="currentExerciseCount == 0 && newBlock && currentBlock == 0">
+            <v-btn
+              block
+              @click="
+                $router.push({ name: 'workout-id', params: { id: workout.id } })
+              "
+              class="py-5 mt-5 next-button"
+              color="secondary"
+              >View full workout</v-btn
+            >
+            <v-btn
+              color="secondary"
+              @click="$router.go(-1)"
+              block
+              class="mt-5"
+              >Back</v-btn
+            >
           </div>
         </div>
       </div>
@@ -330,6 +349,7 @@ export default {
       resetVideo: false,
       progressCurrentExercise: 0,
       progressTotalExercises: 0,
+      progressTotalExercisesBlock: [],
       timerStarted: false,
       actualTimerStarted: false,
       finished: false,
@@ -402,35 +422,51 @@ export default {
       }
 
       if (this.currentSet >= this.currentBlockSetTotal) {
-        if (this.currentBlock >= this.workout.blocks.length - 1) {
-          this.workoutfinish()
-          return
-        }
-
-        this.currentExerciseCount = 0
-        this.currentSet = 0
-        this.currentBlock++
-        this.newBlock = true
-        this.setCurrentBlockSettings()
+        this.nextBlock()
       }
 
       this.getExercise()
     },
+    nextBlock(skip = false) {
+      clearInterval(this.timerInterval)
+      this.timerStarted = false
+
+      if (skip) {
+        this.progressCurrentExercise = this.progressTotalExercisesBlock
+          .slice(0, this.currentBlock + 1)
+          .reduce((a, b) => a + b, 0)
+      }
+
+      if (this.currentBlock >= this.workout.blocks.length - 1) {
+        this.workoutfinish()
+        return
+      }
+
+      this.currentExerciseCount = 0
+      this.currentSet = 0
+      this.currentBlock++
+      this.newBlock = true
+      this.setCurrentBlockSettings()
+    },
     calculateProgressTotalExercises() {
-      this.workout.blocks.forEach((e) => {
+      this.workout.blocks.forEach((e, i) => {
         if (e.type == 'Circuit') {
-          this.progressTotalExercises +=
+          this.progressTotalExercisesBlock[i] =
             parseInt(e.values[0]) * e.exercises.length
         } else if (['Single', 'For time'].includes(e.type)) {
-          this.progressTotalExercises += parseInt(e.exercises.length)
+          this.progressTotalExercisesBlock[i] = parseInt(e.exercises.length)
         } else if (e.type == 'EMOM') {
-          this.progressTotalExercises += parseInt(e.values[1])
+          this.progressTotalExercisesBlock[i] = parseInt(e.values[1])
         } else if (['AMRAP', 'Text'].includes(e.type)) {
-          this.progressTotalExercises += 1
+          this.progressTotalExercisesBlock[i] = 1
         } else if (['TABATA'].includes(e.type)) {
-          this.progressTotalExercises += parseInt(e.values[0])
+          this.progressTotalExercisesBlock[i] = parseInt(e.values[0])
         }
       })
+      this.progressTotalExercises = this.progressTotalExercisesBlock.reduce(
+        (a, b) => a + b,
+        0
+      )
     },
     setCurrentBlockSettings() {
       const block = this.workout.blocks[this.currentBlock]
@@ -599,7 +635,7 @@ export default {
     },
     stopWorkout() {
       clearInterval(this.timerInterval)
-      this.$router.go(-1)
+      this.$router.push({name: 'workouts'})
     },
     async getLike() {
       const id = this.$route.path.substring(

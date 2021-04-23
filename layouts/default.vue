@@ -10,6 +10,11 @@
 export default {
   props: ['error'],
   layout: 'error', // you can set a custom layout for the error page
+  computed: {
+    theme() {
+      return this.$vuetify.theme.dark ? 'dark' : 'light'
+    },
+  },
 }
 </script>
 
