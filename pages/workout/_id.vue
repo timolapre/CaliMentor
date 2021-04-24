@@ -1,5 +1,6 @@
 <template>
   <div class="register-container d-flex align-center justify-center">
+    <LoggedInOnly />
     <div v-if="loading" class="text-center"><Loading /></div>
     <div v-else class="mx-4 page">
       <div>
@@ -177,7 +178,9 @@
       />
       <Ad v-if="workout.blocks.length < 4" />
 
-      <v-btn block @click="workoutFinished" v-if="!finished">Mark workout finished</v-btn>
+      <v-btn block @click="workoutFinished" v-if="!finished"
+        >Mark workout finished</v-btn
+      >
 
       <Confetti :confetti="confetti" @false="confetti = false" />
     </div>
@@ -216,11 +219,6 @@ export default {
       )
 
       const data = await this.$axios.$post('workout/id', { id })
-
-      if (data == 'unauthorized') {
-        this.$router.push({ name: 'unauthorized' })
-        return
-      }
 
       this.creator = data.user?.username
       this.workout = data
@@ -278,6 +276,8 @@ export default {
       })
       this.confetti = true
       this.finished = true
+
+      this.$store.state.LOGGEDINUSER.monthlyFinishes++
     },
     async increaseView() {
       const data = await this.$axios.$post('workout/view', {
@@ -285,11 +285,17 @@ export default {
       })
     },
   },
-  created() {
-    this.getWorkout()
-    if (this.$store.state.LOGGEDIN) {
+  async created() {
+    await this.$store.dispatch('getLoggedinUser')
+    if (
+      !this.$store.state.PREMIUMUSER &&
+      this.$store.state.LOGGEDINUSER.monthlyFinishes >= 5
+    ) {
+      this.$router.push({ name: 'workouts', query: { exceeded: '1' } })
+    } else if (this.$store.state.LOGGEDIN) {
       this.getLike()
       this.getFavorite()
+      this.getWorkout()
     }
   },
   mounted() {

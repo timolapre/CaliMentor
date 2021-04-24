@@ -14,12 +14,23 @@
         class="ml-auto d-none d-md-flex justify-center align-center"
         v-if="$store.state.LOGGEDIN"
       >
-        <v-btn @click="$router.push({ name: 'dashboard' })">
-          <v-icon class="mr-2" small>fa-chart-bar</v-icon>Dashboard</v-btn
+        <v-btn
+          class="mr-2 px-4"
+          @click="
+            $router.push({
+              name: 'workouts',
+            })
+          "
+        >
+          <v-icon class="mr-2" small>fa-dumbbell</v-icon> Workouts
+        </v-btn>
+
+        <v-btn class="mr-2" @click="$router.push({ name: 'workout-create' })">
+          <v-icon class="mr-2" small>fa-plus</v-icon>Create workout</v-btn
         >
 
         <v-btn
-          class="ml-2 px-4"
+          class="mr-2 px-4"
           @click="
             $router.push({
               name: 'exercises',
@@ -29,16 +40,10 @@
           <v-icon class="mr-2" small>fa-running</v-icon> Exercises
         </v-btn>
 
-        <v-btn
-          class="ml-2 px-4"
-          @click="
-            $router.push({
-              name: 'workouts',
-            })
-          "
+        <v-btn @click="$router.push({ name: 'dashboard' })">
+          <v-icon class="mr-2" small>fa-chart-bar</v-icon>Dashboard</v-btn
         >
-          <v-icon class="mr-2" small>fa-dumbbell</v-icon> Workouts
-        </v-btn>
+
         <!-- <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
             <v-btn v-bind="attrs" v-on="on" class="ml-2 px-4">
@@ -84,10 +89,6 @@
             </v-list-item>
           </v-list>
         </v-menu> -->
-
-        <v-btn class="ml-2" @click="$router.push({ name: 'workout-create' })">
-          <v-icon class="mr-2" small>fa-plus</v-icon>Create workout</v-btn
-        >
 
         <v-btn class="ml-2 px-1" @click="$router.push({ name: 'account' })">
           <v-icon small>fa-user</v-icon>

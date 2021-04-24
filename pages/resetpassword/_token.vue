@@ -66,7 +66,6 @@ export default {
           this.$route.path.lastIndexOf('/') + 1
         ),
       })
-      console.log(data)
 
       this.errors = data.errors ? data.errors : {}
       this.success = data.user ? true : false

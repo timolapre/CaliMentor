@@ -1,5 +1,6 @@
 <template>
   <div class="workout-container d-flex align-center justify-center">
+    <LoggedInOnly />
     <div class="page">
       <Filters
         class="mb-4"
@@ -17,19 +18,19 @@
           </h2>
         </div>
         <v-row>
-          <v-col v-for="(workout, i) in workouts" :key="workout.id" cols="12" md="6">
-            <WorkoutList :workout="workout" :index="i" />
+          <v-col
+            v-for="(workout, i) in workouts"
+            :key="workout.id"
+            cols="12"
+            md="6"
+          >
+            <WorkoutList
+              :workout="workout"
+              :index="i"
+              @openExceededDialog="exceededWorkoutsLimitDialog = true"
+            />
           </v-col>
         </v-row>
-        <v-btn
-          class="py-10 mt-10 no-text-transform"
-          v-if="!$store.state.LOGGEDIN && workouts.length >= 1"
-          block
-          @click="$router.push({ name: 'register' })"
-        >
-          Please create an account <br />
-          to see more workouts
-        </v-btn>
         <!-- <v-btn
           class="py-10 px-1"
           color="primary"
@@ -51,7 +52,6 @@
         > -->
         <div class="pagination mt-7">
           <v-pagination
-            v-if="$store.state.LOGGEDIN"
             :length="pagesCount"
             @input="changePage"
             :value="pageSelected"
@@ -59,6 +59,37 @@
         </div>
       </div>
     </div>
+
+    <!-- Exceeded workout limit dialog -->
+    <v-dialog
+      v-model="exceededWorkoutsLimitDialog"
+      max-width="500"
+      overlay-opacity="0.85"
+      overlay-color="black"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Monthly workout limit exceeded
+        </v-card-title>
+        <v-card-text>
+          Well done working out this much! <br />
+          Upgrade to a premium account to make use of endless workouts
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            class="text--secondary"
+            text
+            @click="exceededWorkoutsLimitDialog = false"
+          >
+            Later
+          </v-btn>
+          <v-btn color="green" text @click="$router.push({ name: 'upgrade' })">
+            Upgrade
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -74,6 +105,7 @@ export default {
       pageSelected: 1,
       pagesCount: null,
       showWorkoutCount: 14,
+      exceededWorkoutsLimitDialog: false,
     }
   },
   methods: {
@@ -115,6 +147,9 @@ export default {
   async created() {
     this.pageSelected = parseInt(this.$route.query.page) || 1
     this.getWorkouts()
+    if (this.$route.query.exceeded) {
+      this.exceededWorkoutsLimitDialog = true
+    }
   },
   watch: {
     $route(to, from) {

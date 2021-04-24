@@ -1,5 +1,6 @@
 <template>
   <div class="d-flex align-center justify-center">
+    <LoggedInOnly />
     <div class="page">
       <v-btn @click="$router.go(-1)" block>Back</v-btn>
 
@@ -117,9 +118,7 @@ export default {
         .redirectToCheckout({
           sessionId: data.sessionId,
         })
-        .then((data) => {
-          console.log(data)
-        })
+        .then((data) => {})
     },
   },
   watch: {

@@ -1,5 +1,6 @@
 <template>
   <div class="register-container d-flex align-center justify-center">
+    <LoggedInOnly :page="'login'" />
     <div class="page">
       <!-- <h1 class="text-center">Welcome {{ user.username }}</h1>
       <v-row class="mb-5">
@@ -69,7 +70,7 @@
         <v-icon class="mr-3" small>fa-dumbbell</v-icon> My workouts
       </v-btn>
 
-      <Contact class="mt-10"/>
+      <Contact class="mt-10" />
     </div>
   </div>
 </template>

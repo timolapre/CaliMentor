@@ -23,13 +23,13 @@
       </div>
     </v-footer>
     <v-footer
-      v-if="$route.name != 'workout-start-id'"
+      v-if="$store.state.LOGGEDIN && $route.name != 'workout-start-id'"
       class="d-md-none d-flex justify-center align-center text-center"
       height="60rem"
       fixed
     >
       <!-- LOGGEDIN -->
-      <div class="row" v-if="$store.state.LOGGEDIN">
+      <div class="row">
         <div
           @click="
             $router.push({ name: 'workouts', query: { favorited: undefined } })
@@ -77,38 +77,6 @@
         >
           <v-icon>fa-plus</v-icon>
         </v-btn>
-      </div>
-
-      <!-- NOT LOGGED IN-->
-      <div class="row" v-if="!$store.state.LOGGEDIN">
-        <div
-          @click="$router.push({ name: 'index' })"
-          class="col-3 pb-1 cursor-pointer d-flex flex-column align-center"
-        >
-          <v-icon>fa-home</v-icon>
-          <p class="small-text">Home</p>
-        </div>
-        <div
-          @click="$router.push({ name: 'workouts' })"
-          class="col-3 pb-1 cursor-pointer d-flex flex-column align-center"
-        >
-          <v-icon>fa-dumbbell</v-icon>
-          <p class="small-text">workouts</p>
-        </div>
-        <div
-          @click="$router.push({ name: 'exercises' })"
-          class="col-3 pb-1 cursor-pointer d-flex flex-column align-center"
-        >
-          <v-icon>fa-running</v-icon>
-          <p class="small-text">exercises</p>
-        </div>
-        <div
-          @click="$router.push({ name: 'login' })"
-          class="col-3 pb-1 cursor-pointer d-flex flex-column align-center"
-        >
-          <v-icon>fa-user</v-icon>
-          <p class="small-text">login</p>
-        </div>
       </div>
     </v-footer>
   </div>

@@ -1,5 +1,6 @@
 <template>
   <div class="register-container d-flex align-center justify-center">
+    <LoggedInOnly />
     <div class="page">
       <v-btn @click="$router.go(-1)" block class="mb-10">Back</v-btn>
       <h1 class="mt-5 text-center">Routine</h1>

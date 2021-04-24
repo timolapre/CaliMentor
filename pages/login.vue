@@ -1,6 +1,8 @@
 <template>
   <div class="register-container d-flex align-center justify-center">
     <div class="page">
+      <GoogleLoginButton class="mb-10" />
+      <h4>Login with username</h4>
       <v-form id="login-form" @submit.prevent="login()">
         <v-text-field
           v-model="username"
@@ -39,7 +41,6 @@
         <p class="mb-0 mr-3">No account yet?</p>
         <v-btn @click="$router.push({ name: 'register' })"> Register </v-btn>
       </div>
-      <GoogleLoginButton />
     </div>
   </div>
 </template>
@@ -67,7 +68,7 @@ export default {
       this.errors = data.errors ? data.errors : {}
       if (!data.errors) {
         await this.$store.dispatch('getLoggedinUser')
-        this.$router.push({ name: 'dashboard' })
+        this.$router.push({ name: 'workouts' })
       }
     },
   },

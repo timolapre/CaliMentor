@@ -1,5 +1,6 @@
 <template>
   <div class="dashboard-container d-flex align-center justify-center">
+    <LoggedInOnly />
     <div class="page overflow-hidden">
       <!-- Routine -->
       <div class="text-center">

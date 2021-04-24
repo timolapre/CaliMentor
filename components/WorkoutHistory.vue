@@ -17,8 +17,8 @@
       >
       </HistoryCard>
     </div>
-    <v-card class="mt-2 pa-3" v-else>
-      <h3>You need a premium account to see this</h3>
+    <v-card @click="$router.push({ name: 'upgrade' })" class="mt-2 pa-3" v-else>
+      <h3>Upgrade to premium to see your full history</h3>
     </v-card>
   </div>
 </template>

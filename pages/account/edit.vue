@@ -1,5 +1,6 @@
 <template>
   <div class="register-container d-flex align-center justify-center">
+    <LoggedInOnly />
     <div class="page">
       <v-btn block @click="$router.push({ name: 'account' })"> Back </v-btn>
       <h1 class="text-center mt-3">Edit account</h1>

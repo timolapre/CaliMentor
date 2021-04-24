@@ -1,5 +1,6 @@
 <template>
   <div class="d-flex justify-center">
+    <LoggedInOnly />
     <div v-if="loading" class="text-center"><Loading /></div>
     <div v-else class="mx-4 page">
       <!-- Information header -->
@@ -32,7 +33,7 @@
                 "
               ></div>
             </div>
-            <div class="d-flex align-center my-2">
+            <div class="d-flex align-center mt-4 mb-2">
               <div v-if="!newBlock" class="mr-3">
                 <div class="d-flex">
                   <h3 class="text--secondary">
@@ -75,15 +76,12 @@
               !['Text', 'Rest'].includes(workout.blocks[this.currentBlock].type)
             "
           >
-            <h3 class="text-center" v-if="!currentExercise">
-              {{
-                workout.blocks[this.currentBlock].exercises[
-                  this.currentExerciseCount
-                ].name
-              }}
-            </h3>
             <Exercise
-              v-if="currentExercise"
+              v-if="
+                currentExercise &&
+                currentExercise.approved &&
+                currentExercise.video
+              "
               :exercise="currentExercise"
               :selected="
                 workout.blocks[this.currentBlock].exercises[
@@ -93,6 +91,13 @@
               :reset="resetVideo"
               class="exercise-container"
             />
+            <h3 class="text-center" v-else>
+              {{
+                workout.blocks[this.currentBlock].exercises[
+                  this.currentExerciseCount
+                ].name
+              }}
+            </h3>
           </div>
           <h3
             class="mt-3 mb-15"
@@ -198,7 +203,9 @@
               {{ timer }}
             </h1>
           </div>
-          <div v-if="currentExerciseCount == 0 && newBlock && currentBlock == 0">
+          <div
+            v-if="currentExerciseCount == 0 && newBlock && currentBlock == 0"
+          >
             <v-btn
               block
               @click="
@@ -210,7 +217,10 @@
             >
             <v-btn
               color="secondary"
-              @click="$router.go(-1)"
+              @click="
+                NoSleepActive = false
+                $router.go(-1)
+              "
               block
               class="mt-5"
               >Back</v-btn
@@ -368,11 +378,6 @@ export default {
       )
 
       const data = await this.$axios.$post('workout/id', { id })
-
-      if (data == 'unauthorized') {
-        this.$router.push({ name: 'unauthorized' })
-        return
-      }
 
       this.creator = data.user?.username
       this.workout = data
@@ -635,7 +640,8 @@ export default {
     },
     stopWorkout() {
       clearInterval(this.timerInterval)
-      this.$router.push({name: 'workouts'})
+      this.NoSleepActive = false
+      this.$router.push({ name: 'workouts' })
     },
     async getLike() {
       const id = this.$route.path.substring(
@@ -678,6 +684,7 @@ export default {
         id: this.workout.id,
       })
       this.confetti = true
+      this.$store.state.LOGGEDINUSER.monthlyFinishes++
     },
     async increaseView() {
       const data = await this.$axios.$post('workout/view', {
@@ -686,8 +693,15 @@ export default {
     },
   },
   async created() {
-    await this.getWorkout()
-    if (this.$store.state.LOGGEDIN) {
+    await this.$store.dispatch('getLoggedinUser')
+
+    if (
+      !this.$store.state.PREMIUMUSER &&
+      this.$store.state.LOGGEDINUSER.monthlyFinishes >= 5
+    ) {
+      this.$router.push({ name: 'workouts', query: { exceeded: '1' } })
+    } else if (this.$store.state.LOGGEDIN) {
+      this.getWorkout()
       this.getLike()
       this.getFavorite()
     }

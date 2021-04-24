@@ -26,7 +26,7 @@
             <v-btn
               class="black--text"
               color="primary"
-              large
+              x-large
               @click="$router.push({ name: 'register' })"
               >Join for free</v-btn
             >
@@ -39,7 +39,11 @@
             <v-col cols="12" sm="6">
               <v-card
                 class="pa-7 cardborder"
-                @click="$router.push({ name: 'workouts' })"
+                @click="
+                  $store.state.LOGGEDIN
+                    ? $router.push({ name: 'workouts' })
+                    : $router.push({ name: 'login' })
+                "
               >
                 <v-icon class="mb-5" large>fa-dumbbell</v-icon>
                 <h2>{{ workoutCount }} Workouts</h2>
@@ -48,7 +52,9 @@
             <v-col cols="12" sm="6">
               <v-card
                 class="pa-7 cardborder"
-                @click="$router.push({ name: 'exercises' })"
+                @click="$store.state.LOGGEDIN
+                    ? $router.push({ name: 'exercises' })
+                    : $router.push({ name: 'login' })"
               >
                 <v-icon class="mb-5" large>fa-running</v-icon>
                 <h2>{{ exercisesCount }} Exercise videos</h2>

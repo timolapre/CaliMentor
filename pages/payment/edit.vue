@@ -93,7 +93,6 @@ export default {
           sessionId: data.sessionId,
         })
         .then((data) => {
-          console.log(data)
         })
     },
   },

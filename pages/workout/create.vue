@@ -1,5 +1,8 @@
 <template>
-  <WorkoutCreateOrEdit />
+  <div>
+    <LoggedInOnly />
+    <WorkoutCreateOrEdit />
+  </div>
 </template>
 
 <script lang="ts">

@@ -1,5 +1,6 @@
 <template>
   <div class="workout-container d-flex align-center justify-center">
+    <LoggedInOnly />
     <div class="page">
       <div v-if="loading" class="d-flex justify-center mt-5">
         <Loading />

@@ -1,6 +1,8 @@
 <template>
   <div class="register-container d-flex align-center justify-center">
     <div class="page">
+      <GoogleLoginButton class="mb-10" />
+      <h4>Register with email</h4>
       <v-form id="register-form" @submit.prevent="register()">
         <v-text-field
           v-model="username"
@@ -29,15 +31,6 @@
           :error-messages="errors.repeatPassword"
         ></v-text-field>
 
-        <v-autocomplete
-          v-model="country"
-          :items="countries"
-          item-text="name"
-          label="Country"
-          :error="!!errors.country"
-          :error-messages="errors.country"
-        ></v-autocomplete>
-
         <v-btn
           type="submit"
           form="register-form"
@@ -52,7 +45,6 @@
         <p class="mb-0 mr-3">Already have an account?</p>
         <v-btn @click="$router.push({ name: 'login' })"> Login </v-btn>
       </div>
-      <GoogleLoginButton />
     </div>
   </div>
 </template>
@@ -66,30 +58,29 @@ export default {
   name: 'Register',
   data() {
     return {
-      countries: CountryList.getData(),
+      //countries: CountryList.getData(),
       username: '',
       password: '',
       repeatPassword: '',
       email: '',
-      country: '',
       errors: {},
     }
   },
   methods: {
     async register() {
+      console.log('ok');
       const data = await this.$axios.$post('/user/register', {
         username: this.username,
         password: this.password,
         repeatPassword: this.repeatPassword,
         email: this.email,
-        country: this.country,
       })
       if (data.errors) {
         this.errors = data.errors
         return
       }
       await this.$store.dispatch('getLoggedinUser')
-      this.$router.push({ name: 'dashboard' })
+      this.$router.push({ name: 'workouts' })
     },
   },
 }

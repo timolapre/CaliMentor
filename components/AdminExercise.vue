@@ -176,7 +176,6 @@ export default {
         exercise: this.newExerciseName,
         order: this.newExerciseOrder,
       })
-      console.log(data)
       this.exercise.levels.push(data)
     },
     async deleteExerciseLevel(id) {

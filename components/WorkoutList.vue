@@ -10,8 +10,13 @@
         {{ workout.finishes }}
       </div>
     </div>
-    <NuxtLink :to="'/workout/start/' + workout.id">
-      <v-card class="workoutlist difficultyborder" :elevation="elevation" hover>
+    <NuxtLink :to="allowedOpenWorkout ? '/workout/start/' + workout.id : ''">
+      <v-card
+        @click="checkAllowedOpenWorkout"
+        class="workoutlist difficultyborder"
+        :elevation="elevation"
+        hover
+      >
         <v-container class="pb-0 text-center">
           <div class="d-flex align-center justify-center">
             <div>
@@ -50,6 +55,8 @@
         </v-container>
       </v-card>
     </NuxtLink>
+
+    <!-- Ads -->
     <Ad v-if="index == 6" />
   </div>
 </template>
@@ -67,6 +74,13 @@ export default {
     return {
       elevation: 3,
     }
+  },
+  methods: {
+    checkAllowedOpenWorkout() {
+      if (!this.allowedOpenWorkout) {
+        this.$emit('openExceededDialog')
+      }
+    },
   },
   computed: {
     date() {
@@ -86,8 +100,13 @@ export default {
           break
       }
     },
+    allowedOpenWorkout() {
+      return !(
+        !this.$store.state.PREMIUMUSER &&
+        this.$store.state.LOGGEDINUSER.monthlyFinishes >= 5
+      )
+    },
   },
-  methods: {},
 }
 </script>
 
