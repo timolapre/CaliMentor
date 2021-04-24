@@ -407,6 +407,7 @@ export default {
     nextExercise() {
       if (this.newBlock) {
         this.newBlock = false
+        this.getExercise()
         return
       }
       this.progressCurrentExercise++
