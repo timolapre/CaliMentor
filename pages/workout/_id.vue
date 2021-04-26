@@ -96,21 +96,6 @@
         ></v-switch>
       </div> -->
 
-      <div class="d-flex justify-center mt-4">
-        <v-btn
-          @click="
-            $router.push({
-              name: 'workout-start-id',
-              params: { id: workout.id },
-            })
-          "
-          block
-          color="secondary"
-          class="py-6"
-          >Start workout</v-btn
-        >
-      </div>
-
       <!-- <div class="d-flex justify-center mt-4">
         <v-btn block>View full workout</v-btn>
       </div> -->
@@ -169,18 +154,38 @@
         </v-row>
       </div>
 
-      <WorkoutBlock
-        v-for="(block, i) in workout.blocks"
-        :key="block.id"
-        :block="block"
-        @block-finish="blockFinishCount += 1"
-        :index="i"
-      />
-      <Ad v-if="workout.blocks.length < 4" />
+      <div class="d-flex justify-center mt-4">
+        <v-btn
+          @click="
+            $router.push({
+              name: 'workout-start-id',
+              params: { id: workout.id },
+            })
+          "
+          block
+          color="primary"
+          class="py-8"
+          >Start workout</v-btn
+        >
+      </div>
 
-      <v-btn block @click="workoutFinished" v-if="!finished"
-        >Mark workout finished</v-btn
-      >
+      <div v-if="viewWorkout">
+        <WorkoutBlock
+          v-for="(block, i) in workout.blocks"
+          :key="block.id"
+          :block="block"
+          @block-finish="blockFinishCount += 1"
+          :index="i"
+        />
+        <Ad v-if="workout.blocks.length < 4" />
+
+        <v-btn block @click="workoutFinished" v-if="!finished"
+          >Mark workout finished</v-btn
+        >
+      </div>
+      <div v-else class="mt-5">
+        <v-btn block @click="viewWorkout = true">View full workout</v-btn>
+      </div>
 
       <Confetti :confetti="confetti" @false="confetti = false" />
     </div>
@@ -210,6 +215,7 @@ export default {
       error: null,
       confetti: false,
       finished: false,
+      viewWorkout: false,
     }
   },
   methods: {

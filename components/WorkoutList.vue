@@ -10,7 +10,7 @@
         {{ workout.finishes }}
       </div>
     </div>
-    <NuxtLink :to="allowedOpenWorkout ? '/workout/start/' + workout.id : ''">
+    <NuxtLink :to="allowedOpenWorkout ? '/workout/' + workout.id : ''">
       <v-card
         @click="checkAllowedOpenWorkout"
         class="workoutlist difficultyborder"

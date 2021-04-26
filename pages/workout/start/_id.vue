@@ -3,228 +3,251 @@
     <LoggedInOnly />
     <div v-if="loading" class="text-center"><Loading /></div>
     <div v-else class="mx-4 page">
-      <!-- Information header -->
-      <div class="d-flex justify-center">
-        <div class="workout-start-container d-flex justify-center">
-          <div class="content">
-            <div
-              class="progress-bar-container rounded-pill d-flex align-center justify-center"
-            >
+      <div v-if="!workoutStarted">
+        <v-btn
+          @click="
+            NoSleepActive = false
+            $router.go(-1)
+          "
+          block
+          class="mb-10"
+          >Back</v-btn
+        >
+        <h1 class="text-center">Ready to start your workout?</h1>
+        <p class="mt-5">
+          After pressing the "I'M READY" button you will first get a small
+          overview of the next exercises. This can be a circuit, EMOM, TABATA or
+          something else. You can press the litte 'i' button next to it for more
+          information if unfamiliar.
+        </p>
+        <p class="mt-5">
+          When ready, press start and you actually have to do the exercises. A
+          timer can start or you see the amount of repetitions you have to do.
+          In most cases there is a video of the exercise. Press 'NEXT' when you
+          did the exercise on screen.
+        </p>
+        <p class="mt-5">
+          Without further ado, press the "I'M READY" button and enjoy your
+          workout!
+        </p>
+        <v-btn
+          block
+          @click="workoutStarted = true"
+          class="py-8 next-button mt-10"
+          color="secondary"
+          >I'm ready!</v-btn
+        >
+      </div>
+      <div v-else>
+        <!-- Information header -->
+        <div class="d-flex justify-center">
+          <div class="workout-start-container d-flex justify-center">
+            <div class="content">
               <div
-                class="percentage rounded-pill"
-                :class="
-                  (progressCurrentExercise / progressTotalExercises) * 100 >= 50
-                    ? 'green-bg'
-                    : 'gray-bg'
-                "
+                class="progress-bar-container rounded-pill d-flex align-center justify-center"
               >
-                {{
-                  Math.round(
-                    (progressCurrentExercise / progressTotalExercises) * 100
-                  )
-                }}%
-              </div>
-              <div
-                class="progress-bar rounded-pill"
-                :style="
-                  'width: ' +
-                  (progressCurrentExercise / progressTotalExercises) * 100 +
-                  '%'
-                "
-              ></div>
-            </div>
-            <div class="d-flex align-center mt-4 mb-2">
-              <div v-if="!newBlock" class="mr-3">
-                <div class="d-flex">
-                  <h3 class="text--secondary">
-                    {{ currentBlockType }}
-                  </h3>
-                  <v-tooltip right data-html="true">
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-icon class="ml-3" dark small v-bind="attrs" v-on="on">
-                        fa-info-circle
-                      </v-icon>
-                    </template>
-                    <span>
-                      {{ WORKOUT_BLOCK_OPTIONS_INFO[currentBlockType] }}
-                    </span>
-                  </v-tooltip>
-                </div>
-                <h4
-                  class="text--secondary"
-                  v-if="
-                    ['Circuit', 'EMOM', 'TABATA'].includes(currentBlockType)
+                <div
+                  class="percentage rounded-pill"
+                  :class="
+                    (progressCurrentExercise / progressTotalExercises) * 100 >=
+                    50
+                      ? 'green-bg'
+                      : 'gray-bg'
                   "
                 >
-                  {{ currentSet + 1 }} / {{ currentBlockSetTotal }}
-                </h4>
+                  {{
+                    Math.round(
+                      (progressCurrentExercise / progressTotalExercises) * 100
+                    )
+                  }}%
+                </div>
+                <div
+                  class="progress-bar rounded-pill"
+                  :style="
+                    'width: ' +
+                    (progressCurrentExercise / progressTotalExercises) * 100 +
+                    '%'
+                  "
+                ></div>
               </div>
-              <v-btn @click="nextBlock(true)">Skip</v-btn>
-              <v-btn @click="stopWorkoutDialog = true" class="ml-auto"
-                >Stop</v-btn
-              >
+              <div class="d-flex align-center mt-4 mb-2">
+                <div v-if="!newBlock" class="mr-3">
+                  <div class="d-flex">
+                    <h3 class="text--secondary">
+                      {{ currentBlockType }}
+                    </h3>
+                    <v-tooltip right data-html="true">
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-icon
+                          class="ml-3"
+                          dark
+                          small
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          fa-info-circle
+                        </v-icon>
+                      </template>
+                      <span>
+                        {{ WORKOUT_BLOCK_OPTIONS_INFO[currentBlockType] }}
+                      </span>
+                    </v-tooltip>
+                  </div>
+                  <h4
+                    class="text--secondary"
+                    v-if="
+                      ['Circuit', 'EMOM', 'TABATA'].includes(currentBlockType)
+                    "
+                  >
+                    {{ currentSet + 1 }} / {{ currentBlockSetTotal }}
+                  </h4>
+                </div>
+                <v-btn @click="nextBlock(true)">Skip</v-btn>
+                <v-btn @click="stopWorkoutDialog = true" class="ml-auto"
+                  >Stop</v-btn
+                >
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Exercise -->
-      <div class="d-flex justify-center">
-        <div v-if="!this.newBlock">
-          <div
-            v-if="
-              !['Text', 'Rest'].includes(workout.blocks[this.currentBlock].type)
-            "
-          >
-            <Exercise
+        <!-- Exercise -->
+        <div class="d-flex justify-center">
+          <div v-if="!this.newBlock">
+            <div
               v-if="
-                currentExercise &&
-                currentExercise.approved &&
-                currentExercise.video
+                !['Text', 'Rest'].includes(
+                  workout.blocks[this.currentBlock].type
+                )
               "
-              :exercise="currentExercise"
-              :selected="
-                workout.blocks[this.currentBlock].exercises[
-                  this.currentExerciseCount
-                ].name
-              "
-              :reset="resetVideo"
-              class="exercise-container"
-            />
-            <h3 class="text-center" v-else>
-              {{
-                workout.blocks[this.currentBlock].exercises[
-                  this.currentExerciseCount
-                ].name
-              }}
-            </h3>
-          </div>
-          <h3
-            class="mt-3 mb-15"
-            v-if="workout.blocks[this.currentBlock].type == 'Text'"
-          >
-            {{ workout.blocks[this.currentBlock].values[0] }}
-          </h3>
-
-          <div
-            v-if="
-              !['Text', 'TABATA', 'AMRAP'].includes(
-                workout.blocks[currentBlock].type
-              )
-            "
-          >
-            <h1 class="text-center font-weight-bold mt-3">
-              {{
-                workout.blocks[this.currentBlock].exercises[
-                  this.currentExerciseCount
-                ].count
-              }}
-              {{
-                workout.blocks[this.currentBlock].exercises[
-                  this.currentExerciseCount
-                ].append
-              }}
-            </h1>
-            <h3 class="text-center text--secondary mb-3">
-              {{
-                workout.blocks[this.currentBlock].exercises[
-                  this.currentExerciseCount
-                ].info
-              }}
-            </h3>
-          </div>
-        </div>
-        <div style="width: 100%" v-else>
-          <h1 class="text-center">Next</h1>
-          <WorkoutBlock :block="workout.blocks[currentBlock]" />
-        </div>
-      </div>
-
-      <!-- Ad -->
-      <Ad
-        class="my-3"
-        v-if="
-          (progressCurrentExercise + 3) % 6 == 0 ||
-          (progressCurrentExercise + 3) % 7 == 0
-        "
-      />
-
-      <!-- Next exercise buttons -->
-      <div class="d-flex justify-center mt-5">
-        <div class="next-button-container">
-          <div
-            v-if="
-              ['Circuit', 'Single', 'For time', 'Text'].includes(
-                workout.blocks[currentBlock].type
-              )
-            "
-          >
-            <v-btn
-              v-if="newBlock"
-              block
-              @click="nextExercise"
-              class="py-10 next-button"
-              color="secondary"
-              >Start</v-btn
             >
-            <v-btn
-              v-else
-              block
-              @click="nextExercise"
-              class="py-10 next-button"
-              color="secondary"
-              >Next</v-btn
-            >
-          </div>
-
-          <v-btn
-            v-if="
-              ['EMOM', 'TABATA', 'AMRAP', 'Rest'].includes(
-                workout.blocks[currentBlock].type
-              ) && !timerStarted
-            "
-            block
-            @click="startTimer"
-            class="py-10 next-button"
-            color="secondary"
-            >Start timer</v-btn
-          >
-          <div v-if="timerStarted" class="mt-3">
+              <Exercise
+                v-if="
+                  currentExercise &&
+                  currentExercise.approved &&
+                  currentExercise.video
+                "
+                :exercise="currentExercise"
+                :selected="
+                  workout.blocks[this.currentBlock].exercises[
+                    this.currentExerciseCount
+                  ].name
+                "
+                :reset="resetVideo"
+                class="exercise-container"
+              />
+              <h3 class="text-center" v-else>
+                {{
+                  workout.blocks[this.currentBlock].exercises[
+                    this.currentExerciseCount
+                  ].name
+                }}
+              </h3>
+            </div>
             <h3
-              class="text-center text--secondary"
-              v-if="
-                workout.blocks[currentBlock].type == 'TABATA' &&
-                actualTimerStarted
-              "
+              class="mt-3 mb-15"
+              v-if="workout.blocks[this.currentBlock].type == 'Text'"
             >
-              {{ workOrRest }}
+              {{ workout.blocks[this.currentBlock].values[0] }}
             </h3>
-            <h1 class="text-center mt-1">
-              {{ timer }}
-            </h1>
+
+            <div
+              v-if="
+                !['Text', 'TABATA', 'AMRAP'].includes(
+                  workout.blocks[currentBlock].type
+                )
+              "
+            >
+              <h1 class="text-center font-weight-bold mt-3">
+                {{
+                  workout.blocks[this.currentBlock].exercises[
+                    this.currentExerciseCount
+                  ].count
+                }}
+                {{
+                  workout.blocks[this.currentBlock].exercises[
+                    this.currentExerciseCount
+                  ].append
+                }}
+              </h1>
+              <h3 class="text-center text--secondary mb-3">
+                {{
+                  workout.blocks[this.currentBlock].exercises[
+                    this.currentExerciseCount
+                  ].info
+                }}
+              </h3>
+            </div>
           </div>
-          <div
-            v-if="currentExerciseCount == 0 && newBlock && currentBlock == 0"
-          >
-            <v-btn
-              block
-              @click="
-                $router.push({ name: 'workout-id', params: { id: workout.id } })
+          <div style="width: 100%" v-else>
+            <h1 class="text-center">Next</h1>
+            <WorkoutBlock :block="workout.blocks[currentBlock]" />
+          </div>
+        </div>
+
+        <!-- Ad -->
+        <Ad
+          class="my-3"
+          v-if="
+            (progressCurrentExercise + 3) % 6 == 0 ||
+            (progressCurrentExercise + 3) % 7 == 0
+          "
+        />
+
+        <!-- Next exercise buttons -->
+        <div class="d-flex justify-center mt-5">
+          <div class="next-button-container">
+            <div
+              v-if="
+                ['Circuit', 'Single', 'For time', 'Text'].includes(
+                  workout.blocks[currentBlock].type
+                )
               "
-              class="py-5 mt-5 next-button"
-              color="secondary"
-              >View full workout</v-btn
             >
+              <v-btn
+                v-if="newBlock"
+                block
+                @click="nextExercise"
+                class="py-10 next-button"
+                color="secondary"
+                >Start</v-btn
+              >
+              <v-btn
+                v-else
+                block
+                @click="nextExercise"
+                class="py-10 next-button"
+                color="secondary"
+                >Next</v-btn
+              >
+            </div>
+
             <v-btn
-              color="secondary"
-              @click="
-                NoSleepActive = false
-                $router.go(-1)
+              v-if="
+                ['EMOM', 'TABATA', 'AMRAP', 'Rest'].includes(
+                  workout.blocks[currentBlock].type
+                ) && !timerStarted
               "
               block
-              class="mt-5"
-              >Back</v-btn
+              @click="startTimer"
+              class="py-10 next-button"
+              color="secondary"
+              >Start timer</v-btn
             >
+            <div v-if="timerStarted" class="mt-3">
+              <h3
+                class="text-center text--secondary"
+                v-if="
+                  workout.blocks[currentBlock].type == 'TABATA' &&
+                  actualTimerStarted
+                "
+              >
+                {{ workOrRest }}
+              </h3>
+              <h1 class="text-center mt-1">
+                {{ timer }}
+              </h1>
+            </div>
           </div>
         </div>
       </div>
@@ -369,6 +392,7 @@ export default {
       workoutFinished: false,
       workoutFinishedDialog: false,
       stopWorkoutDialog: false,
+      workoutStarted: false,
     }
   },
   methods: {
