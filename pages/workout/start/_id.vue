@@ -18,18 +18,15 @@
           After pressing the "I'M READY" button you will first get a small
           overview of the next exercises. This can be a circuit, EMOM, TABATA or
           something else. You can press the litte 'i' button next to it for more
-          information if unfamiliar.
+          information.
         </p>
         <p class="mt-5">
-          When ready, press start and you actually have to do the exercises. A
-          timer can start or you see the amount of repetitions you have to do.
-          In most cases there is a video of the exercise. Press 'NEXT' when you
-          did the exercise on screen.
+          When ready, press start and your exercise will begin. A timer starts
+          or you see the amount of repetitions you have to do. In most cases
+          there is a video of the exercise. Press 'NEXT' when you did the
+          exercise on screen.
         </p>
-        <p class="mt-5">
-          Without further ado, press the "I'M READY" button and enjoy your
-          workout!
-        </p>
+        <p class="mt-5">Press the "I'M READY" button and enjoy your workout!</p>
         <v-btn
           block
           @click="workoutStarted = true"
