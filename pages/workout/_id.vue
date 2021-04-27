@@ -88,13 +88,13 @@
         </v-row>
       </div>
 
-      <!-- <div class="d-flex justify-end">
+      <div v-if="viewWorkout" class="d-flex justify-end">
         <v-switch
           v-model="NoSleepActive"
           label="Keep phone active"
           hide-details
         ></v-switch>
-      </div> -->
+      </div>
 
       <!-- <div class="d-flex justify-center mt-4">
         <v-btn block>View full workout</v-btn>
