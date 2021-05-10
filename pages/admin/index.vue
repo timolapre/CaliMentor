@@ -52,6 +52,7 @@
           </v-btn>
         </v-form>
 
+        <!-- Users -->
         <div class="mt-10" v-if="usersInfo">
           <v-card color="secondary" class="pa-2 text-center mb-3">
             <h3>{{ totalUsers }} total users</h3>
@@ -104,6 +105,28 @@
         </div>
       </v-card>
 
+      <!-- Latest workout finishes -->
+      <v-card class="pa-3 mt-5">
+        <h1 class="text-center mb-5">Latest workout finishes</h1>
+        <v-row>
+          <v-col
+            cols="6"
+            sm="3"
+            v-for="finish in latestWorkoutFinishes"
+            :key="finish.id"
+          >
+            <v-card color="secondary" class="pa-2">
+              <p class="mb-0 text--disabled">
+                {{ moment(finish.createdAt).fromNow('DD MMMM') }}
+              </p>
+              <h3>{{ finish.user.username }}</h3>
+              <p class="mb-0">{{ finish.workout.name }}</p>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-card>
+
+      <!-- Earnings -->
       <v-card class="pa-3 mt-5">
         <h1 class="text-center mb-5">Earnings</h1>
         <v-row>
@@ -143,12 +166,12 @@ export default {
       giftMessage: null,
       usersInfo: null,
       totalUsers: 0,
-
       months: 2,
       fakeLoginUser: null,
       fakeLoginMessage: null,
       earnings: [],
       moment: moment,
+      latestWorkoutFinishes: null,
     }
   },
   methods: {
@@ -177,6 +200,10 @@ export default {
       const data = await this.$axios.$get('admin/earnings')
       this.earnings = data
     },
+    async getLatestWorkoutFinishes() {
+      const data = await this.$axios.$get('admin/latestworkoutfinishes')
+      this.latestWorkoutFinishes = data
+    },
   },
   async created() {
     await this.$store.dispatch('getLoggedinUser')
@@ -195,6 +222,7 @@ export default {
       this.usersInfo.canceledUsers[1]
 
     await this.getEarnings()
+    await this.getLatestWorkoutFinishes()
   },
   computed: {
     thisMonth() {
