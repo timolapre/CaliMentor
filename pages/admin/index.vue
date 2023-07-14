@@ -1,23 +1,25 @@
 <template>
   <div class="d-flex align-center justify-center">
     <div class="page">
-      <!-- Fake login -->
+      <!-- AI Workout -->
       <v-card class="pa-3">
+        <h1 class="text-center">New ChatGPT Workout</h1>
+        <v-form id="fake-login-form" @submit.prevent="createAIWorkout()">
+          <v-text-field label="message" v-model="chatGPTInput" hide-details></v-text-field>
+          <p v-if="ChatGPTMessage">{{ ChatGPTMessage }}</p>
+          <v-btn type="submit" form="fake-login-form" class="mt-3" color="primary" block>
+            Create new AI Workout
+          </v-btn>
+        </v-form>
+      </v-card>
+
+      <!-- Fake login -->
+      <v-card class="pa-3 mt-5">
         <h1 class="text-center">Fake login</h1>
         <v-form id="fake-login-form" @submit.prevent="fakeLogin()">
-          <v-text-field
-            label="username"
-            v-model="fakeLoginUser"
-            hide-details
-          ></v-text-field>
+          <v-text-field label="username" v-model="fakeLoginUser" hide-details></v-text-field>
           <p v-if="fakeLoginMessage">{{ fakeLoginMessage }}</p>
-          <v-btn
-            type="submit"
-            form="fake-login-form"
-            class="mt-3"
-            color="primary"
-            block
-          >
+          <v-btn type="submit" form="fake-login-form" class="mt-3" color="primary" block>
             fake Login
           </v-btn>
         </v-form>
@@ -27,27 +29,10 @@
       <v-card class="pa-3 mt-5">
         <h1 class="text-center">Users</h1>
         <v-form id="gift-premium-form" @submit.prevent="giftPremium()">
-          <v-text-field
-            label="username"
-            v-model="selectedUser"
-            hide-details
-          ></v-text-field>
-          <v-text-field
-            hide-details
-            suffix="Months"
-            type="number"
-            min="0"
-            max="99"
-            v-model="months"
-          ></v-text-field>
+          <v-text-field label="username" v-model="selectedUser" hide-details></v-text-field>
+          <v-text-field hide-details suffix="Months" type="number" min="0" max="99" v-model="months"></v-text-field>
           <p v-if="giftMessage">{{ giftMessage }}</p>
-          <v-btn
-            type="submit"
-            form="gift-premium-form"
-            class="mt-3"
-            color="primary"
-            block
-          >
+          <v-btn type="submit" form="gift-premium-form" class="mt-3" color="primary" block>
             gift premium
           </v-btn>
         </v-form>
@@ -69,10 +54,7 @@
             <v-col cols="6" sm="3">
               <v-card color="secondary" class="pa-2 text-center">
                 <h3>{{ usersInfo.giftedPremiumUsers[1] }} gifted premium</h3>
-                <span
-                  v-for="user in usersInfo.giftedPremiumUsers[0]"
-                  :key="user.id"
-                >
+                <span v-for="user in usersInfo.giftedPremiumUsers[0]" :key="user.id">
                   {{ user.username }} -
                 </span>
               </v-card>
@@ -109,12 +91,7 @@
       <v-card class="pa-3 mt-5">
         <h1 class="text-center mb-5">Latest workout finishes</h1>
         <v-row>
-          <v-col
-            cols="6"
-            sm="3"
-            v-for="finish in latestWorkoutFinishes"
-            :key="finish.id"
-          >
+          <v-col cols="6" sm="3" v-for="finish in latestWorkoutFinishes" :key="finish.id">
             <v-card color="secondary" class="pa-2">
               <p class="mb-0 text--disabled">
                 {{ moment(finish.createdAt).fromNow('DD MMMM') }}
@@ -131,10 +108,7 @@
         <h1 class="text-center mb-5">Earnings</h1>
         <v-row>
           <v-col cols="6" sm="3" v-for="earning in earnings" :key="earning.id">
-            <v-card
-              :color="thisMonth == earning.month ? 'primary' : 'secondary'"
-              class="pa-2"
-            >
+            <v-card :color="thisMonth == earning.month ? 'primary' : 'secondary'" class="pa-2">
               <h3>{{ moment(earning.month).format('MMMM YYYY') }}</h3>
               <h3>&euro; {{ earning.earnings }}</h3>
             </v-card>
@@ -144,12 +118,7 @@
 
       <v-card class="pa-3 mt-5">
         <h1 class="text-center mb-5">Exercises</h1>
-        <v-btn
-          block
-          color="primary"
-          @click="$router.push({ name: 'admin-exercises' })"
-          >Go to exercises</v-btn
-        >
+        <v-btn block color="primary" @click="$router.push({ name: 'admin-exercises' })">Go to exercises</v-btn>
       </v-card>
     </div>
   </div>
@@ -169,6 +138,8 @@ export default {
       months: 2,
       fakeLoginUser: null,
       fakeLoginMessage: null,
+      chatGPTInput: 'Create a beginner pull workout without pull ups',
+      ChatGPTMessage: null,
       earnings: [],
       moment: moment,
       latestWorkoutFinishes: null,
@@ -204,6 +175,16 @@ export default {
       const data = await this.$axios.$get('admin/latestworkoutfinishes')
       this.latestWorkoutFinishes = data
     },
+    async createAIWorkout() {
+      this.ChatGPTMessage = "Loading new workout"
+      const data = await this.$axios.$post('ai/create', {
+        message: this.chatGPTInput
+      })
+      this.ChatGPTMessage = data.message
+      setTimeout(() => {
+        this.ChatGPTMessage = null
+      }, 2000)
+    }
   },
   async created() {
     await this.$store.dispatch('getLoggedinUser')

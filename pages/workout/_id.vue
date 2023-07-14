@@ -20,7 +20,8 @@
               <h2 class="font-weight-medium">
                 {{ workout.name }}
               </h2>
-              <p class="text--disabled mb-0">By {{ workout.user.username }}</p>
+              <p class="text--disabled my-3">{{ workout.description }}</p>
+              <p class="text--disabled mb-3">By {{ workout.user.username }}</p>
             </div>
           </div>
           <v-divider class="my-2" />
